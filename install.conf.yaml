@@ -1,22 +1,23 @@
-- defaults: 
+- defaults:
     link:
       relink: true
     brewfile:
       stdout: true
       stderr: true
-      include: ['tap', 'brew', 'cask', 'mas']
+      include: ["tap", "brew", "cask", "mas"]
       sudo: brewuser
 
-- clean: ['~']
+- clean: ["~"]
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
+    - [git submodule update --init --recursive, Installing submodules]
 
 - link:
     ~/.config/nvim: nvim
     ~/.zshrc: zsh/.zshrc
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile
+    ~/.gitignore: git/gitignore
 
 - brewfile:
     file: Brewfile

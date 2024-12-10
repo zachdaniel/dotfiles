@@ -1,3 +1,5 @@
 require("options")
 
-require("plugins")
+require("config.lazy")
+
+require("autocmds")
