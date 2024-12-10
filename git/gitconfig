@@ -1,0 +1,8 @@
+[core]
+	editor = nvim
+	excludesFile = ~/.gitignore
+[user]
+	name = Zach Daniel
+	email = zach@zachdaniel.dev
+[pull]
+	rebase = true

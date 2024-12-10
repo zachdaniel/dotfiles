@@ -18,6 +18,8 @@
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile
     ~/.gitignore: git/gitignore
+    ~/.gitconfig: git/gitconfig
+    ~/scripts: scripts
 
 - brewfile:
     file: Brewfile
