@@ -92,6 +92,7 @@ fi
 
 alias lg=lazygit
 alias ls="eza -l --git --git-repos --header"
+alias p="project"
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"

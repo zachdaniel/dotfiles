@@ -5,8 +5,10 @@ return {
   },
   config = function()
     local wk = require("which-key")
+
     wk.add({
       { "<leader>f", group = "file" },
+      { "<leader>t", group = "term" }
     })
   end,
   keys = {
