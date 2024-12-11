@@ -99,6 +99,8 @@ p() {
   if [ -n "$dir" ] && [ -d "$dir" ]; then
     cd "$dir"
     nvim
+  else
+    echo $dir
   fi
 }
 
