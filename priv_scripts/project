@@ -1,16 +1,13 @@
 #! /bin/bash
-
 # List of folders to iterate over (can use wildcard patterns or explicit paths)
 folder_list=(
   "~/dev/ash/*"
   "~/dev/alembic/*"
 )
-
 # Explicitly named folders
 explicit_folders=(
   "$HOME/.dotfiles"
 )
-
 # Combine all folders into one array
 all_folders=()
 for pattern in "${folder_list[@]}"; do
@@ -18,10 +15,8 @@ for pattern in "${folder_list[@]}"; do
   expanded_folders=$(eval echo $pattern)
   all_folders+=($expanded_folders)
 done
-
 # Add explicitly named folders
 all_folders+=("${explicit_folders[@]}")
-
 # Iterate over all folders to verify they exist and are directories
 valid_folders=()
 for folder in "${all_folders[@]}"; do
@@ -29,14 +24,12 @@ for folder in "${all_folders[@]}"; do
     valid_folders+=("$folder")
   fi
 done
-
 # Use fzf to select a directory
 selected_dir=$(printf '%s\n' "${valid_folders[@]}" | fzf --prompt="Select a folder: ")
-
 # Check if a selection was made
 if [ -n "$selected_dir" ]; then
-  cd "$selected_dir" || exit
-  nvim
+  # Instead of using cd directly, print the directory
+  echo "$selected_dir"
 else
   echo "No selection made. Exiting."
 fi
