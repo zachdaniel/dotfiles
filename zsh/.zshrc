@@ -93,6 +93,9 @@ fi
 alias lg=lazygit
 alias ls="eza --git --git-repos --header"
 alias cat="bat"
+p() {
+  source $HOME/.dotfiles/priv_scripts/project $1
+}
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"

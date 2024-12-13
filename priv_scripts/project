@@ -1,35 +1,64 @@
-#! /bin/bash
-# List of folders to iterate over (can use wildcard patterns or explicit paths)
+#! /usr/bin/env zsh
+
+# Use Zsh globbing to expand directories
 folder_list=(
-  "~/dev/ash/*"
-  "~/dev/alembic/*"
+  $HOME/dev/ash/*(/)    # Only match directories
+  $HOME/dev/alembic/*(/)
 )
+
 # Explicitly named folders
 explicit_folders=(
-  "$HOME/.dotfiles"
+  $HOME/.dotfiles
 )
+
 # Combine all folders into one array
-all_folders=()
-for pattern in "${folder_list[@]}"; do
-  # Expand each wildcard pattern into actual directories
-  expanded_folders=$(eval echo $pattern)
-  all_folders+=($expanded_folders)
-done
-# Add explicitly named folders
-all_folders+=("${explicit_folders[@]}")
-# Iterate over all folders to verify they exist and are directories
+all_folders=($folder_list $explicit_folders)
+
+# Verify folders exist
 valid_folders=()
-for folder in "${all_folders[@]}"; do
-  if [ -d "$folder" ]; then
-    valid_folders+=("$folder")
+for folder in $all_folders; do
+  if [[ -d $folder ]]; then
+    valid_folders+=($folder)
   fi
 done
+
 # Use fzf to select a directory
 selected_dir=$(printf '%s\n' "${valid_folders[@]}" | fzf --prompt="Select a folder: ")
+
 # Check if a selection was made
-if [ -n "$selected_dir" ]; then
-  # Instead of using cd directly, print the directory
-  echo "$selected_dir"
+if [[ -n $selected_dir ]]; then
+  # Get the Kitty window information
+  kitty_info=$(kitty @ ls)
+
+  # Extract the current window title using jq
+  current_title=$(kitty @ ls | jq -r '
+    [.[] | select(.is_focused == true)] | 
+    first | 
+    .tabs[0].windows[0].title // empty
+  ')
+
+  project_name="Project $(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
+  project_name=$(echo "$project_name" | tr ' :' '-')
+
+  if [[ $current_title != Project-* ]]; then
+    kitten @ set-window-title "$project_name"
+    cd "$selected_dir" > /dev/null
+  else
+    if [[ $current_title == "$project_name" ]]; then
+      echo "You're already there!"
+    else
+      # Run the kitty command with --match to switch to a matching window
+      if ! kitty @ focus-window --match="title:^${project_name}" 2> /dev/null; then
+        # Retry without the --match option if none is found
+        kitty @ launch \
+            --title="${project_name}" \
+            --type os-window \
+            --cwd "$selected_dir" \
+            --hold \
+            /bin/zsh -c "/opt/homebrew/bin/nvim"
+      fi
+    fi
+  fi
 else
   echo "No selection made."
 fi

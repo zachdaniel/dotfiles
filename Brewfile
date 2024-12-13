@@ -1,9 +1,19 @@
+# Casks
+tap "railwaycat/emacsmacport"
+
+# Elixir
 brew "elixir-ls"
-brew "eza"
+
+# Utilities
+brew "git"
+brew "ripgrep"
+brew "coreutils"
+brew "fd"
 
 # terminal
-cask "wezterm"
-cask "alacritty"
+# cask "wezterm"
+# cask "alacritty"
+brew "eza"
 
 # postgis packages
 brew "proj"
