@@ -1,0 +1,9 @@
+#! /bin/bash
+
+if [[ $# -eq 1 ]]; then
+  project=(eval echo $1)
+else
+  project=$PWD
+fi
+
+echo $project >> ~/.config/ever-opened-projects.txt

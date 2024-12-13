@@ -1,6 +1,10 @@
 brew "elixir-ls"
 brew "eza"
 
+# terminal
+cask "wezterm"
+cask "alacritty"
+
 # postgis packages
 brew "proj"
 brew "geos"

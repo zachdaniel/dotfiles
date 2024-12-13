@@ -1,7 +1,6 @@
 ## Set paths for tools
 eval "$(/opt/homebrew/bin/brew shellenv)"
 . "$HOME/.cargo/env"
-
 export PYENV_ROOT="$HOME/.pyenv"
 
 ## Set erlang options

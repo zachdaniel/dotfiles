@@ -91,18 +91,8 @@ else
 fi
 
 alias lg=lazygit
-alias ls="eza -l --git --git-repos --header"
+alias ls="eza --git --git-repos --header"
 alias cat="bat"
-p() {
-  local dir
-  dir=$(~/.dotfiles/priv_scripts/project)
-  if [ -n "$dir" ] && [ -d "$dir" ]; then
-    cd "$dir"
-    nvim
-  else
-    echo $dir
-  fi
-}
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
