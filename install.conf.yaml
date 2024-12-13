@@ -14,7 +14,7 @@
 
 - link:
     ~/.config/nvim: nvim
-    ~/.config/wezterm: wezterm
+    ~/.config/kitty: kitty
     ~/.zshrc: zsh/.zshrc
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile

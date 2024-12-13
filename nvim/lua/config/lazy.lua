@@ -22,6 +22,7 @@ require("lazy").setup({
     {
       import = "plugins"
     },
+    {"lewis6991/fileline.nvim"},
     {
       "rebelot/kanagawa.nvim",
       config = function()

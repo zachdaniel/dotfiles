@@ -2,7 +2,7 @@
 
 # Use Zsh globbing to expand directories
 folder_list=(
-  $HOME/dev/ash/*(/)    # Only match directories
+  $HOME/dev/ash/*(/) #  Only match directories
   $HOME/dev/alembic/*(/)
 )
 
@@ -43,9 +43,11 @@ if [[ -n $selected_dir ]]; then
   if [[ $current_title != Project-* ]]; then
     kitten @ set-window-title "$project_name"
     cd "$selected_dir" > /dev/null
+    nvim
   else
     if [[ $current_title == "$project_name" ]]; then
-      echo "You're already there!"
+      cd "$selected_dir" > /dev/null
+      nvim
     else
       # Run the kitty command with --match to switch to a matching window
       if ! kitty @ focus-window --match="title:^${project_name}" 2> /dev/null; then

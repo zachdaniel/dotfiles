@@ -10,7 +10,7 @@ vim.opt.splitright = true
 vim.opt.wrap = false
 
 -- use spaces instead of tabs
-default_tab_size = 2
+local default_tab_size = 2
 
 vim.opt.expandtab = true
 vim.opt.tabstop = default_tab_size

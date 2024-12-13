@@ -18,6 +18,15 @@ export PATH="$HOME/scripts/:$PATH"
 export HOMEBREW_PREFIX=/opt/homebrew
 
 ## Set editors
-export ELIXIR_EDITOR="zed __FILE__:__LINE__"
-export EDITOR="zed -n -w"
-export VISUAL="zed -n -w"
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+  export VISUAL='vim'
+else
+  export EDITOR='nvim'
+  export VISUAL='nvim'
+  alias vim=nvim
+  alias vi=nvim
+  export ELIXIR_EDITOR="nvim __FILE__:__LINE__"
+fi
