@@ -24,16 +24,20 @@ require("lazy").setup({
     },
     {"lewis6991/fileline.nvim"},
     {
-      "rebelot/kanagawa.nvim",
+      "scottmckendry/cyberdream.nvim",
+      lazy = false,
+      priority = 1000,
       config = function()
-        vim.cmd([[colorscheme kanagawa-wave]])
-      end,
-    },
+        require("cyberdream").setup({
+          transparent = true,
+          borderless_telescoep = true,
+          terminal_colors = true
+        })
+        vim.cmd("colorscheme cyberdream")
+      end
+    }
   },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "kanagawa-wave" } },
-  -- automatically check for plugin updates
+  install = { colorscheme = { "cyberdream" } },
   checker = { 
     enabled = true,
     notify = false
