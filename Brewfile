@@ -8,9 +8,11 @@ brew "coreutils"
 brew "fd"
 
 # terminal
-# cask "wezterm"
-# cask "alacritty"
 brew "eza"
+cask "kitty"
+
+# Window manager
+cask "nikitabobko/tap/aerospace"
 
 # postgis packages
 brew "proj"
