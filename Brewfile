@@ -1,6 +1,3 @@
-# Casks
-tap "railwaycat/emacsmacport"
-
 # Elixir
 brew "elixir-ls"
 
