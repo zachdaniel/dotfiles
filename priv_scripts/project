@@ -82,5 +82,5 @@ else
   kitten @ set-user-vars TO_CLOSE=true
 fi
 
-kitten @ close-window --match var:TO_CLOSE=true
+kitten @ close-window --match var:TO_CLOSE=true > /dev/null 2>&1
 
