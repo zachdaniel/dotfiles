@@ -40,27 +40,47 @@ if [[ -n $selected_dir ]]; then
   project_name="Project $(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
   project_name=$(echo "$project_name" | tr ' :' '-')
 
+  current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
+
   if [[ $current_title != Project-* ]]; then
+    if [[ $1 == "hot-key" ]]; then
+      kitten @ close-window --match "id:$2"
+    fi
+
     kitten @ set-window-title "$project_name"
     cd "$selected_dir" > /dev/null
     nvim
   else
     if [[ $current_title == "$project_name" ]]; then
-      cd "$selected_dir" > /dev/null
-      nvim
+      if [[ $1 == "hot-key" ]]; then
+        kitten @ close-window --match "id:$current_window_id"
+      else
+        cd "$selected_dir" > /dev/null
+        nvim
+      fi
     else
+      if [[ $1 == "hot-key" ]]; then
+        # No idea why I have to do this, but specifying the window id *does not work* 😭
+        kitten @ set-user-vars TO_CLOSE=true
+      fi
       # Run the kitty command with --match to switch to a matching window
-      if ! kitty @ focus-window --match="title:^${project_name}" 2> /dev/null; then
-        # Retry without the --match option if none is found
+      kitty @ focus-window --match="title:^${project_name}" 2> /dev/null
+      if [ $? -eq 0 ]; then
+      else
+        kitten @ set-user-vars TO_CLOSE=true
         kitty @ launch \
-            --title="${project_name}" \
-            --type os-window \
-            --cwd "$selected_dir" \
-            --hold \
-            /bin/zsh -c "/opt/homebrew/bin/nvim"
+          --title="${project_name}" \
+          --type os-window \
+          --cwd "$selected_dir" \
+          --hold \
+          /bin/zsh -c "/opt/homebrew/bin/nvim"
+
       fi
     fi
   fi
 else
-  echo "No selection made."
+  kitten @ set-user-vars TO_CLOSE=true
 fi
+
+kitten @ close-window --match var:TO_CLOSE=true
+
