@@ -1,0 +1,5 @@
+#! /bin/bash
+
+current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
+
+kitten @ launch --hold /Users/zachdaniel/.dotfiles/priv_scripts/project hot-key $current_window_id 
