@@ -10,7 +10,8 @@ return {
       { "<leader>f", group = "file" },
       { "<leader>t", group = "term" },
       { "<leader>g", group = "git" },
-      { "<leader>w", group = "window" }
+      { "<leader>w", group = "window" },
+      { "<leader>s", group = "search" }
     })
   end,
   keys = {

@@ -23,6 +23,7 @@ require("lazy").setup({
       import = "plugins"
     },
     {"lewis6991/fileline.nvim"},
+    { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
     {
       "scottmckendry/cyberdream.nvim",
       lazy = false,
@@ -38,6 +39,9 @@ require("lazy").setup({
     }
   },
   install = { colorscheme = { "cyberdream" } },
+  change_detection = {
+    enabled = false
+  },
   checker = { 
     enabled = true,
     notify = false

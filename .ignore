@@ -1,3 +1,7 @@
 .git
 dotbot
 dotbot-brewfile
+deps
+_build
+.elixir_ls
+.lexical

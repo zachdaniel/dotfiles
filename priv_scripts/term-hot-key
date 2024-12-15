@@ -1,0 +1,50 @@
+#! /bin/bash
+
+# NOTE: I ultimately decided not to use this, favoring the embedded terminal in vim
+
+current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
+we_are_hotkey=$(kitty @ ls | jq -r --arg window_id $current_window_id '.[] | .tabs[].windows[] | select(.id == ($window_id | tonumber)) | has("env") and (.env | has("HOTKEY_TERM_FOR"))')
+
+echo $we_are_hotkey
+
+if [[ $we_are_hotkey == "true" ]]; then
+  echo "We are hotkey"
+  kitten @ focus-window --match "id:$HOTKEY_TERM_FOR"
+  kitten @ goto-layout stack
+else
+  echo "We are not hotkey"
+  hot_key_term_id=$(kitten @ ls | jq -r --arg window_id "$current_window_id" '.[] | .tabs[].windows[] | select(.env.HOTKEY_TERM_FOR == $window_id) | .id')
+
+  if [ -n "$hot_key_term_id" ]; then
+    echo "We found a hotkey window"
+    hidden=$(kitten @ ls | jq --arg id "$hot_key_term_id" '.[] | .tabs[].windows[] | select(.id == ($id | tonumber)) | .user_vars.HIDDEN')
+
+    if [ "$hidden" == "true" ]; then
+      echo "It is hidden"
+      kitten @ set-user-vars --match="id:$hot_key_term_id" HIDDEN=false
+      kitten @ goto-layout vertical
+    else
+      is_focused=$(kitten @ ls | jq -r --arg window_id "4" '.[] | .tabs[].windows[] | select(.id == ($window_id | tonumber)) | .is_focused')
+      if [ is_focused == true ]; then
+        echo "It is active, so we should hide it"
+        kitten @ set-user-vars --match="id:$hot_key_term_id" HIDDEN=true
+        kitten @ goto-layout stack
+      else
+        echo "It is not active, so we should switch to it"
+        kitten @ goto-layout vertical
+
+        kitten @ focus-window --match "id:$hot_key_term_id"
+      fi
+    fi
+  else
+    echo "We did not find a hotkey window"
+    kitten @ goto-layout vertical
+    kitty @ launch \
+      --title="HOTKEY_TERM" \
+      --type window \
+      --env "HOTKEY_TERM_FOR=${current_window_id}" \
+      --cwd "$selected_dir" \
+      /opt/homebrew/bin/zsh 
+  fi
+fi
+

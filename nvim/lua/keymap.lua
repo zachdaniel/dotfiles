@@ -9,3 +9,7 @@ end, { desc = "Horizontal split"})
 vim.keymap.set("n", "<leader>ww", function()
   vim.cmd("wincmd w")
 end, { desc = "Next window"})
+
+-- vim.keymap.set("n", "<leader>tt", function()
+--   vim.cmd("terminal")
+-- end, { desc = "Toggle Terminal"})

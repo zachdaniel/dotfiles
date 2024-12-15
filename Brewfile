@@ -10,6 +10,7 @@ brew "fd"
 # terminal
 brew "eza"
 cask "kitty"
+brew "zsh"
 
 # Window manager
 cask "nikitabobko/tap/aerospace"
