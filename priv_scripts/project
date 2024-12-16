@@ -37,12 +37,11 @@ if [[ -n $selected_dir ]]; then
     .tabs[0].windows[0].title // empty
   ')
 
-  project_name="Project $(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
-  project_name=$(echo "$project_name" | tr ' :' '-')
+  project_name="Project: $(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
 
   current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
 
-  if [[ $current_title != Project-* ]]; then
+  if [[ $current_title != Project\:\ * ]]; then
     if [[ $1 == "hot-key" ]]; then
       kitten @ close-window --match "id:$2"
     fi
@@ -65,8 +64,9 @@ if [[ -n $selected_dir ]]; then
         kitten @ set-user-vars TO_CLOSE=true
       fi
       # Run the kitty command with --match to switch to a matching window
-      kitty @ focus-window --match="title:^${project_name}" 2> /dev/null
-      if [ $? -eq 0 ]; then
+      matching_window_id=$(kitty @ ls | jq --arg title $project_name '.[] | .tabs[].windows[] | select(.title == $title).id') 
+      if [[ -n "$matching_window_id" ]]; then
+        kitty @ focus-window --match="id:$matching_window_id" 2> /dev/null
       else
         kitten @ set-user-vars TO_CLOSE=true
         kitty @ launch \
