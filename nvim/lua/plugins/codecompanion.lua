@@ -6,6 +6,11 @@ return {
   },
   config = function()
     require("codecompanion").setup({
+      display = {
+        action_palettte = {
+          provider = "telescope"
+        }
+      },
       adapters = {
         openai = function()
           return require("codecompanion.adapters").extend("anthropic", {
