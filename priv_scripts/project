@@ -41,7 +41,13 @@ if [[ -n $selected_dir ]]; then
 
   current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
 
-  if [[ $current_title != Project* ]]; then
+  here=false
+
+  if [[ " $* " == *" --here "* ]]; then
+    here=true
+  fi
+
+  if [[ $current_title != Project* || $here == "true" ]]; then
     if [[ $1 == "hot-key" ]]; then
       kitten @ close-window --match "id:$2"
     fi

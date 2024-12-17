@@ -87,7 +87,7 @@ alias lg=lazygit
 alias ls="eza --git --git-repos --header"
 alias cat="bat"
 p() {
-  source $HOME/.dotfiles/priv_scripts/project $1
+  source $HOME/.dotfiles/priv_scripts/project "$@"
 }
 
 # Compilation flags

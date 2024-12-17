@@ -17,6 +17,9 @@ export PATH="$HOME/scripts/:$PATH"
 # set homebrew prefix
 export HOMEBREW_PREFIX=/opt/homebrew
 
+# Java env 
+export JAVA_HOME=`/usr/libexec/java_home`
+
 ## Set editors
 
 # Preferred editor for local and remote sessions
