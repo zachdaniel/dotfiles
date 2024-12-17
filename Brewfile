@@ -15,6 +15,9 @@ brew "zsh"
 # Window manager
 cask "nikitabobko/tap/aerospace"
 
+# Task bar manager
+cask "jordanbaird-ice"
+
 # postgis packages
 brew "proj"
 brew "geos"

@@ -37,11 +37,11 @@ if [[ -n $selected_dir ]]; then
     .tabs[0].windows[0].title // empty
   ')
 
-  project_name="Project: $(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
+  project_name="Project-$(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
 
   current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
 
-  if [[ $current_title != Project\:\ * ]]; then
+  if [[ $current_title != Project* ]]; then
     if [[ $1 == "hot-key" ]]; then
       kitten @ close-window --match "id:$2"
     fi
