@@ -1,6 +1,6 @@
 #! /bin/bash
 
-current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
+current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_focused == true) | .id')
 
 if [[ $1 == "here" ]]; then
   kitten @ launch /Users/zachdaniel/.dotfiles/priv_scripts/project hot-key $current_window_id --here

@@ -4,5 +4,3 @@ require("config.lazy")
 
 require("autocmds")
 
-require("keymap")
-

@@ -39,3 +39,7 @@ vim.opt.termguicolors = true
 -- leader key
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+-- Use ripgrep
+vim.opt.grepprg = "rg --vimgrep"
+vim.opt.grepformat = "%f:%l:%c:%m"

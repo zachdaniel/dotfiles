@@ -39,7 +39,7 @@ if [[ -n $selected_dir ]]; then
 
   project_name="Project-$(echo "$selected_dir" | sed "s|$HOME/|~/|g")"
 
-  current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
+  current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_focused == true) | .id')
 
   here=false
 

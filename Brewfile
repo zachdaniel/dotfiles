@@ -12,8 +12,9 @@ brew "eza"
 cask "kitty"
 brew "zsh"
 
-# Window manager
+# Window management
 cask "nikitabobko/tap/aerospace"
+cask "deskpad"
 
 # Task bar manager
 cask "jordanbaird-ice"

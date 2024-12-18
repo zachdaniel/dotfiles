@@ -2,7 +2,7 @@
 
 # NOTE: I ultimately decided not to use this, favoring the embedded terminal in vim
 
-current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_active == true) | .id')
+current_window_id=$(kitty @ ls | jq '.[] | .tabs[] | .windows[] | select(.is_focused == true) | .id')
 we_are_hotkey=$(kitty @ ls | jq -r --arg window_id $current_window_id '.[] | .tabs[].windows[] | select(.id == ($window_id | tonumber)) | has("env") and (.env | has("HOTKEY_TERM_FOR"))')
 
 echo $we_are_hotkey
