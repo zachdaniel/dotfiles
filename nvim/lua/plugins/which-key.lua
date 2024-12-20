@@ -7,6 +7,7 @@ return {
     local wk = require("which-key")
 
     wk.add({
+      mode = { "n", "v" },
       { "<leader>f", group = "file" },
       { "<leader>t", group = "terminal" },
       { "<leader>g", group = "git" },
@@ -14,12 +15,14 @@ return {
       { "<leader>s", group = "search" },
       { "<leader>q", group = "quit" },
       { "<leader>c", group = "quickfix" },
+      { "<leader>h", group = "share" },
+      { "<leader>a", group = "ai" }
     })
 
     -- Windows
 
     vim.keymap.set("n", "<leader>wv", function()
-    vim.cmd("vsplit")
+      vim.cmd("vsplit")
     end, { desc = "Vertical split"})
 
     vim.keymap.set("n", "<leader>wh", function()

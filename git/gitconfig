@@ -6,3 +6,5 @@
 	email = zach@zachdaniel.dev
 [pull]
 	rebase = true
+[init]
+	defaultBranch = main

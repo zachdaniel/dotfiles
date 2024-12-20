@@ -5,7 +5,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
   },
   config = function()
-    require("codecompanion").setup({
+    local codecompanion = require("codecompanion")
+    codecompanion.setup({
       display = {
         action_palettte = {
           provider = "telescope"
@@ -20,6 +21,17 @@ return {
           })
         end,
       },
+      opts = {
+        strategies = {
+          --NOTE: Change the adapter as required
+          chat = { adapter = "copilot" },
+          inline = { adapter = "copilot" },
+        },
+      }
     })
+
+    vim.keymap.set("n", "<leader>at", function()
+      vim.cmd("CodeCompanionChat Toggle")
+    end, { desc = "Toggle AI Chat"})
   end
 }

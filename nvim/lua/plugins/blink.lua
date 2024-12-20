@@ -25,7 +25,7 @@ return {
     providers = {
       codecomponion = {
         name = "CodeCompanion",
-        module ="codecompanion.providers.completion.blink",
+        module = "codecompanion.providers.completion.blink",
         enabled = true
       }
     },

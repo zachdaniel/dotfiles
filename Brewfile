@@ -7,6 +7,9 @@ brew "ripgrep"
 brew "coreutils"
 brew "fd"
 
+# Environment
+brew "direnv"
+
 # terminal
 brew "eza"
 cask "kitty"
