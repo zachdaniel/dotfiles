@@ -61,6 +61,12 @@ return {
     vim.keymap.set("n", "<leader>cp", function()
       vim.cmd("cprev")
     end, { desc = "Previous item"})
+
+    -- Thanks to BoostCoder
+    vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv") 
+    vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+    vim.keymap.set("v", ">", ">gv") 
+    vim.keymap.set("v", "<", "<gv")
   end,
   keys = {
     {

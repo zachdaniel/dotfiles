@@ -9,6 +9,7 @@ folder_list=(
 # Explicitly named folders
 explicit_folders=(
   $HOME/.dotfiles
+  $HOME/dev/overlays
 )
 
 # Combine all folders into one array
