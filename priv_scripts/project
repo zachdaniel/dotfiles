@@ -49,14 +49,19 @@ if [[ -n $selected_dir ]]; then
   fi
 
   if [[ $current_title != Project* || $here == "true" ]]; then
-    if [[ $1 == "hot-key" ]]; then
-      kitten @ close-window --match "id:$2"
-    fi
+    matching_window_id=$(kitty @ ls | jq --arg title $project_name '.[] | .tabs[].windows[] | select(.title == $title).id') 
+    if [[ -n "$matching_window_id" ]]; then
+      kitty @ focus-window --match="id:$matching_window_id" 2> /dev/null
+    else
+      if [[ $1 == "hot-key" ]]; then
+        kitten @ close-window --match "id:$2"
+      fi
 
-    kitten @ set-window-title "$project_name"
-    cd "$selected_dir" > /dev/null
-    nvim
-    /opt/homebrew/bin/zsh
+      kitten @ set-window-title "$project_name"
+      cd "$selected_dir" > /dev/null
+      nvim
+      /opt/homebrew/bin/zsh
+    fi
   else
     if [[ $current_title == "$project_name" ]]; then
       if [[ $1 == "hot-key" ]]; then

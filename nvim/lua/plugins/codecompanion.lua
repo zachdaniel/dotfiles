@@ -7,11 +7,6 @@ return {
   config = function()
     local codecompanion = require("codecompanion")
     codecompanion.setup({
-      display = {
-        action_palettte = {
-          provider = "telescope"
-        }
-      },
       adapters = {
         openai = function()
           return require("codecompanion.adapters").extend("anthropic", {
@@ -26,12 +21,12 @@ return {
           --NOTE: Change the adapter as required
           chat = { adapter = "copilot" },
           inline = { adapter = "copilot" },
-        },
+        }
       }
     })
 
     vim.keymap.set("n", "<leader>at", function()
       vim.cmd("CodeCompanionChat Toggle")
-    end, { desc = "Toggle AI Chat"})
+    end, { desc = "Toggle AI Chat" })
   end
 }

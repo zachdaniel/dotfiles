@@ -1,8 +1,8 @@
 return {
   "NeogitOrg/neogit",
   dependencies = {
-    "nvim-lua/plenary.nvim",         -- required
-    "sindrets/diffview.nvim",        -- optional - Diff integration
+    "nvim-lua/plenary.nvim",  -- required
+    "sindrets/diffview.nvim", -- optional - Diff integration
 
     -- Only one of these is needed.
     "nvim-telescope/telescope.nvim", -- optional
@@ -13,7 +13,6 @@ return {
     local neogit = require("neogit")
     vim.keymap.set("n", "<leader>gg", function()
       neogit.open()
-
     end, { desc = "Open Neogit" })
   end
 }
