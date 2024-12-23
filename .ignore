@@ -5,3 +5,5 @@ deps
 _build
 .elixir_ls
 .lexical
+
+assets/vendor

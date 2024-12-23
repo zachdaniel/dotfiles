@@ -19,6 +19,7 @@ return {
       { "<leader>q", group = "quit" },
       { "<leader>s", group = "search" },
       { "<leader>t", group = "terminal" },
+      { "<leader>b", group = "buffer" },
       { "<leader>w", group = "window" },
       { "<leader>x", group = "debug" }
     })
@@ -40,6 +41,19 @@ return {
     vim.keymap.set("n", "<leader>wc", function()
       vim.cmd("close")
     end, { desc = "Close window" })
+
+    -- Buffers
+    vim.keymap.set("n", "<leader>bb", function()
+      vim.cmd("bnext")
+    end, { desc = "Next buffer" })
+
+    vim.keymap.set("n", "<leader>bc", function()
+      vim.cmd("bd")
+    end, { desc = "Close buffer" })
+
+    vim.keymap.set("n", "<leader>bf", function()
+      vim.cmd("Telescope buffers")
+    end, { desc = "Find buffers" })
 
     -- Quit
 

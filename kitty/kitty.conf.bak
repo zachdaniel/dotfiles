@@ -14,12 +14,12 @@ font_size               14.0
 # background
 window_margin_width     8
 # background_image        /Users/zachdaniel/.dotfiles/images/gradient-fire-ice.png
-# background_image_layout scaled
-# background_tint         0.88
-# background_opacity      0.7
-# background_blur         16
+background_image_layout scaled
+background_tint         0.88
+background_opacity      0.7
+background_blur         14
 window_border_width     1pt
-# active_border_color     #44ffff
+active_border_color     #44ffff
 
 # window bar
 hide_window_decorations titlebar-only
@@ -27,9 +27,3 @@ hide_window_decorations titlebar-only
 # Keybindings
 map cmd+p remote_control_script /Users/zachdaniel/.dotfiles/priv_scripts/project-hot-key
 map cmd+r remote_control_script /Users/zachdaniel/.dotfiles/priv_scripts/project-hot-key here
-
-
-# BEGIN_KITTY_THEME
-# Catppuccin-Mocha
-include current-theme.conf
-# END_KITTY_THEME

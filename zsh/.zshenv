@@ -33,3 +33,5 @@ else
   alias vi=nvim
   export ELIXIR_EDITOR="nvim __FILE__:__LINE__"
 fi
+
+export DIRENV_LOG_FORMAT=""

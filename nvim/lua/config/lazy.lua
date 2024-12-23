@@ -7,7 +7,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" }, { "\nPress any key to exit..." },
+      { out,                            "WarningMsg" }, { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
     os.exit(1)
@@ -22,29 +22,43 @@ require("lazy").setup({
     {
       import = "plugins"
     },
-    {"lewis6991/fileline.nvim"},
+    { "lewis6991/fileline.nvim" },
     { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
     {
-      "scottmckendry/cyberdream.nvim",
-      lazy = false,
+      "catppuccin/nvim",
+      name = "catppuccin",
       priority = 1000,
+      lazy = false,
       config = function()
-        require("cyberdream").setup({
-          transparent = true,
-          borderless_telescoep = true,
-          terminal_colors = true
+        require('catppuccin').setup({
+          -- transparent_background = true,
+          flavour = "mocha"
         })
-        vim.cmd("colorscheme cyberdream")
+
+        vim.cmd("colorscheme catppuccin")
       end
     }
+    -- {
+    --   "scottmckendry/cyberdream.nvim",
+    --   lazy = false,
+    --   priority = 1000,
+    --   config = function()
+    --     require("cyberdream").setup({
+    --       transparent = true,
+    --       borderless_telescoep = true,
+    --       terminal_colors = true
+    --     })
+    --
+    --     vim.cmd("colorscheme catppuccin")
+    --   end
+    -- }
   },
-  install = { colorscheme = { "cyberdream" } },
+  install = { colorscheme = { "catppuccin" } },
   change_detection = {
     enabled = false
   },
-  checker = { 
+  checker = {
     enabled = true,
     notify = false
   }
 })
-
