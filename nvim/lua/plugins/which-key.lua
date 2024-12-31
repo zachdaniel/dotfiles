@@ -24,6 +24,11 @@ return {
       { "<leader>x", group = "debug" }
     })
 
+    -- Quickfix
+    vim.keymap.set("n", "<leader>xx", function()
+      require("quicker").toggle()
+    end, { desc = "Toggle Quickfix" })
+
     -- Windows
 
     vim.keymap.set("n", "<leader>wv", function()
@@ -44,6 +49,10 @@ return {
 
     -- Buffers
     vim.keymap.set("n", "<leader>bb", function()
+      vim.cmd("bprev")
+    end, { desc = "Previous buffer" })
+
+    vim.keymap.set("n", "<leader>bn", function()
       vim.cmd("bnext")
     end, { desc = "Next buffer" })
 
@@ -58,12 +67,15 @@ return {
     -- Quit
 
     vim.keymap.set("n", "<leader>qq", function()
-      vim.cmd("confirm quit")
+      vim.cmd("confirm quitall")
     end, { desc = "Quit neovim" })
 
     -- Thanks to BoostCoder
+    -- In visual mode, shift J and K moves lines up and down
     vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
     vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+    -- stay in visual mode as indenting/outdenting
     vim.keymap.set("v", ">", ">gv")
     vim.keymap.set("v", "<", "<gv")
   end,

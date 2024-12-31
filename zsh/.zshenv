@@ -1,4 +1,4 @@
-## Set paths for tools
+# Set paths for tools
 eval "$(/opt/homebrew/bin/brew shellenv)"
 . "$HOME/.cargo/env"
 export PYENV_ROOT="$HOME/.pyenv"
@@ -11,13 +11,13 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 ## Set paths
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 export PATH="/opt/homebrew/opt/qt@5/bin:$PATH"
-export PATH="/opt/homebrew/bin:$PATH"
+# export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/scripts/:$PATH"
 
 # set homebrew prefix
 export HOMEBREW_PREFIX=/opt/homebrew
 
-# Java env 
+# Java env
 export JAVA_HOME=`/usr/libexec/java_home`
 
 ## Set editors
@@ -35,3 +35,13 @@ else
 fi
 
 export DIRENV_LOG_FORMAT=""
+
+export PATH="/opt/homebrew/bin:$PATH"
+
+
+if [[ -o interactive ]] then
+  eval "$(/Users/zachdaniel/.local/bin/mise activate zsh)"
+else
+  eval "$(/Users/zachdaniel/.local/bin/mise activate zsh --shims)"
+fi
+

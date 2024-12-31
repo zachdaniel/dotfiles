@@ -14,6 +14,7 @@ brew "direnv"
 brew "eza"
 cask "kitty"
 brew "zsh"
+cask "ghostty"
 
 # Window management
 cask "nikitabobko/tap/aerospace"

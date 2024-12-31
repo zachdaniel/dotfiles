@@ -72,7 +72,12 @@ unsetopt autocd
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git mise brew direnv)
+
+if [[ -z "$NVIM" ]] then
+  plugins=(git mise direnv zsh-vi-mode)
+else
+  plugins=(git mise direnv)
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -95,5 +100,3 @@ p() {
 source ~/.iterm2_shell_integration.zsh
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
 
-export PATH="/opt/homebrew/bin:$PATH"
-eval "$(/Users/zachdaniel/.local/bin/mise activate zsh)"

@@ -10,7 +10,7 @@ return {
     dependencies = { "mason.nvim", "nvim-lspconfig" },
     ensure_installed = {
       { "elixir-ls", auto_update = true },
-      { "lua_ls", auto_update = true },
+      { "lua_ls",    auto_update = true },
     },
     config = function()
       local mason_lspconfig = require("mason-lspconfig")
@@ -24,7 +24,7 @@ return {
             on_init = function(client)
               if client.workspace_folders then
                 local path = client.workspace_folders[1].name
-                if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+                if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
                   return
                 end
               end

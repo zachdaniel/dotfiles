@@ -43,3 +43,6 @@ vim.g.maplocalleader = "\\"
 -- Use ripgrep
 vim.opt.grepprg = "rg --vimgrep"
 vim.opt.grepformat = "%f:%l:%c:%m"
+
+-- autoread changes
+vim.opt.autoread = true
