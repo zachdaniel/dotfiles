@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    config = function() 
+    config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "erlang", "elixir", "rust", "javascript", "typescript" },
 
@@ -29,8 +29,9 @@ return {
 
             keymaps = {
               -- You can use the capture groups defined in textobjects.scm
-              ["af"] = { query = "@function.outer", desc = "Select function"},
-              ["if"] = { query = "@function.inner", desc = "Select function contents"},
+              -- ["as"] = { query = "@scope", desc = "Scope" },
+              -- ["is"] = { query = "@locals.scope", desc = "Scope" },
+              -- ["is"] = { query = "@scope.inner", desc = "Select scope contents" },
               -- You can optionally set descriptions to the mappings (used in the desc parameter of
               -- nvim_buf_set_keymap) which plugins like which-key display
               -- You can also use captures from other query groups like `locals.scm`
@@ -44,8 +45,8 @@ return {
             -- and should return the mode ('v', 'V', or '<c-v>') or a table
             -- mapping query_strings to modes.
             selection_modes = {
-              ['@function.outer'] = 'V', -- linewise
-              ['@function.inner'] = 'v', -- linewise
+              -- ['@function.outer'] = 'V', -- linewise
+              -- ['@function.inner'] = 'v', -- linewise
             },
             -- If you set this to `true` (default is `false`) then any textobject is
             -- extended to include preceding or succeeding whitespace. Succeeding
@@ -59,7 +60,8 @@ return {
             include_surrounding_whitespace = true,
           },
         },
-      }) end,
+      })
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter-textobjects"

@@ -100,3 +100,7 @@ p() {
 source ~/.iterm2_shell_integration.zsh
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
 
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

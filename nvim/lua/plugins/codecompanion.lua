@@ -25,8 +25,16 @@ return {
       }
     })
 
+    vim.keymap.set("n", "<leader>aa", function()
+      vim.cmd("CodeCompanionActions")
+    end, { desc = "AI Actions" })
+
     vim.keymap.set("n", "<leader>at", function()
       vim.cmd("CodeCompanionChat Toggle")
     end, { desc = "Toggle AI Chat" })
+
+    vim.keymap.set("n", "<leader>ar", function()
+      vim.cmd("CodeCompanion")
+    end, { desc = "Prompt AI for Replacement" })
   end
 }

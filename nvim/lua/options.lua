@@ -1,3 +1,6 @@
+-- setting for nvchad ui plugin
+vim.g.base46_cache = vim.fn.stdpath('data') .. '/base46_cache/'
+
 -- relative line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -38,7 +41,7 @@ vim.opt.termguicolors = true
 
 -- leader key
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+-- vim.g.maplocalleader = "\\"
 
 -- Use ripgrep
 vim.opt.grepprg = "rg --vimgrep"
@@ -46,3 +49,6 @@ vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- autoread changes
 vim.opt.autoread = true
+
+-- Hide the command line when its not in use
+vim.opt.cmdheight = 0

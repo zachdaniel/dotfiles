@@ -22,7 +22,7 @@ export JAVA_HOME=`/usr/libexec/java_home`
 
 ## Set editors
 
-# Preferred editor for local and remote sessions
+# A cool editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
   export VISUAL='vim'

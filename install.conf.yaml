@@ -27,3 +27,6 @@
 
 - brewfile:
     file: Brewfile
+
+- cargo:
+    
