@@ -16,44 +16,17 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+local colorscheme = "ashen";
+
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
     {
       import = "plugins"
     },
-    { "lewis6991/fileline.nvim" },
-    { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
-    {
-      "catppuccin/nvim",
-      name = "catppuccin",
-      priority = 1000,
-      lazy = false,
-      config = function()
-        require('catppuccin').setup({
-          -- transparent_background = true,
-          flavour = "mocha"
-        })
-
-        vim.cmd("colorscheme catppuccin")
-      end
-    }
-    -- {
-    --   "scottmckendry/cyberdream.nvim",
-    --   lazy = false,
-    --   priority = 1000,
-    --   config = function()
-    --     require("cyberdream").setup({
-    --       transparent = true,
-    --       borderless_telescoep = true,
-    --       terminal_colors = true
-    --     })
-    --
-    --     vim.cmd("colorscheme catppuccin")
-    --   end
-    -- }
+    { "lewis6991/fileline.nvim" }
   },
-  install = { colorscheme = { "catppuccin" } },
+  install = { colorscheme = { colorscheme } },
   change_detection = {
     enabled = false
   },
@@ -62,3 +35,5 @@ require("lazy").setup({
     notify = false
   }
 })
+
+vim.cmd("colorscheme " .. colorscheme)
