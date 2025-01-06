@@ -33,7 +33,7 @@ return {
       vim.cmd("CodeCompanionChat Toggle")
     end, { desc = "Toggle AI Chat" })
 
-    vim.keymap.set("n", "<leader>ar", function()
+    vim.keymap.set("v", "<leader>ar", function()
       vim.cmd("CodeCompanion")
     end, { desc = "Prompt AI for Replacement" })
   end

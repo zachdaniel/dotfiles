@@ -6,6 +6,7 @@ brew "git"
 brew "ripgrep"
 brew "coreutils"
 brew "fd"
+brew "colorscript"
 
 # Environment
 brew "direnv"

@@ -1,9 +1,15 @@
 return {
   {
     "ficcdaf/ashen.nvim",
+    lazy = false,
+    priority = 1000,
     install = function()
       require("ashen").setup({
-        force_hi_clear = true,
+        hl = {
+          merge_override = {
+            NotifyBackground = "#121212"
+          }
+        }
       })
 
       vim.cmd("colorscheme ashen")
@@ -22,18 +28,4 @@ return {
   --     })
   --   end
   -- },
-  -- {
-  --   "scottmckendry/cyberdream.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     require("cyberdream").setup({
-  --       transparent = true,
-  --       borderless_telescoep = true,
-  --       terminal_colors = true
-  --     })
-  --
-  --     vim.cmd("colorscheme catppuccin")
-  --   end
-  -- }
 }

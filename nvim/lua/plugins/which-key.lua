@@ -1,3 +1,12 @@
+local function confirm_and_delete_buffer()
+  local confirm = vim.fn.confirm("Delete buffer and file?", "&Yes\n&No", 2)
+
+  if confirm == 1 then
+    os.remove(vim.fn.expand "%")
+    vim.api.nvim_buf_delete(0, { force = true })
+  end
+end
+
 return {
   "folke/which-key.nvim",
   event = "VeryLazy",
@@ -18,6 +27,7 @@ return {
       { "<leader>h", group = "share" },
       { "<leader>q", group = "quit" },
       { "<leader>s", group = "search" },
+      { "<leader>o", group = "open",    icon = "|>" },
       { "<leader>t", group = "terminal" },
       { "<leader>b", group = "buffer" },
       { "<leader>w", group = "window" },
@@ -54,11 +64,18 @@ return {
     -- Buffers
     vim.keymap.set("n", "<leader>bb", function()
       vim.cmd("bprev")
+    end, { desc = "Next buffer" })
+
+    vim.keymap.set("n", "<leader>bp", function()
+      vim.cmd("bnext")
     end, { desc = "Previous buffer" })
 
-    vim.keymap.set("n", "<leader>bn", function()
-      vim.cmd("bnext")
-    end, { desc = "Next buffer" })
+    -- Open
+
+    vim.keymap.set("n", "<leader>od", function()
+      require("snacks").dashboard()
+    end, { desc = "Open Dashboard" })
+
 
     vim.keymap.set("n", "<leader>bc", function()
       vim.cmd("bd")
@@ -73,6 +90,17 @@ return {
     vim.keymap.set("n", "<leader>qq", function()
       vim.cmd("confirm quitall")
     end, { desc = "Quit neovim" })
+
+    vim.keymap.set("n", "<leader>qh", function()
+      vim.cmd("noh")
+    end, { desc = "Dismiss highlights" })
+
+    vim.keymap.set("n", "<leader>qn", function()
+      vim.cmd("NoiceDismiss")
+    end, { desc = "Dismiss notifications" })
+
+    -- Files
+    vim.keymap.set('n', '<leader>fd', confirm_and_delete_buffer, { desc = "Delete current file" })
 
     -- Thanks to BoostCoder
     -- In visual mode, shift J and K moves lines up and down
