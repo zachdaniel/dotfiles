@@ -15,12 +15,28 @@ return {
     config = function()
       local mason_lspconfig = require("mason-lspconfig")
       mason_lspconfig.setup()
+      local on_attach = function(client, bufnr)
+        local opts = { noremap = true, silent = true }
+
+        local function buf_set_keymap(...)
+          vim.api.nvim_buf_set_keymap(bufnr, ...)
+        end
+        buf_set_keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+      end
       mason_lspconfig.setup_handlers({
         function(server_name)
-          require("lspconfig")[server_name].setup({})
+          require("lspconfig")[server_name].setup({
+            on_attach = on_attach })
+        end,
+        elixirls = function()
+          require("lspconfig").elixirls.setup({
+            on_attach = on_attach
+
+          })
         end,
         lua_ls = function()
           require("lspconfig").lua_ls.setup({
+            on_attach = on_attach,
             on_init = function(client)
               if client.workspace_folders then
                 local path = client.workspace_folders[1].name

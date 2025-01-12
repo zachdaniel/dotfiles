@@ -73,11 +73,7 @@ unsetopt autocd
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-if [[ -z "$NVIM" ]] then
-  plugins=(git mise direnv zsh-vi-mode)
-else
-  plugins=(git mise direnv)
-fi
+plugins=(git mise direnv)
 
 source $ZSH/oh-my-zsh.sh
 

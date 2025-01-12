@@ -95,9 +95,9 @@ return {
       vim.cmd("noh")
     end, { desc = "Dismiss highlights" })
 
-    vim.keymap.set("n", "<leader>qn", function()
-      vim.cmd("NoiceDismiss")
-    end, { desc = "Dismiss notifications" })
+    -- vim.keymap.set("n", "<leader>qn", function()
+    --   vim.cmd("NoiceDismiss")
+    -- end, { desc = "Dismiss notifications" })
 
     -- Files
     vim.keymap.set('n', '<leader>fd', confirm_and_delete_buffer, { desc = "Delete current file" })
