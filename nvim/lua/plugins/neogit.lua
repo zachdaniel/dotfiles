@@ -12,13 +12,16 @@ return {
   config = function()
     local neogit = require("neogit")
     neogit.setup()
-    dofile(vim.g.base46_cache .. "git")
-    dofile(vim.g.base46_cache .. "neogit")
     vim.keymap.set("n", "<leader>gg", function()
-      if vim.g.nvdash_displayed then
-        require("nvchad.tabufline").close_buffer()
-      end
       neogit.open()
+    end, { desc = "Open Neogit" })
+
+    vim.keymap.set("n", "<leader>gv", function()
+      neogit.open({ kind = "split" })
+    end, { desc = "Open Neogit" })
+
+    vim.keymap.set("n", "<leader>gv", function()
+      neogit.open({ kind = "vsplit" })
     end, { desc = "Open Neogit" })
   end
 }

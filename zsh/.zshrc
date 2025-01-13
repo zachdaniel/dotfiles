@@ -87,6 +87,8 @@ source $ZSH/oh-my-zsh.sh
 alias lg=lazygit
 alias ls="eza --git --git-repos --header"
 alias cat="bat"
+alias imix="iex -S mix"
+
 p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"
 }
@@ -96,7 +98,3 @@ p() {
 source ~/.iterm2_shell_integration.zsh
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
 
-
-. "$HOME/.atuin/bin/env"
-
-eval "$(atuin init zsh)"

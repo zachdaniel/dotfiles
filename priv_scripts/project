@@ -2,6 +2,7 @@
 
 # Use Zsh globbing to expand directories
 folder_list=(
+  $HOME/dev/elixir/*(/) #  Only match directories
   $HOME/dev/ash/*(/) #  Only match directories
   $HOME/dev/nvim/*(/) 
   $HOME/dev/alembic/*(/)
