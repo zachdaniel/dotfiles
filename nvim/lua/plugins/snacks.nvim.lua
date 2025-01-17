@@ -4,9 +4,9 @@ return {
   lazy = false,
   opts = {
     terminal = {
-      -- your terminal configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
+    },
+    scratch = {
+      root = "~/Documents/scratch/"
     },
     dashboard = {
       sections = {
@@ -79,6 +79,21 @@ return {
     }
   },
   keys = {
+    -- { "<leader>.",  function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
+    -- { "<leader>fs", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+    -- {
+    --   "<leader>fS",
+    --   function()
+    --     vim.ui.input({ prompt = 'Enter name: ' }, function(input)
+    --       local name = input
+    --       if not name:match("%.md$") then
+    --         name = name .. ".md"
+    --       end
+    --       Snacks.scratch({ name = name })
+    --     end)
+    --   end,
+    --   desc = "Create scratch buffer"
+    -- },
     {
       "<D-`>",
       function()
@@ -105,6 +120,5 @@ return {
       desc = "Toggle Terminal",
       mode = { "n", "v" }
     }
-    -- { "<leader>tt", toggle_term, desc = "Toggle Terminal" },
   }
 }

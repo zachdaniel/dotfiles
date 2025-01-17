@@ -5,15 +5,6 @@ return {
     priority = 1000,
     config = function()
       require("ashen").setup({
-        hl = {
-          merge_override = {
-            NeogitDiffAdd = { "#3C8B6C" },
-            NeogitDiffAddHighlight = { "#1E6F54" },
-            NeogitChangeAdded = { "#3C8B6C" },
-            NeogitDiffAddCursor = { "#3C8B6C" },
-            NeogitDiffAdditions = { "#3C8B6C" },
-          }
-        },
         terminal = {
           colors = {
             [0] = "#121212",

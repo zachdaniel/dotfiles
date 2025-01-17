@@ -6,6 +6,7 @@ folder_list=(
   $HOME/dev/ash/*(/) #  Only match directories
   $HOME/dev/nvim/*(/) 
   $HOME/dev/alembic/*(/)
+  $HOME/dev/repros/*(/)
 )
 
 # Explicitly named folders
