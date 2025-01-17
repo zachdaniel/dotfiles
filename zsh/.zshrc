@@ -93,8 +93,3 @@ p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"
 }
 
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-source ~/.iterm2_shell_integration.zsh
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
-

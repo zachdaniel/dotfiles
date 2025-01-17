@@ -18,7 +18,7 @@ export PATH="$HOME/scripts/:$PATH"
 export HOMEBREW_PREFIX=/opt/homebrew
 
 # Java env
-export JAVA_HOME=`/usr/libexec/java_home`
+export JAVA_HOME=/usr/libexec/java_home
 
 ## Set editors
 
@@ -29,8 +29,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='nvim'
   export VISUAL='nvim'
-  alias vim=nvim
-  alias vi=nvim
   export ELIXIR_EDITOR="nvim __FILE__:__LINE__"
 fi
 
@@ -40,8 +38,8 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 
 if [[ -o interactive ]] then
-  eval "$(/Users/zachdaniel/.local/bin/mise activate zsh)"
+  eval "$(/opt/homebrew/bin/mise activate zsh)"
 else
-  eval "$(/Users/zachdaniel/.local/bin/mise activate zsh --shims)"
+  eval "$(/opt/homebrew/bin/mise activate zsh --shims)"
 fi
 

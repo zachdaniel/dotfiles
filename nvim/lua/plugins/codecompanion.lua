@@ -7,9 +7,9 @@ return {
   config = function()
     local codecompanion = require("codecompanion")
     codecompanion.setup({
-      adapters = {
+     adapters = {
         openai = function()
-          return require("codecompanion.adapters").extend("anthropic", {
+          return require("codecompanion.adapters").extend("openai", {
             env = {
               api_key = "OPEN_AI_API_KEY"
             },
@@ -19,8 +19,8 @@ return {
       opts = {
         strategies = {
           --NOTE: Change the adapter as required
-          chat = { adapter = "copilot" },
-          inline = { adapter = "copilot" },
+          chat = { adapter = "openai" },
+          inline = { adapter = "openai" },
         }
       }
     })
