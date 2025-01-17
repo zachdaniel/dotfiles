@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Get the directory of the script
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
+# Path to the package file relative to the script
+PACKAGE_FILE="$SCRIPT_DIR/../CargoFile"
+
+# Check if the package file exists
+if [[ ! -f $PACKAGE_FILE ]]; then
+    echo "Package file '$PACKAGE_FILE' not found. Please create it with a list of package names."
+    exit 1
+fi
+
+# Read package names into an array manually
+CARGO_PACKAGES=()
+while IFS= read -r line || [[ -n $line ]]; do
+    CARGO_PACKAGES+=("$line")
+done < "$PACKAGE_FILE"
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Ensure cargo and rust are installed
+if ! command_exists cargo; then
+    echo "Cargo not found. Installing Rust and Cargo..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    export PATH="$HOME/.cargo/bin:$PATH"
+    source "$HOME/.cargo/env"
+    if ! command_exists cargo; then
+        echo "Cargo installation failed. Exiting."
+        exit 1
+    fi
+else
+    echo "Cargo is already installed."
+fi
+
+# Ensure nightly toolchain is installed
+if ! rustup show | grep -q "nightly"; then
+    echo "Installing nightly Rust toolchain..."
+    rustup install nightly
+fi
+
+# Use nightly toolchain for cargo commands
+for package in "${CARGO_PACKAGES[@]}"; do
+    if cargo +nightly install --list | grep -q "$package v"; then
+        echo "Updating $package with nightly toolchain..."
+        cargo +nightly install "$package" --force --quiet
+    else
+        echo "Installing $package with nightly toolchain..."
+        cargo +nightly install "$package" --quiet
+    fi
+done
+
+echo "All packages processed."
