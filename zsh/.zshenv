@@ -34,12 +34,18 @@ fi
 
 export DIRENV_LOG_FORMAT=""
 
-export PATH="/opt/homebrew/bin:$PATH"
-
+export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
 
 if [[ -o interactive ]] then
   eval "$(/opt/homebrew/bin/mise activate zsh)"
 else
   eval "$(/opt/homebrew/bin/mise activate zsh --shims)"
 fi
+
+export LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/icu4c@76/lib"
+export CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/icu4c@76/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c@76/lib/pkgconfig":"$PKG_CONFIG_PATH"
+export PATH="/opt/homebrew/opt/icu4c@76/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
 

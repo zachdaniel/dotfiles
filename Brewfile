@@ -9,17 +9,30 @@ brew "protobuf-c"
 brew "sfcgal"
 brew "bat"
 
+# deps: postgres
+brew "readline" 
+brew "zlib" 
+brew "curl" 
+brew "ossp-uuid" 
+brew "icu4c" 
+brew "pkg-config"
+
 # Utilities
 brew "git"
+brew "gh"
 brew "ripgrep"
 brew "coreutils"
 brew "fd"
 brew "fzf"
 
+# Database
+brew "postgis"
+brew "postgresql@16"
+
 # Environment
 brew "direnv"
 
-# terminal
+# terminal & neovim
 brew "eza"
 cask "kitty"
 brew "zsh"
@@ -32,6 +45,7 @@ cask "deskpad"
 # Task bar manager
 cask "jordanbaird-ice"
 
-# Recast
+# Apps
 cask "raycast"
-
+cask "discord"
+cask "slack"

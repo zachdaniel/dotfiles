@@ -4,37 +4,48 @@ return {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
   },
-  config = function()
-    local codecompanion = require("codecompanion")
-    codecompanion.setup({
-     adapters = {
-        openai = function()
-          return require("codecompanion.adapters").extend("openai", {
-            env = {
-              api_key = "OPEN_AI_API_KEY"
-            },
-          })
-        end,
+  opts = {
+    strategies = {
+      -- Change the default chat adapter
+      chat = {
+        adapter = "openai"
       },
-      opts = {
-        strategies = {
-          --NOTE: Change the adapter as required
-          chat = { adapter = "openai" },
-          inline = { adapter = "openai" },
-        }
+      inline = {
+        adapter = "openai",
+      },
+    },
+    opts = {
+      -- Set debug logging
+      log_level = "DEBUG",
+    },
+    display = {
+      action_palette = {
+        provider = 'telescope'
       }
-    })
-
-    vim.keymap.set("n", "<leader>aa", function()
-      vim.cmd("CodeCompanionActions")
-    end, { desc = "AI Actions" })
-
-    vim.keymap.set("n", "<leader>at", function()
-      vim.cmd("CodeCompanionChat Toggle")
-    end, { desc = "Toggle AI Chat" })
-
-    vim.keymap.set("v", "<leader>ar", function()
-      vim.cmd("CodeCompanion")
-    end, { desc = "Prompt AI for Replacement" })
-  end
+    }
+  },
+  keys = {
+    {
+      "<leader>aa",
+      function()
+        vim.cmd("CodeCompanionActions")
+      end,
+      desc = "AI Actions"
+    },
+    {
+      "<leader>at",
+      function()
+        vim.cmd("CodeCompanionChat Toggle")
+      end,
+      desc = "Toggle AI Chat"
+    },
+    {
+      "<leader>ar",
+      function()
+        vim.cmd("CodeCompanion")
+      end,
+      desc = "Prompt AI for Replacement",
+      mode = {"v"}
+    }
+  }
 }

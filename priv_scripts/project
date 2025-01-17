@@ -1,12 +1,12 @@
 #! /usr/bin/env zsh
 
-# Use Zsh globbing to expand directories
+# Use Zsh globbing to expand directories and ignore failures
 folder_list=(
-  $HOME/dev/elixir/*(/) #  Only match directories
-  $HOME/dev/ash/*(/) #  Only match directories
-  $HOME/dev/nvim/*(/) 
-  $HOME/dev/alembic/*(/)
-  $HOME/dev/repros/*(/)
+  $HOME/dev/elixir/*(/N) # Only match directories, ignore missing
+  $HOME/dev/ash/*(/N) # Only match directories, ignore missing
+  $HOME/dev/nvim/*(/N) 
+  $HOME/dev/alembic/*(/N)
+  $HOME/dev/repros/*(/N)
 )
 
 # Explicitly named folders
@@ -18,10 +18,10 @@ explicit_folders=(
 # Combine all folders into one array
 all_folders=($folder_list $explicit_folders)
 
-# Verify folders exist
+# Verify folders exist and are not empty
 valid_folders=()
 for folder in $all_folders; do
-  if [[ -d $folder ]]; then
+  if [[ -d $folder && "$(ls -A $folder 2>/dev/null)" ]]; then
     valid_folders+=($folder)
   fi
 done
