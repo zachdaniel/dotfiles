@@ -25,6 +25,9 @@ brew "coreutils"
 brew "fd"
 brew "fzf"
 
+# Fly.io
+brew "flyctl"
+
 # Database
 brew "postgis"
 brew "postgresql@16"
@@ -49,3 +52,4 @@ cask "jordanbaird-ice"
 cask "raycast"
 cask "discord"
 cask "slack"
+cask "cleanshot"
