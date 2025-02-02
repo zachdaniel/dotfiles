@@ -5,6 +5,10 @@ return {
     priority = 1000,
     config = function()
       require("ashen").setup({
+        style_presets = {
+          bold_functions = true,
+          italic_comments = false,
+        },
         terminal = {
           colors = {
             [0] = "#121212",

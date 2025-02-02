@@ -31,6 +31,7 @@ brew "flyctl"
 # Database
 brew "postgis"
 brew "postgresql@16"
+brew "mysql"
 
 # Environment
 brew "direnv"

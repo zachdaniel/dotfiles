@@ -2,8 +2,9 @@
 
 # Use Zsh globbing to expand directories and ignore failures
 folder_list=(
-  $HOME/dev/elixir/*(/N) # Only match directories, ignore missing
-  $HOME/dev/ash/*(/N) # Only match directories, ignore missing
+  $HOME/dev/elixir/*(/N)
+  $HOME/dev/ash/*(/N)
+  $HOME/dev/oss/*(/N)
   $HOME/dev/nvim/*(/N) 
   $HOME/dev/alembic/*(/N)
   $HOME/dev/repros/*(/N)
@@ -62,6 +63,11 @@ if [[ -n $selected_dir ]]; then
 
       kitten @ set-window-title "$project_name"
       cd "$selected_dir" > /dev/null
+
+      direnv_log_format="$DIRENV_LOG_FORMAT"
+      export DIRENV_LOG_FORMAT=
+      eval "$(direnv export zsh)"
+      export DIRENV_LOG_FORMAT="$direnv_log_format"
       nvim
       /opt/homebrew/bin/zsh
     fi
@@ -71,6 +77,10 @@ if [[ -n $selected_dir ]]; then
         kitten @ close-window --match "id:$current_window_id"
       else
         cd "$selected_dir" > /dev/null
+        direnv_log_format="$DIRENV_LOG_FORMAT"
+        export DIRENV_LOG_FORMAT=
+        eval "$(direnv export zsh)"
+        export DIRENV_LOG_FORMAT="$direnv_log_format"
         nvim
       fi
     else

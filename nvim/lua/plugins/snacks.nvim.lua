@@ -4,6 +4,16 @@ return {
   lazy = false,
   opts = {
     terminal = {
+      win = {
+        wo = {
+          winbar = ''
+        }
+      }
+    },
+    picker = {
+      -- your picker configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
     },
     scratch = {
       root = "~/Documents/scratch/"
@@ -94,6 +104,15 @@ return {
     --   end,
     --   desc = "Create scratch buffer"
     -- },
+    --
+    -- vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
+    -- vim.keymap.set("n", "<leader>ss", builtin.live_grep, { desc = "Telescope project search" })
+    {"<leader>ff", function() 
+      Snacks.picker.files({hidden = true})
+    end},
+    {"<leader>ss", function()
+      Snacks.picker.grep({hidden = true})
+    end},
     {
       "<D-`>",
       function()

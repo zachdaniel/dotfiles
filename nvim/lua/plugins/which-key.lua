@@ -43,6 +43,10 @@ return {
       require("quicker").toggle()
     end, { desc = "Toggle Quickfix" })
 
+    vim.keymap.set("n", "<leader>xc", function()
+      require("quicker").close()
+    end, { desc = "Close Quickfix" })
+
     -- Windows
 
     vim.keymap.set("n", "<leader>wv", function()
@@ -63,11 +67,11 @@ return {
 
     -- Buffers
     vim.keymap.set("n", "<leader>bb", function()
-      vim.cmd("bprev")
+      vim.cmd("bnext")
     end, { desc = "Next buffer" })
 
     vim.keymap.set("n", "<leader>bp", function()
-      vim.cmd("bnext")
+      vim.cmd("bprev")
     end, { desc = "Previous buffer" })
 
     -- Open
@@ -82,7 +86,7 @@ return {
     end, { desc = "Close buffer" })
 
     vim.keymap.set("n", "<leader>bf", function()
-      vim.cmd("Telescope buffers")
+      Snacks.picker.buffers()
     end, { desc = "Find buffers" })
 
     -- Quit

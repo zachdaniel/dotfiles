@@ -1,5 +1,14 @@
 # Set paths for tools
 eval "$(/opt/homebrew/bin/brew shellenv)"
+allow_dir=${XDG_DATA_HOME:-$HOME/.local}/share/direnv/allow
+allow_paths=`ls $allow_dir/* | xargs cat | sort | uniq`
+echo "$allow_paths" | while IFS= read -r allow_path; do
+  dir_path=$(dirname "$allow_path")
+  if [[ "$PWD" == "$dir_path"* ]]; then
+    source $dir_path/.envrc
+  fi
+done
+
 . "$HOME/.cargo/env"
 export PYENV_ROOT="$HOME/.pyenv"
 

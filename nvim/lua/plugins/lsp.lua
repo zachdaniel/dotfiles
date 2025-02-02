@@ -6,6 +6,16 @@ return {
     end
   },
   {
+    "synic/refactorex.nvim",
+    ft = "elixir",
+    ---@module "refactorex.nvim"
+    ---@type refactorex.Config
+    opts = {
+      auto_update = true,
+      pin_version = nil,
+    }
+  },
+  {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "mason.nvim", "nvim-lspconfig" },
     ensure_installed = {
@@ -22,6 +32,9 @@ return {
           vim.api.nvim_buf_set_keymap(bufnr, ...)
         end
         buf_set_keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+        buf_set_keymap("n", "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+        buf_set_keymap("v", "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+        buf_set_keymap("n", "<leader>cr", "<Cmd>lua vim.lsp.buf.rename()<CR>", opts)
       end
       mason_lspconfig.setup_handlers({
         function(server_name)
