@@ -1,9 +1,7 @@
 -- setting for nvchad ui plugin
 vim.g.base46_cache = vim.fn.stdpath('data') .. '/base46_cache/'
 
--- relative line numbers
 vim.opt.number = true
-vim.opt.relativenumber = true
 
 -- preferred location for splits
 vim.opt.splitbelow = true
