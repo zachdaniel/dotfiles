@@ -7,7 +7,7 @@ return {
     -- See the docs for other config options.
     recipe = { 'minimalist', { animate = true } },
     ncmode = 'windows', -- use 'windows' to fade inactive windows
-    fadelevel = 0.8,    -- any value between 0 and 1. 0 is hidden and 1 is opaque.
+    fadelevel = 0.7,    -- any value between 0 and 1. 0 is hidden and 1 is opaque.
     tint = {
       -- bg = {rgb={0,0,0}, intensity=0.3}, -- adds 30% black to background
       -- fg = {rgb={0,0,255}, intensity=0.3}, -- adds 30% blue to foreground
@@ -28,11 +28,10 @@ return {
     blocklist = {
       default = {
         buf_opts = { buftype = { 'prompt' } },
-        win_config = { relative = true },
-        highlights = {
-          'LineNr'
-        }
+        win_config = { relative = true }
       },
+
+
       -- any_rule_name1 = {
       --   buf_opts = {}
       -- },

@@ -36,6 +36,9 @@ brew "mysql"
 # Environment
 brew "direnv"
 
+# Zed
+cask "zed@preview"
+
 # terminal & neovim
 brew "eza"
 cask "kitty"

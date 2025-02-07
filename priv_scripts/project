@@ -7,6 +7,7 @@ folder_list=(
   $HOME/dev/oss/*(/N)
   $HOME/dev/nvim/*(/N) 
   $HOME/dev/alembic/*(/N)
+  $HOME/dev/meeseeks/*(/N)
   $HOME/dev/repros/*(/N)
 )
 
