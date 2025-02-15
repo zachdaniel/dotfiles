@@ -1,7 +1,6 @@
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons',
-
     "ficcdaf/ashen.nvim",
   },
   config = function()

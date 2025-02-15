@@ -3,7 +3,7 @@ local function confirm_and_delete_buffer()
 
   if confirm == 1 then
     os.remove(vim.fn.expand "%")
-    vim.api.nvim_buf_delete(0, { force = true })
+    Snacks.bufdelete({force = true})
   end
 end
 
@@ -105,6 +105,8 @@ return {
 
     -- Files
     vim.keymap.set('n', '<leader>fd', confirm_and_delete_buffer, { desc = "Delete current file" })
+    vim.keymap.set('n', '<leader>fv', '<cmd>:vnew<cr>', { desc = "Create a new file in a vertical split" })
+    vim.keymap.set('n', '<leader>fh', '<cmd>:new<cr>', { desc = "Create a new file in a horizontal split" })
 
     -- Thanks to BoostCoder
     -- In visual mode, shift J and K moves lines up and down

@@ -3,6 +3,7 @@ return {
   priority = 1000,
   lazy = false,
   opts = {
+    indent = {},
     terminal = {
       win = {
         wo = {
@@ -15,6 +16,7 @@ return {
         frecency = true
       }
     },
+    image = {},
     scratch = {
       root = "~/Documents/scratch/"
     },
