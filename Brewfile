@@ -16,6 +16,7 @@ brew "curl"
 brew "ossp-uuid" 
 brew "icu4c" 
 brew "pkg-config"
+brew "pgvector"
 
 # Utilities
 brew "git"

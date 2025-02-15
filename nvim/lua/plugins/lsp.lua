@@ -16,6 +16,17 @@ return {
     }
   },
   {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {
+      bind = true,
+      handler_opts = {
+        border = "rounded"
+      }
+    },
+    config = function(_, opts) require'lsp_signature'.setup(opts) end
+  },
+  {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "mason.nvim", "nvim-lspconfig" },
     ensure_installed = {

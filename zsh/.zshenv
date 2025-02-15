@@ -41,8 +41,6 @@ else
   export ELIXIR_EDITOR="nvim __FILE__:__LINE__"
 fi
 
-export DIRENV_LOG_FORMAT=""
-
 export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
 
