@@ -30,9 +30,4 @@ map cmd+p remote_control_script /Users/zachdaniel/.dotfiles/priv_scripts/project
 map cmd+r remote_control_script /Users/zachdaniel/.dotfiles/priv_scripts/project-hot-key here
 map cmd+` noop
 
-# include ashen.conf
-
-# BEGIN_KITTY_THEME
-# Catppuccin-Mocha
-include current-theme.conf
-# END_KITTY_THEME
+include ashen.conf

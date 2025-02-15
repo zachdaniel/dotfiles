@@ -16,7 +16,7 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-local colorscheme = "ashen";
+local colorscheme = "catppuccin-mocha";
 
 -- Setup lazy.nvim
 require("lazy").setup({
