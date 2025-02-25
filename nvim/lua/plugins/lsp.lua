@@ -55,7 +55,6 @@ return {
         elixirls = function()
           require("lspconfig").elixirls.setup({
             on_attach = on_attach
-
           })
         end,
         lua_ls = function()

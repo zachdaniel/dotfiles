@@ -23,98 +23,85 @@ return {
     dashboard = {
       sections = {
         { section = "header" },
-        { section = "keys",  gap = 1, padding = 1 },
         {
-          pane = 1,
-          icon = " ",
-          desc = "Browse Repo",
-          padding = 1,
-          key = "b",
-          action = function()
-            Snacks.gitbrowse()
-          end,
+          footer = [[]],
+          padding = 2,      -- Optional padding above/below the footer
+          align = "center", -- Optional alignment (left, center, right)
+          hl = "comment"
         },
-        function()
-          local in_git = Snacks.git.get_root() ~= nil
-          local cmds = {
-          }
-          return vim.tbl_map(function(cmd)
-            return vim.tbl_extend("force", {
-              pane = 2,
-              section = "terminal",
-              enabled = in_git,
-              padding = 1,
-              ttl = 5 * 60,
-              indent = 3,
-            }, cmd)
-          end, cmds)
-        end,
-        { section = "startup" },
+        {
+          pane = 2,
+          section = "terminal",
+          cmd = "cbonsai -l -i -L 30",
+          height = 30,
+          indent = 0,
+          gap = 0,
+          padding = 1
+        },
+        {
+          pane = 3,
+          section = "keys",
+          gap = 1,
+          indent = 5,
+          padding = 0,
+          align = "left"
+        },
+        {
+          pane = 2,
+          section = "startup"
+        },
       },
       preset = {
+        keys = {
+          { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+          { icon = " ", key = "g", desc = "Git", action = ":Neogit" },
+          {
+            icon = " ",
+            key = ".",
+            desc = "Scratch",
+            action = function()
+              Snacks.scratch()
+            end
+          },
+          { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil }
+        },
         header = [[
-╔═════════════════════════════════════════════════════╗
-║                                                     ║
-║                          ░                          ║
-║                         ░░░                         ║
-║                        ░▒▓▒░                        ║
-║                       ░▒▓▓▓▒░                       ║
-║                      ▒▒▓▓▓▓▓▒░                      ║
-║                    ▒▒▓▓▓▓▓▓▓▓▒░                     ║
-║                   ░▒▓▓▓▓▓▓▓▓▓▓▓▒                    ║
-║                   ▒██▓▓▓▓▓▓▓▓▓▓▓▒░                  ║
-║                 ░▒▒▒▓██▓▓▓▓▓▓▓▓▓▓▒░                 ║
-║                ░░█▓▓▓▒███▓▓▓▓▓▓▓▓▓▒░                ║
-║               ░░█▓▓▓▓▓▒▒███▓▓▓▓▓▓▓▓▒░               ║
-║              ░▒█▓▓▓▓▓▓▓▓▒▒███▓▓▓▓▓▓▓▒░              ║
-║            ░░▓▒█▓▓▓▓▓▓▓▓▓▓▓▒███▓▓▓▓▓▓▒░             ║
-║           ░▒▓▒█▓▓▓▓▓▓▓▓▓▓▓█▓▒████▓▓▓▓▓▓▒            ║
-║          ░▒▓▓▒█▓▓▓▓▓▓▓▓▓██▒▒▒▒▓▒███▓▓▓▓▓▒░          ║
-║         ░▒▓▓▒█▓▓▓▓▓▓▓▓▓█▓▒▓▓▓▓▒█▓▒███▓▓▓▓▒░         ║
-║        ░▒▓▓▒▓█▓▓▓▓▓▓▓▓▓▒▒▒▓▓▓▓▓▒█▓▒▒███▓▓▓▒░        ║
-║       ░▒▓▓▓▒█▓▓▓▓▓▓▓█▒███▒▒▒▓▓▓▓▒█▓▓▒▒███▓▓▒░       ║
-║     ░▒▓▓▓▓▒█▓▓▓▓▓▓██▒▒█████▒▒▒▒▓▓▒▓█▓▓▒▒███▓▒░      ║
-║    ░▒▓▓▓▓▓▒█▓▓▓▓▓█▒▒▓▒█▓▓▓████▒▒▒▒▒▓█▓▓▓▒▒███▓░     ║
-║   ░▒▓▓▓▓▓▒█▓▓▓▓██▒▓▓▓▒█▓▓▓▓▓████▒▒▒▒▓█▓▓▓▓▒▒██▓▒░   ║
-║  ░▒▓▓▓▓▓▓▒█▓▓██▒▒▓▓▓▓▒█▓▓▓▓▓▓▓▓████▒▒▒▓▓▓▓▓▓▒▒██▓░  ║
-║                                                     ║
-║                                                     ║
-║               █████╗ ███████╗██╗  ██╗               ║
-║              ██╔══██╗██╔════╝██║  ██║               ║
-║              ███████║███████╗███████║               ║
-║              ██╔══██║╚════██║██╔══██║               ║
-║              ██║  ██║███████║██║  ██║               ║
-║              ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝               ║
-╚═════════════════════════════════════════════════════╝
+                     ░⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                    ░░░⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                   ░▒▓▒░⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                  ░▒▓▓▓▒░⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                 ▒▒▓▓▓▓▓▒░⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ▒▓▓▓▓▓▓▓▓▒░⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+               ▒▓▓▓▓▓▓▓▓▓▓▓▒⠀⠀⠀⠀⠀⠀⠀⠀⠀
+              ▒██▓▓▓▓▓▓▓▓▓▓▓▒⠀⠀⠀⠀⠀⠀⠀⠀
+             ▒▒▒▓██▓▓▓▓▓▓▓▓▓▓▒⠀⠀⠀⠀⠀⠀⠀
+            ░█▓▓▓▒███▓▓▓▓▓▓▓▓▓▒⠀⠀⠀⠀⠀⠀
+           ░█▓▓▓▓▓▒▒███▓▓▓▓▓▓▓▓▒⠀⠀⠀⠀⠀
+          ▒█▓▓▓▓▓▓▓▓▒▒███▓▓▓▓▓▓▓▒⠀⠀⠀⠀
         ]]
       }
     }
   },
   keys = {
-    -- { "<leader>.",  function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
-    -- { "<leader>fs", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
-    -- {
-    --   "<leader>fS",
-    --   function()
-    --     vim.ui.input({ prompt = 'Enter name: ' }, function(input)
-    --       local name = input
-    --       if not name:match("%.md$") then
-    --         name = name .. ".md"
-    --       end
-    --       Snacks.scratch({ name = name })
-    --     end)
-    --   end,
-    --   desc = "Create scratch buffer"
-    -- },
-    --
-    -- vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
-    -- vim.keymap.set("n", "<leader>ss", builtin.live_grep, { desc = "Telescope project search" })
-    {"<leader>ff", function() 
-      Snacks.picker.files({hidden = true})
-    end},
-    {"<leader>ss", function()
-      Snacks.picker.grep({hidden = true})
-    end},
+
+    { "<leader>.", function() Snacks.scratch() end, desc = "Open persistent scratch" },
+    {
+      "<leader>fs",
+      function()
+        if vim.tbl_isempty(Snacks.scratch.list()) then
+          Snacks.scratch()
+        else
+          Snacks.scratch.select()
+        end
+      end,
+      desc = "Find scratch"
+    },
+    { "<leader>ff", function()
+      Snacks.picker.files({ hidden = true })
+    end },
+    { "<leader>ss", function()
+      Snacks.picker.grep({ hidden = true })
+    end },
     {
       "<D-`>",
       function()

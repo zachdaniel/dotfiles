@@ -1,5 +1,6 @@
 # deps: general
 brew "java"
+brew "cmake" 
 
 # deps: postgis deps
 brew "proj"
@@ -45,6 +46,8 @@ brew "eza"
 cask "kitty"
 brew "zsh"
 brew "neovim"
+brew "cbonsai" # used for dashboard
+brew "luarocks" # used for formatting lua
 
 # Window management
 cask "nikitabobko/tap/aerospace"
