@@ -5,6 +5,8 @@ folder_list=(
   $HOME/dev/elixir/*(/N)
   $HOME/dev/ash/*(/N)
   $HOME/dev/oss/*(/N)
+  $HOME/dev/outrun/*(/N)
+  $HOME/dev/demo/*(/N)
   $HOME/dev/nvim/*(/N) 
   $HOME/dev/alembic/*(/N)
   $HOME/dev/ai/*(/N)

@@ -48,6 +48,7 @@ brew "zsh"
 brew "neovim"
 brew "cbonsai" # used for dashboard
 brew "luarocks" # used for formatting lua
+brew "lazygit" # TUI git terminal
 
 # Window management
 cask "nikitabobko/tap/aerospace"
