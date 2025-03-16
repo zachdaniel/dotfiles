@@ -96,12 +96,20 @@ return {
       end,
       desc = "Find scratch"
     },
-    { "<leader>ff", function()
-      Snacks.picker.files({ hidden = true })
-    end },
-    { "<leader>ss", function()
-      Snacks.picker.grep({ hidden = true })
-    end },
+    {
+      "<leader>ff",
+      function()
+        Snacks.picker.files({ hidden = true })
+      end,
+      desc = "Find file"
+    },
+    {
+      "<leader>ss",
+      function()
+        Snacks.picker.grep({ hidden = true })
+      end,
+      desc = "Search all files"
+    },
     {
       "<D-`>",
       function()
@@ -114,19 +122,6 @@ return {
       end,
       desc = "Toggle Terminal",
       mode = { "n", "v", "t", "i" }
-    },
-    {
-      "<leader>tt",
-      function()
-        local in_terminal = vim.bo.buftype == "terminal"
-        if in_terminal then
-          vim.cmd("hide")
-        else
-          Snacks.terminal.toggle()
-        end
-      end,
-      desc = "Toggle Terminal",
-      mode = { "n", "v" }
     }
   }
 }

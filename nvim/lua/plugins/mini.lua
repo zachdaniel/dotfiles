@@ -1,7 +1,20 @@
-return { 'echasnovski/mini.nvim', version = '*',
+return {
+  'echasnovski/mini.nvim',
+  version = '*',
   config = function()
     local minifiles = require("mini.files")
+    local minimove = require("mini.move")
     minifiles.setup({})
+    minimove.setup({
+
+      mappings = {
+        -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+        left = 'H',
+        right = 'L',
+        down = 'J',
+        up = 'K',
+      }
+    })
 
     vim.keymap.set("n", "<leader>ft", function()
       local buf_name = vim.api.nvim_buf_get_name(0)

@@ -53,3 +53,5 @@ vim.opt.autoread = true
 if vim.g.neovide then
   vim.g.neovide_floating_corner_radius = 0.5
 end
+
+vim.o.undofile = true
