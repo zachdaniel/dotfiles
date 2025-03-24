@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "args": [
+        "/Users/zachdaniel/.mcphub/servers/fetch-mcp/dist/index.js"
+      ],
+      "disabled": false,
+      "command": "node"
+    },
+    "hexdocs-mcp": {
+      "args": [
+        "/Users/zachdaniel/dev/mcp/hexdocs-mcp/dist/index.js"
+      ],
+      "disabled": false,
+      "command": "node"
+    }
+  }
+}

@@ -4,6 +4,8 @@ return {
   config = function()
     local minifiles = require("mini.files")
     local minimove = require("mini.move")
+    local minipairs = require("mini.pairs")
+    minipairs.setup({})
     minifiles.setup({})
     minimove.setup({
 

@@ -1,5 +1,5 @@
 # deps: general
-Brew "java"
+brew "java"
 brew "cmake" 
 
 # deps: postgis deps
@@ -27,7 +27,7 @@ brew "coreutils"
 brew "fd"
 brew "fzf"
 brew "act" # run github actions locally
-brew "orbstack" # Docker for mac alternative
+# brew "orbstack" # Docker for mac alternative
 
 # Fly.io
 brew "flyctl"
@@ -54,7 +54,7 @@ brew "lazygit" # TUI git terminal
 brew "superfile" # TUI file manager
 
 # Window management
-cask "nikitabobko/tap/aerospace"
+# cask "nikitabobko/tap/aerospace"
 cask "deskpad"
 
 # Task bar manager

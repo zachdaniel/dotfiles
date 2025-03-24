@@ -48,10 +48,13 @@ vim.opt.grepformat = "%f:%l:%c:%m"
 -- autoread changes
 vim.opt.autoread = true
 
--- Hide the command line when its not in use
--- vim.opt.cmdheight = 0
-if vim.g.neovide then
-  vim.g.neovide_floating_corner_radius = 0.5
-end
-
 vim.o.undofile = true
+vim.o.shortmess = "at"
+vim.o.cmdheight = 2
+
+vim.filetype.add({
+  extension = {
+    outrun = 'outrun',
+    ['or'] = 'outrun'
+  }
+})

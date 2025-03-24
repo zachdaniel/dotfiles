@@ -25,6 +25,7 @@
     ~/.gitignore: git/gitignore
     ~/.gitconfig: git/gitconfig
     ~/scripts: scripts
+    ~/mcpservers.json: mcpservers.json
     ~/.ignore: .ignore
     ~/.aerospace.toml: aerospace/.aerospace.toml
 

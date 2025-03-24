@@ -41,6 +41,8 @@ else
   export ELIXIR_EDITOR="nvim __FILE__:__LINE__"
 fi
 
+export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=4
+
 export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
 
