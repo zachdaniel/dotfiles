@@ -73,7 +73,7 @@ unsetopt autocd
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git mise)
+plugins=(git mise mix-fast)
 
 source $ZSH/oh-my-zsh.sh
 

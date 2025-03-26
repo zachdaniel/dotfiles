@@ -3,3 +3,4 @@
 .elixir_ls
 .elixir-tools
 assets/vendor
+.mix_tasks
