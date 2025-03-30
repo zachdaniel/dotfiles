@@ -1,6 +1,7 @@
 .envrc
 .DS_Store
 .elixir_ls
+.lexical
 .elixir-tools
 assets/vendor
 .mix_tasks
