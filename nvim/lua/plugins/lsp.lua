@@ -24,11 +24,11 @@ return {
         border = "rounded"
       }
     },
-    config = function(_, opts) require'lsp_signature'.setup(opts) end
+    config = function(_, opts) require 'lsp_signature'.setup(opts) end
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    dependencies = { "mason.nvim", "nvim-lspconfig" },
+    dependencies = { "mason.nvim", "nvim-lspconfig", "folke/snacks.nvim" },
     ensure_installed = {
       { "elixir-ls", auto_update = true },
       { "lua_ls",    auto_update = true },

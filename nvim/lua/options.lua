@@ -58,3 +58,4 @@ vim.filetype.add({
     ['or'] = 'outrun'
   }
 })
+vim.opt.showmode = false

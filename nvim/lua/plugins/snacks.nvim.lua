@@ -16,6 +16,7 @@ return {
         frecency = true
       }
     },
+    notifier = {},
     image = {},
     scratch = {
       root = "~/Documents/scratch/"
