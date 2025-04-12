@@ -13,6 +13,16 @@
       ],
       "disabled": false,
       "command": "node"
+    },
+    "github.com/modelcontextprotocol/servers/tree/main/src/memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "/Users/zachdaniel/.mcphub/servers/memory/memory.json"
+      }
     }
   }
 }

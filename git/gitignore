@@ -5,3 +5,4 @@
 .elixir-tools
 assets/vendor
 .mix_tasks
+.zed

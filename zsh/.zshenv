@@ -1,4 +1,5 @@
 # Set paths for tools
+export XDG_CONFIG_HOME="$HOME/.config"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 allow_dir=${XDG_DATA_HOME:-$HOME/.local}/share/direnv/allow
 allow_paths=`ls $allow_dir/* | xargs cat | sort | uniq`
@@ -57,4 +58,3 @@ export CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/icu4c@76/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c@76/lib/pkgconfig":"$PKG_CONFIG_PATH"
 export PATH="/opt/homebrew/opt/icu4c@76/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
-

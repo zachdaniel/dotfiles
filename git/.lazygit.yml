@@ -1,0 +1,9 @@
+os:
+  edit: "zed {{filename}}"
+  editAtLine: "zed {{filename}}:{{line}}"
+git:
+  disableForcePushing: true
+keybinding:
+  universal:
+    quit: "<esc>"
+    return: "q"

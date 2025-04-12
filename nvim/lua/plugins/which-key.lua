@@ -65,15 +65,6 @@ return {
       vim.cmd("close")
     end, { desc = "Close window" })
 
-    -- Buffers
-    vim.keymap.set("n", "<leader>bb", function()
-      vim.cmd("bnext")
-    end, { desc = "Next buffer" })
-
-    vim.keymap.set("n", "<leader>bp", function()
-      vim.cmd("bprev")
-    end, { desc = "Previous buffer" })
-
     -- Open
 
     vim.keymap.set("n", "<leader>od", function()

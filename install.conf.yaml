@@ -13,7 +13,7 @@
     - [git submodule update --init --recursive]
 
 - shell:
-    - ['~/.dotfiles/priv_scripts/cargo-install']
+    - ["~/.dotfiles/priv_scripts/cargo-install"]
 
 - link:
     ~/.config/nvim: nvim
@@ -24,11 +24,11 @@
     ~/.zprofile: zsh/.zprofile
     ~/.gitignore: git/gitignore
     ~/.gitconfig: git/gitconfig
+    ~/.config/lazygit/config.yml: git/.lazygit.yml
     ~/scripts: scripts
     ~/mcpservers.json: mcpservers.json
     ~/.ignore: .ignore
     ~/.aerospace.toml: aerospace/.aerospace.toml
 
-- brewfile:
-    file: Brewfile
-
+- shell:
+    - ["cd ~/.dotfiles && brew bundle"]

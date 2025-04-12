@@ -4,11 +4,12 @@ return {
   config = function()
     local minifiles = require("mini.files")
     local minimove = require("mini.move")
+    -- local minivisits = require("mini.visits")
     -- local minipairs = require("mini.pairs")
     -- minipairs.setup({})
     minifiles.setup({})
+    -- minivisits.setup({})
     minimove.setup({
-
       mappings = {
         -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
         left = 'H',

@@ -26,6 +26,7 @@ brew "ripgrep"
 brew "coreutils"
 brew "fd"
 brew "fzf"
+brew "imagemagick"
 brew "act" # run github actions locally
 # brew "orbstack" # Docker for mac alternative
 
@@ -65,3 +66,4 @@ cask "raycast"
 cask "discord"
 cask "slack"
 cask "cleanshot"
+cask "orbstack"
