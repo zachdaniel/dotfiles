@@ -71,6 +71,8 @@ return {
               }
             )
           end
+        else
+          vim.lsp.handlers['window/showMessage'] = original_handler
         end
       end
       mason_lspconfig.setup_handlers({
