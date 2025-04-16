@@ -4,7 +4,3 @@ os:
 quitOnTopLevelReturn: true
 git:
   disableForcePushing: true
-keybinding:
-  universal:
-    quit: "q"
-    return: "q"

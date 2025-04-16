@@ -36,6 +36,7 @@ return {
     config = function()
       local mason_lspconfig = require("mason-lspconfig")
       mason_lspconfig.setup()
+      original_handler = vim.lsp.handlers['window/showMessage']
       local on_attach = function(client, bufnr)
         local opts = { noremap = true, silent = true }
 
@@ -46,6 +47,31 @@ return {
         buf_set_keymap("n", "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
         buf_set_keymap("v", "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
         buf_set_keymap("n", "<leader>cr", "<Cmd>lua vim.lsp.buf.rename()<CR>", opts)
+        if (client.name == "elixirls") then
+          vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
+            local lvl = ({
+              'ERROR',
+              'WARN',
+              'INFO',
+              'DEBUG',
+            })[result.type]
+
+            local vim_lvl = ({
+              ['ERROR'] = vim.log.levels.ERROR,
+              ['WARN'] = vim.log.levels.WARN,
+              ['INFO'] = vim.log.levels.INFO,
+              ['DEBUG'] = vim.log.levels.DEBUG,
+            })[lvl]
+
+            vim.notify(
+              result.message,
+              vim_lvl,
+              {
+                title = 'LSP | ' .. client.name,
+              }
+            )
+          end
+        end
       end
       mason_lspconfig.setup_handlers({
         function(server_name)

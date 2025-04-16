@@ -1,6 +1,6 @@
 # deps: general
 brew "java"
-brew "cmake" 
+brew "cmake"
 
 # deps: postgis deps
 brew "proj"
@@ -11,11 +11,11 @@ brew "sfcgal"
 brew "bat"
 
 # deps: postgres
-brew "readline" 
-brew "zlib" 
-brew "curl" 
-brew "ossp-uuid" 
-brew "icu4c" 
+brew "readline"
+brew "zlib"
+brew "curl"
+brew "ossp-uuid"
+brew "icu4c"
 brew "pkg-config"
 brew "pgvector"
 
@@ -28,7 +28,6 @@ brew "fd"
 brew "fzf"
 brew "imagemagick"
 brew "act" # run github actions locally
-# brew "orbstack" # Docker for mac alternative
 
 # Fly.io
 brew "flyctl"
@@ -53,6 +52,7 @@ brew "cbonsai" # used for dashboard
 brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
 brew "superfile" # TUI file manager
+brew "yazi"
 
 # Window management
 # cask "nikitabobko/tap/aerospace"

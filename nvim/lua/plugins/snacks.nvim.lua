@@ -98,6 +98,13 @@ return {
       desc = "Find scratch"
     },
     {
+      "<leader>fn",
+      function()
+        Snacks.notifier.show_history()
+      end,
+      desc = "Find notification"
+    },
+    {
       "<leader>ff",
       function()
         Snacks.picker.files({ hidden = true })
