@@ -1,6 +1,5 @@
 os:
-  edit: "zed {{filename}}"
-  editAtLine: "zed {{filename}}:{{line}}"
+  editPreset: "zed"
 quitOnTopLevelReturn: true
 git:
   disableForcePushing: true

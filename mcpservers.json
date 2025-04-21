@@ -22,7 +22,13 @@
       ],
       "env": {
         "MEMORY_FILE_PATH": "/Users/zachdaniel/.mcphub/servers/memory/memory.json"
-      }
-    }
+    },
+    {
+       "command": "mcp_proxy",
+       "env": {
+         "SSE_URL": "http://localhost:$PORT/tidewave/mcp?include_fs_tools=true"
+       }
+     }
   }
+}
 }

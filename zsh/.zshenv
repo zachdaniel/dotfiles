@@ -35,12 +35,12 @@ export JAVA_HOME=/usr/libexec/java_home
 # A cool editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
-  export VISUAL='vim'
 else
-  export EDITOR='nvim'
-  export VISUAL='nvim'
-  export ELIXIR_EDITOR="nvim __FILE__:__LINE__"
+  export EDITOR='zed --wait'
+  export ELIXIR_EDITOR="zed __FILE__:__LINE__"
 fi
+
+export VISUAL=$EDITOR
 
 export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=4
 
@@ -58,3 +58,6 @@ export CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/opt/icu4c@76/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c@76/lib/pkgconfig":"$PKG_CONFIG_PATH"
 export PATH="/opt/homebrew/opt/icu4c@76/bin:$PATH"
 export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
+
+# uv
+export PATH="/Users/zachdaniel/.local/bin:$PATH"
