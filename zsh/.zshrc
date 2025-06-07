@@ -73,7 +73,7 @@ unsetopt autocd
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git mise)
+plugins=(git mise direnv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -92,4 +92,3 @@ alias imix="iex -S mix"
 p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"
 }
-

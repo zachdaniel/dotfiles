@@ -34,7 +34,7 @@ brew "flyctl"
 
 # Database
 brew "postgis"
-brew "postgresql@16"
+brew "postgresql@17"
 brew "mysql"
 
 # Environment
@@ -53,6 +53,7 @@ brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
 brew "superfile" # TUI file manager
 brew "yazi"
+brew "rainfrog"
 
 # Window management
 # cask "nikitabobko/tap/aerospace"

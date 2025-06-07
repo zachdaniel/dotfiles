@@ -25,6 +25,7 @@
     ~/.gitignore: git/gitignore
     ~/.gitconfig: git/gitconfig
     ~/.config/lazygit/config.yml: git/.lazygit.yml
+    ~/.config/yazi: yazi
     ~/scripts: scripts
     ~/mcpservers.json: mcpservers.json
     ~/.ignore: .ignore

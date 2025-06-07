@@ -1,34 +1,20 @@
 {
+  "nativeMCPServers": [
+    
+  ],
   "mcpServers": {
-    "fetch": {
-      "args": [
-        "/Users/zachdaniel/.mcphub/servers/fetch-mcp/dist/index.js"
-      ],
+    "shirabe": {
+      "custom_instructions": {
+        "disabled": false
+      },
+      "headers": {
+        "Authorization": "Bearer shirabe_d6IpbEASwPVgLXlLZzaDJW0K34ImwaySCZZQYLV5yLvZ5vppdFTR7eMdOuS3Uva1V_eDvxV1"
+      },
       "disabled": false,
-      "command": "node"
-    },
-    "hexdocs-mcp": {
-      "args": [
-        "/Users/zachdaniel/dev/mcp/hexdocs-mcp/dist/index.js"
-      ],
-      "disabled": false,
-      "command": "node"
-    },
-    "github.com/modelcontextprotocol/servers/tree/main/src/memory": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory"
-      ],
-      "env": {
-        "MEMORY_FILE_PATH": "/Users/zachdaniel/.mcphub/servers/memory/memory.json"
-    },
-    {
-       "command": "mcp_proxy",
-       "env": {
-         "SSE_URL": "http://localhost:$PORT/tidewave/mcp?include_fs_tools=true"
-       }
-     }
+      "url": "http://localhost:4000/mcp",
+      "disabled_tools": [
+        
+      ]
+    }
   }
-}
 }

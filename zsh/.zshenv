@@ -1,14 +1,6 @@
 # Set paths for tools
 export XDG_CONFIG_HOME="$HOME/.config"
 eval "$(/opt/homebrew/bin/brew shellenv)"
-allow_dir=${XDG_DATA_HOME:-$HOME/.local}/share/direnv/allow
-allow_paths=`ls $allow_dir/* | xargs cat | sort | uniq`
-echo "$allow_paths" | while IFS= read -r allow_path; do
-  dir_path=$(dirname "$allow_path")
-  if [[ "$PWD" == "$dir_path"* ]]; then
-    source $dir_path/.envrc
-  fi
-done
 
 . "$HOME/.cargo/env"
 export PYENV_ROOT="$HOME/.pyenv"
@@ -19,7 +11,7 @@ export KERL_CONFIGURE_OPTIONS="--with-ssl=$(brew --prefix openssl)"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 ## Set paths
-export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 export PATH="/opt/homebrew/opt/qt@5/bin:$PATH"
 # export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/scripts/:$PATH"
@@ -37,7 +29,7 @@ if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
   export EDITOR='zed --wait'
-  export ELIXIR_EDITOR="zed __FILE__:__LINE__"
+  export ELIXIR_EDITOR="zed __FILE__:__LINE__ --wait"
 fi
 
 export VISUAL=$EDITOR

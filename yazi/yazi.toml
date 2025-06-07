@@ -1,0 +1,15 @@
+[plugin]
+prepend_previewers = [
+    { mime = "audio/*", run = "exifaudio" },
+    { mime = "text/csv", run = "miller" },
+]
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*"
+run = "git"
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*/"
+run = "git"

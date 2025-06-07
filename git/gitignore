@@ -6,3 +6,5 @@
 assets/vendor
 .mix_tasks
 .zed
+.aider.*
+.claude
