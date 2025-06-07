@@ -53,7 +53,7 @@ The repository uses dotbot for managing symlinks. The main configuration is in `
 ### Neovim Plugin Architecture
 The Neovim setup uses lazy.nvim for plugin management with configurations in `nvim/lua/plugins/`. Key plugins include:
 - LSP configurations
-- AI assistants (Avante, CodeCompanion, Claude Code)
+- AI assistants (Claude Code)
 - Git integration (Neogit, Gitsigns)
 - File navigation (Telescope, Yazi integration)
 - Code completion and snippets (Blink)
