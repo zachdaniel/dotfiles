@@ -54,3 +54,10 @@ vim.api.nvim_create_autocmd({ "RecordingLeave" }, {
     vim.opt.cmdheight = 0
   end,
 })
+
+-- Autoread files when they change on the filesystem
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  callback = function()
+    vim.cmd("checktime")
+  end,
+})
