@@ -61,3 +61,14 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
     vim.cmd("checktime")
   end,
 })
+
+-- Always start at the top of git commit messages
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "gitcommit", "NeogitCommitMessage" },
+  callback = function()
+    vim.defer_fn(function()
+      vim.cmd("normal! gg")
+      vim.cmd("startinsert!")
+    end, 50)
+  end,
+})
