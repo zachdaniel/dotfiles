@@ -20,6 +20,7 @@
     ~/.config/kitty: kitty
     ~/.config/direnv: direnv
     ~/.config/ghostty: ghostty
+    ~/.config/zellij: zellij
     ~/.config/claude/commands: claude/commands
     ~/.config/claude/settings.json: claude/settings.json
     ~/.config/claude/CLAUDE.md: claude/CLAUDE.md
