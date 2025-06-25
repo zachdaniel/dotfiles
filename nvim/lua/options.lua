@@ -50,7 +50,6 @@ vim.opt.autoread = true
 
 vim.o.undofile = true
 vim.o.shortmess = "at"
-vim.o.cmdheight = 2
 
 vim.filetype.add({
   extension = {
@@ -59,3 +58,4 @@ vim.filetype.add({
   }
 })
 vim.opt.showmode = false
+-- vim.opt.laststatus = 0

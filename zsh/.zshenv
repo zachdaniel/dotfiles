@@ -25,12 +25,8 @@ export JAVA_HOME=/usr/libexec/java_home
 ## Set editors
 
 # A cool editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='zed --wait'
-  export ELIXIR_EDITOR="zed __FILE__:__LINE__ --wait"
-fi
+export EDITOR='nvim'
+export ELIXIR_EDITOR="nvim +__LINE__ __FILE__"
 
 export VISUAL=$EDITOR
 

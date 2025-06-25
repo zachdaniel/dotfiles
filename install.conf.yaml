@@ -19,6 +19,10 @@
     ~/.config/nvim: nvim
     ~/.config/kitty: kitty
     ~/.config/direnv: direnv
+    ~/.config/ghostty: ghostty
+    ~/.config/claude/commands: claude/commands
+    ~/.config/claude/settings.json: claude/settings.json
+    ~/.config/claude/CLAUDE.md: claude/CLAUDE.md
     ~/.zshrc: zsh/.zshrc
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile
@@ -27,7 +31,6 @@
     ~/.config/lazygit/config.yml: git/.lazygit.yml
     ~/.config/yazi: yazi
     ~/scripts: scripts
-    ~/mcpservers.json: mcpservers.json
     ~/.ignore: .ignore
     ~/.aerospace.toml: aerospace/.aerospace.toml
 

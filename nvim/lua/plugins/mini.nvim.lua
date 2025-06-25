@@ -4,6 +4,10 @@ return {
   config = function()
     local minifiles = require("mini.files")
     local minimove = require("mini.move")
+    local statusline = require("mini.statusline")
+
+    statusline.setup({})
+
     -- local minivisits = require("mini.visits")
     -- local minipairs = require("mini.pairs")
     -- minipairs.setup({})

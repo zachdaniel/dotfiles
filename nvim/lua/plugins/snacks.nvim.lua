@@ -19,7 +19,7 @@ return {
     notifier = { enabled = false },
     image = {},
     scratch = {
-      root = ".cratch/"
+      root = "~/.scratch/"
     },
     dashboard = {
       sections = {

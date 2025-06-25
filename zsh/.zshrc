@@ -88,6 +88,8 @@ alias lg=lazygit
 alias ls="eza --git --git-repos --header"
 alias cat="bat"
 alias imix="iex -S mix"
+alias zj="zellij -l session-picker" 
+alias opencode="EDITOR=nvim opencode"
 
 p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"
