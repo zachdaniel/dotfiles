@@ -21,9 +21,11 @@
     ~/.config/direnv: direnv
     ~/.config/ghostty: ghostty
     ~/.config/zellij: zellij
-    ~/.config/claude/commands: claude/commands
-    ~/.config/claude/settings.json: claude/settings.json
-    ~/.config/claude/CLAUDE.md: claude/CLAUDE.md
+    ~/.config/yabai: yabai
+    ~/.config/skhd: skhd
+    ~/.claude/commands: claude/commands
+    ~/.claude/settings.json: claude/settings.json
+    ~/.claude/CLAUDE.md: claude/CLAUDE.md
     ~/.zshrc: zsh/.zshrc
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile

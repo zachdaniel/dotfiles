@@ -10,7 +10,7 @@
   mnemonicPrefix = true
   renames = true
 [core]
-	editor = zed --wait
+	editor = nvim
 	excludesFile = ~/.gitignore
 [user]
 	name = Zach Daniel

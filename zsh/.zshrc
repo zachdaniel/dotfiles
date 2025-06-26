@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
+if [ -z "$ZELLIJ" ] && [ "$TERM" = "xterm-kitty" ]; then
+  zellij -l welcome
+  exit
+fi
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -89,8 +94,10 @@ alias ls="eza --git --git-repos --header"
 alias cat="bat"
 alias imix="iex -S mix"
 alias zj="zellij -l session-picker" 
-alias opencode="EDITOR=nvim opencode"
 
 p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"
 }
+
+alias claude="/Users/zachdaniel/.claude/local/claude"
+
