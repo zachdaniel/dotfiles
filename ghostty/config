@@ -39,6 +39,6 @@
 theme = dark:catppuccin-frappe,light:catppuccin-latte
 background-opacity = 0.9
 background-blur = true
-macos-titlebar-style = hidden
+# macos-titlebar-style = hidden
 command = /opt/homebrew/bin/zellij -l welcome
 keybind = shift+enter=text:\n

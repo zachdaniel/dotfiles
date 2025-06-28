@@ -5,16 +5,16 @@ return {
       require("mason").setup()
     end
   },
-  {
-    "synic/refactorex.nvim",
-    ft = "elixir",
-    ---@module "refactorex.nvim"
-    ---@type refactorex.Config
-    opts = {
-      auto_update = true,
-      pin_version = nil,
-    }
-  },
+  -- {
+  --   "synic/refactorex.nvim",
+  --   ft = "elixir",
+  --   ---@module "refactorex.nvim"
+  --   ---@type refactorex.Config
+  --   opts = {
+  --     auto_update = true,
+  --     pin_version = nil,
+  --   }
+  -- },
   {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
@@ -40,7 +40,7 @@ return {
         buf_set_keymap("n", "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
         buf_set_keymap("v", "<leader>ca", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
         buf_set_keymap("n", "<leader>cr", "<Cmd>lua vim.lsp.buf.rename()<CR>", opts)
-        
+
         -- Custom handler for elixirls
         if (client.name == "elixirls") then
           vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
