@@ -34,7 +34,7 @@
 **TEST TEMPLATE**:
 ```elixir
 test "descriptive name of what should work" do
-  # Arrange
+  # ArrangeGuilds.Sites.Organization |> Ash.Query.load([:users]) |> Ash.read!()
   [setup code]
   
   # Act 

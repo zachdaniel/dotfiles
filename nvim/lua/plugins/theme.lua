@@ -34,15 +34,27 @@ return {
   --     vim.cmd("colorscheme ashen")
   --   end
   -- },
+  -- {
+  --   "catppuccin/nvim",
+  --   name = "catppuccin",
+  --   priority = 1000,
+  --   config = function()
+  --     require("catppuccin").setup({
+  --       transparent_background = true
+  --     })
+  --     vim.cmd.colorscheme "catppuccin-mocha"
+  --   end
+  -- },
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
     priority = 1000,
     config = function()
-      require("catppuccin").setup({
-        transparent_background = true
+      require("cyberdream").setup({
+        transparent = true
       })
-      vim.cmd.colorscheme "catppuccin-mocha"
+      vim.cmd.colorscheme "cyberdream"
     end
+
   }
 }

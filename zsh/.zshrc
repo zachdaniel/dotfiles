@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 if [ -z "$ZELLIJ" ] && [ "$TERM" = "xterm-kitty" ]; then
-  zellij -l welcome
+  zellij
   exit
 fi
 
@@ -93,7 +93,6 @@ alias lg=lazygit
 alias ls="eza --git --git-repos --header"
 alias cat="bat"
 alias imix="iex -S mix"
-alias zj="zellij -l session-picker" 
 
 p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"

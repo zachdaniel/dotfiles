@@ -36,8 +36,8 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-theme = dark:catppuccin-frappe,light:catppuccin-latte
-background-opacity = 0.9
+theme = catppuccin-mocha
+background-opacity = 0.95
 background-blur = true
 # macos-titlebar-style = hidden
 command = /opt/homebrew/bin/zellij -l welcome
