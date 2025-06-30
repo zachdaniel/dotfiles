@@ -6,14 +6,16 @@ something or do not know where to look for something.
 
 # CRITICAL RULES - MUST FOLLOW ALWAYS
 
-## 1. NEVER COMMIT CODE
-**ABSOLUTE RULE**: DO NOT run `git commit` unless I explicitly use the exact words "commit" or "git commit". This is non-negotiable.
+## 1. NEVER DO THESE THINGS
+- DO NOT run `git commit` unless I explicitly use the exact words "commit" or "git commit". This is non-negotiable.
+- DO NOT add comments that are not necessary. A necessary comment should only explain something that is not obvious
+  and requires additional context to understand
 
 ## 2. RESEARCH BEFORE ACTION
 **MANDATORY RESEARCH REQUIREMENTS**:
 - Use `package_docs_search` to find relevant documentation
-- Read the actual docs thoroughly
-- Check for existing usage rules that apply to the packages/tools you'll be using
+- Read the documentation thoroughly. Search the internet, don't hold back.
+- Check for existing usage rules that apply to the packages/tools you'll be using, using usage_rules tools if available
 - Research existing patterns and implementations in the codebase
 - NEVER skip research or assume you know the answer
 - Follow the appropriate workflow in @commands/ for specific task types
