@@ -21,7 +21,7 @@ vim.opt.shiftwidth = default_tab_size
 vim.opt.clipboard = "unnamedplus"
 
 -- scrolloffset
--- vim.opt.scrolloff = 999
+vim.opt.scrolloff = 999
 
 -- visual block mode
 -- allows for visual blocks to expand past

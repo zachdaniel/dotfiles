@@ -25,7 +25,7 @@ return {
     -- C-k: Toggle signature help (if signature.enabled = true)
     --
     -- See :h blink-cmp-config-keymap for defining your own keymap
-    keymap = { preset = 'default' },
+    keymap = { preset = 'super-tab' },
 
     appearance = {
       -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -34,9 +34,16 @@ return {
     },
 
     -- (Default) Only show the documentation popup when manually triggered
-    completion = { documentation = { auto_show = false } },
+    completion = {
+      documentation = {
+        auto_show = true,
+        window = {
+          border = "rounded"
+        }
+      },
+    },
     cmdline = {
-      keymap = { preset = 'inherit' },
+      keymap = { preset = 'super-tab' },
       completion = { menu = { auto_show = true } },
     },
 

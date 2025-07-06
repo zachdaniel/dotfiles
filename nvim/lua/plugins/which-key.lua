@@ -62,6 +62,12 @@ return {
       vim.cmd("wincmd w")
     end, { desc = "Next window" })
 
+    vim.keymap.set("n", "<leader>wn", function()
+      local current_file = vim.fn.expand("%:p:h")
+      local new_file = current_file .. "/untitled"
+      vim.cmd("new " .. new_file)
+    end, { desc = "New window" })
+
     vim.keymap.set("n", "<leader>wc", function()
       vim.cmd("close")
     end, { desc = "Close window" })

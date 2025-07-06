@@ -93,12 +93,11 @@
 ### Step 3.3: Implementation Rules
 **MANDATORY SEQUENCE FOR EACH TASK**:
 1. Check for relevant generator using `list_generators`
-2. Run generator with `--yes` if exists
-3. Research docs again for specific implementation details
-4. Implement using Ash patterns ONLY
-5. Compile and check for errors
-6. Run tests if applicable
-7. Update log with results
+2. Research docs again for specific implementation details
+3. Implement using Ash patterns ONLY
+4. Compile and check for errors
+5. Run tests if applicable
+6. Update log with results
 
 ### Step 3.4: Progress Reporting
 **AFTER EACH SUBTASK**:

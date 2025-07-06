@@ -119,7 +119,7 @@ return {
     dependencies = { "mason.nvim", "nvim-lspconfig", "folke/snacks.nvim" },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "elixirls", "lua_ls" },
+        ensure_installed = { "lexical", "lua_ls" },
         automatic_enable = true
       })
     end
