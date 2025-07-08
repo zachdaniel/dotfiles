@@ -93,10 +93,20 @@ alias lg=lazygit
 alias ls="eza --git --git-repos --header"
 alias cat="bat"
 alias imix="iex -S mix"
+alias claude="/Users/zachdaniel/.claude/local/claude"
 
 p() {
   source $HOME/.dotfiles/priv_scripts/project "$@"
 }
 
-alias claude="/Users/zachdaniel/.claude/local/claude"
+# Store the current command for plz to use
+preexec() {
+  export PLZ_CURRENT_COMMAND="$1"
+}
+
+# Wrapper function to pass previous command to plz script
+plz() {
+  PLZ_FULL_CMD="$PLZ_CURRENT_COMMAND" $HOME/.dotfiles/scripts/plz "$@"
+}
+
 

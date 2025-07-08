@@ -7,7 +7,8 @@ return {
     format_on_save.setup({
       formatter_by_ft = {
         lua = formatters.lsp,
-        elixir = formatters.lsp
+        elixir = formatters.lsp,
+        sql = formatters.lsp
       }
     })
   end
