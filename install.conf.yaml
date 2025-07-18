@@ -18,6 +18,7 @@
 - link:
     ~/.config/nvim: nvim
     ~/.config/kitty: kitty
+    ~/.wezterm.lua: wezterm/wezterm.lua
     ~/.config/direnv: direnv
     ~/.config/ghostty: ghostty
     ~/.config/zellij: zellij
@@ -25,7 +26,10 @@
     ~/.config/skhd: skhd
     ~/.claude/commands: claude/commands
     ~/.claude/settings.json: claude/settings.json
-    ~/.claude/CLAUDE.md: claude/CLAUDE.md
+    ~/.claude/CLAUDE.md: agents/AGENTS.md
+    ~/.config/opencode/opencode.json: opencode/opencode.json
+    ~/.config/opencode/prompts: claude/commands
+    ~/.config/opencode/AGENTS.md: agents/AGENTS.md
     ~/.zshrc: zsh/.zshrc
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile

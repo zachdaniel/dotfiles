@@ -8,8 +8,7 @@
 **REQUIRED ACTIONS**:
 - Get exact error message/behavior description
 - Identify affected module/function using grep/glob
-- Use `package_docs_search` to understand intended behavior
-- Check existing usage rules via `get_usage_rules` MCP tool or CLAUDE.md links
+- Follow RESEARCH PROTOCOL
 - Verify if bug violates any existing package usage rules
 - Check if this is an Ash-specific issue
 - Search for similar issues in codebase history

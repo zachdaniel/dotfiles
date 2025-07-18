@@ -58,4 +58,7 @@ vim.filetype.add({
   }
 })
 vim.opt.showmode = false
--- vim.opt.laststatus = 0
+
+-- folding
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevelstart = 99

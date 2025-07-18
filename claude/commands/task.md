@@ -12,8 +12,7 @@
 
 ### Step 1.2: Research Requirements
 **REQUIRED RESEARCH - USE ALL AVAILABLE TOOLS**:
-- Use `package_docs_search` for any packages involved
-- Check existing usage rules via `get_usage_rules` MCP tool or CLAUDE.md links
+- Follow RESEARCH PROTOCOL
 - Check existing code patterns with grep/glob
 - Verify Ash-specific requirements
 - Look for similar implementations

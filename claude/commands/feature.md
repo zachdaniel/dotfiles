@@ -6,9 +6,7 @@
 
 ### Step 1.1: Initial Research
 **YOU MUST USE ALL AVAILABLE RESOURCES**:
-- Check existing usage rules via `get_usage_rules` MCP tool or CLAUDE.md links
-- Use `package_docs_search` for ALL potentially relevant packages
-- Read the full documentation found
+- Follow RESEARCH PROTOCOL
 - Search for similar features in the codebase using grep/glob
 - Check for existing patterns to follow
 - Use `project_eval` to explore modules if available
@@ -131,7 +129,7 @@
 # REMEMBER
 
 - **NO COMMITS** unless explicitly told "commit this"
-- **RESEARCH FIRST** - always use package_docs_search
+- **RESEARCH FIRST** - always use search_package_docs
 - **ASH PATTERNS ONLY** - no direct Ecto
 - **STOP AT CHECKPOINTS** - wait for approval
 - **LOG EVERYTHING** - maintain feature notes file

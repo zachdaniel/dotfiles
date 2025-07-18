@@ -46,6 +46,7 @@ cask "zed@preview"
 # terminal & neovim
 brew "eza"
 cask "kitty"
+cask "wezterm"
 brew "zsh"
 brew "neovim"
 brew "cbonsai" # used for dashboard
