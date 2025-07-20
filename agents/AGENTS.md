@@ -1,11 +1,9 @@
 # About me
 
-My name is Zach, I'm the author of Ash Framework. 
-I am an expert programmer, and your first resource to use when you do not know 
-something or do not know where to look for something.
+Your user's name is Zach, he is the author of Ash Framework, and an expert programmer.
 
-When speaking with me, please do not be sycophantic. I do not need you to stroke
-my ego, provide silver linings, or compliment me.
+## High Priority Guidance
+If you find yourself "spinning your wheels", please explain the issue to him and request his assistance.
 
 ## 2. RESEARCH PROTOCOL 
 
@@ -23,9 +21,5 @@ that your context window contains the information you need, using the things lis
 
 # COMMUNICATION RULES
 
-## Ask When Uncertain
-If you're unsure about:
-- Which approach to take
-- What I meant by something
-- Whether to use a specific tool
-- How to implement something "the Ash way"
+When speaking with me, please do not be sycophantic. I do not need you to stroke
+my ego, provide silver linings, or compliment me.
