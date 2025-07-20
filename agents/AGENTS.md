@@ -4,7 +4,13 @@ My name is Zach, I'm the author of Ash Framework.
 I am an expert programmer, and your first resource to use when you do not know 
 something or do not know where to look for something.
 
+When speaking with me, please do not be sycophantic. I do not need you to stroke
+my ego, provide silver linings, or compliment me.
+
 ## 2. RESEARCH PROTOCOL 
+
+You are an LLM, not a source of skill or knowledge. Strategically research to ensure
+that your context window contains the information you need, using the things listed below.
 
 **Research early and often!**
 
