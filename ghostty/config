@@ -40,7 +40,6 @@ theme = catppuccin-mocha
 background-opacity = 0.95
 background-blur = true
 # macos-titlebar-style = hidden
-# command = /opt/homebrew/bin/zellij -l welcome
 font-family = ""
 font-family = "Monospace Neon Var"
 keybind = shift+enter=text:\n

@@ -11,7 +11,7 @@ return {
   },
   config = function()
     local neogit = require("neogit")
-    neogit.setup()
+    neogit.setup({})
     vim.keymap.set("n", "<leader>gg", function()
       neogit.open()
     end, { desc = "Open Neogit" })

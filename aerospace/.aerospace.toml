@@ -108,6 +108,11 @@ alt-shift-j = 'move down'
 alt-shift-k = 'move up'
 alt-shift-l = 'move right'
 
+cmd-alt-h = ['join-with left']
+cmd-alt-j = ['join-with down']
+cmd-alt-k = ['join-with up']
+cmd-alt-l = ['join-with right']
+
 cmd-shift-enter = ['fullscreen']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize
@@ -194,18 +199,13 @@ alt-shift-semicolon = 'mode service'
 esc = ['reload-config', 'mode main']
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 f = [
-    'layout floating tiling',
-    'mode main',
+  'layout floating tiling',
+  'mode main',
 ] # Toggle between floating and tiling layout
 backspace = ['close-all-windows-but-current', 'mode main']
 
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 #s = ['layout sticky tiling', 'mode main']
-
-cmd-alt-h = ['join-with left']
-cmd-alt-j = ['join-with down']
-cmd-alt-k = ['join-with up']
-cmd-alt-l = ['join-with right']
 
 down = 'volume down'
 up = 'volume up'

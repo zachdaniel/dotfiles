@@ -24,7 +24,14 @@
     ~/.config/zellij: zellij
     ~/.config/yabai: yabai
     ~/.config/skhd: skhd
+    ~/.config/.profile: .profile
+    ~/.config/.bashrc: .bashrc
+    ~/.config/starship.toml: starship.toml
+    ~/.tmux.conf: tmux.conf
+    ~/.config/nushell/config.nu: nushell/config.nu
+    ~/.config/nushell/env.nu: nushell/env.nu
     ~/.claude/commands: claude/commands
+    ~/.claude/agents: claude/agents
     ~/.claude/settings.json: claude/settings.json
     ~/.claude/CLAUDE.md: agents/AGENTS.md
     ~/.config/opencode/opencode.json: opencode/opencode.json

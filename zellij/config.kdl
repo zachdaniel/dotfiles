@@ -116,7 +116,7 @@ keybinds clear-defaults=true {
                 cwd "/"
                 session_layout "nvim"
                 root_files ".git;.obsidian"
-                root_dirs "/Users/zachdaniel/dev/ash;/Users/zachdaniel/dev/oss;/Users/zachdaniel/dev/elixir/;/Users/zachdaniel/dev/oss;/Users/zachdaniel/dev/alembic;/Users/zachdaniel/dev/repros;/Users/zachdaniel/dev/vaults"
+                root_dirs "/Users/zachdaniel/dev/ash;/Users/zachdaniel/dev/oss;/Users/zachdaniel/dev/elixir/;/Users/zachdaniel/dev/oss;/Users/zachdaniel/dev/alembic;/Users/zachdaniel/dev/repros;/Users/zachdaniel/dev/vaults;/Users/zachdaniel/projects"
                 dirs "/Users/zachdaniel/.dotfiles"
             }; SwitchToMode "Locked";
         }

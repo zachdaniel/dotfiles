@@ -7,4 +7,5 @@ assets/vendor
 .mix_tasks
 .zed
 .aider.*
+./CLAUDE.local.md
 .claude

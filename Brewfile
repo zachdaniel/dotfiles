@@ -48,6 +48,8 @@ brew "eza"
 cask "kitty"
 cask "wezterm"
 brew "zsh"
+brew "nushell"
+brew "starship"
 brew "neovim"
 brew "cbonsai" # used for dashboard
 brew "luarocks" # used for formatting lua
