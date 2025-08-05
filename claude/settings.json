@@ -1,3 +1,8 @@
 {
-  "includeCoAuthoredBy": false
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "includeCoAuthoredBy": false,
+  "preferredNotifChannel": "terminal_bell",
+  "feedbackSurveyState": {
+    "lastShownTime": 1754076959040
+  }
 }

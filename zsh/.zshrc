@@ -9,5 +9,10 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
-eval "$(starship init zsh)"
-# eval "$(direnv hook zsh)"
+if [ -n "$TMUX" ]; then
+  eval "$(direnv hook zsh)"
+  eval "$(starship init zsh)"
+else
+  tmux
+fi
+

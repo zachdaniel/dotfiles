@@ -4,9 +4,12 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
-# Replace the '❯' symbol in the prompt with '➜'
-[character] # The name of the module we are configuring is 'character'
-success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+[elixir]
+disabled = true
 
-# Disable the package module, hiding it from the prompt completely
-[package]
+# [custom.elixir]
+# format = '[$symbol(v$output )]($style)'
+# command = "elixir --short-version 2>/dev/null || (elixir --version | grep '^Elixir' | awk '{print $2}')"
+# when = "test -f mix.exs"
+# style = 'bold purple'
+# symbol = '💧 '
