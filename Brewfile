@@ -10,6 +10,11 @@ brew "protobuf-c"
 brew "sfcgal"
 brew "bat"
 
+# ai
+tap "sst/tap"
+cask "claude-code"
+brew "sst/tap/opencode"
+
 # deps: postgres
 brew "readline"
 brew "zlib"
@@ -27,7 +32,7 @@ brew "coreutils"
 brew "fd"
 brew "fzf"
 brew "imagemagick"
-brew "act" # run github actions locally
+brew "lua"
 
 # Fly.io
 brew "flyctl"
@@ -39,13 +44,16 @@ brew "mysql"
 
 # Environment
 brew "direnv"
+brew "mise"
 
 # Zed
 cask "zed@preview"
 
 # terminal & neovim
 brew "eza"
+brew "tmux"
 cask "kitty"
+cask "ghostty"
 cask "wezterm"
 brew "zsh"
 brew "nushell"
@@ -59,7 +67,7 @@ brew "yazi"
 brew "rainfrog"
 
 # Window management
-# cask "nikitabobko/tap/aerospace"
+cask "nikitabobko/tap/aerospace"
 cask "deskpad"
 
 # Task bar manager
