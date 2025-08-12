@@ -1,0 +1,182 @@
+{
+  "icon_theme": "Catppuccin Mocha",
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "tab_size": 2,
+  "lsp": {
+    "elixir-ls": {
+      "settings": {
+        "dialyzerEnabeld": true,
+        "incrementalDialyzer": true,
+        "enableTestLenses": false,
+        "fetchDeps": false
+      }
+    }
+  },
+  "file_scan_exclusions": [
+    "deps/",
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings"
+  ],
+  "auto_signature_help": true,
+  "show_signature_help_after_edits": true,
+  "minimap": {
+    "show": "auto",
+    "display_in": "active_editor"
+  },
+  "context_servers": {
+    // "ash_dev": {
+    //   "command": {
+    //     "path": "/Users/zachdaniel/.bin/mcp-proxy",
+    //     "args": [
+    //       "http://localhost:4000/ash_ai/mcp",
+    //       "--rewrite-protocol-version"
+    //     ],
+    //     "env": {}
+    //   },
+    //   "settings": {}
+    // },
+    // // "playwright": {
+    // //   "command": {
+    // //     "path": "npx",
+    // //     "args": ["@playwright/mcp@latest"]
+    // //   }
+    // // },
+    // "Tidewave Phoenix": {
+    //   "command": {
+    //     "path": "/Users/zachdaniel/.bin/mcp-proxy",
+    //     "args": ["http://localhost:4000/tidewave/mcp"]
+    //   },
+    //   "settings": {}
+    // }
+  },
+  "agent": {
+    "commit_message_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4-latest"
+    },
+    "play_sound_when_agent_done": true,
+    "default_profile": "web",
+    "inline_assistant_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4-latest"
+    },
+    "profiles": {
+      "web": {
+        "name": "Web",
+        "tools": {
+          "terminal": true,
+          "batch_tool": true,
+          "code_actions": true,
+          "code_symbols": true,
+          "copy_path": false,
+          "create_file": true,
+          "delete_path": false,
+          "diagnostics": true,
+          "edit_file": true,
+          "fetch": true,
+          "list_directory": false,
+          "move_path": false,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "grep": true,
+          "rename": true,
+          "symbol_info": true,
+          "thinking": true
+        },
+        "enable_all_context_servers": true,
+        "context_servers": {
+          "ash_dev": {
+            "tools": {}
+          },
+          "Tidewave Phoenix": {
+            "tools": {
+              "glob_project_files": false,
+              "grep_project_files": false,
+              "list_project_files": false,
+              "shell_eval": false,
+              "get_ecto_schemas": false,
+              "read_project_file": false,
+              "write_project_file": false,
+              "edit_project_file": false
+            }
+          }
+        }
+      },
+      "code": {
+        "name": "Code",
+        "tools": {},
+        "enable_all_context_servers": true,
+        "context_servers": {
+          "Tidewave Phoenix": {
+            "tools": {
+              "get_ecto_schemas": false,
+              "read_project_file": false,
+              "write_project_file": false,
+              "edit_project_file": false
+            }
+          }
+        }
+      },
+      "write": {
+        "name": "Write",
+        "tools": {
+          "terminal": true,
+          "batch_tool": true,
+          "code_actions": true,
+          "code_symbols": true,
+          "copy_path": false,
+          "create_file": true,
+          "delete_path": false,
+          "diagnostics": true,
+          "edit_file": true,
+          "fetch": true,
+          "list_directory": false,
+          "move_path": false,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "grep": true,
+          "rename": true,
+          "symbol_info": true,
+          "thinking": true
+        },
+        "enable_all_context_servers": true,
+        "context_servers": {}
+      }
+    },
+    "always_allow_tool_actions": true,
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    },
+    "version": "2"
+  },
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font"
+  },
+  "vim_mode": true,
+  // streaming settings
+  // "ui_font_size": 24,
+  // "buffer_font_size": 24,
+  // "agent_font_size": 24,
+  // regular settings
+  "ui_font_size": 18,
+  "buffer_font_size": 18,
+  "agent_font_size": 18,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Catppuccin Mocha"
+  }
+}

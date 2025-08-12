@@ -38,6 +38,7 @@
     ~/.config/opencode/prompts: claude/commands
     ~/.config/opencode/AGENTS.md: agents/AGENTS.md
     ~/.zshrc: zsh/.zshrc
+    ~/.config/zed: zed
     ~/.zshenv: zsh/.zshenv
     ~/.zprofile: zsh/.zprofile
     ~/.gitignore: git/gitignore

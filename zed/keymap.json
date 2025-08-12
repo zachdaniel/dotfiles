@@ -1,0 +1,99 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "bindings": {
+      "ctrl-alt-right": null,
+      "ctrl-alt-left": null,
+      "ctrl-alt-down": null,
+      "ctrl-alt-up": null,
+      "ctrl-alt-enter": null
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-`": "workspace::ToggleBottomDock"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "c": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "o": "project_panel::NewFile"
+    }
+  },
+  {
+    "context": "Editor",
+    "use_key_equivalents": true,
+    "bindings": {
+      "ctrl-n": ["editor::SelectNext", { "replace_newest": false }] // Add selection to Next Find Match
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-v": "vim::ToggleVisualBlock",
+      "ctrl-q": "vim::ToggleVisualBlock"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "v": "vim::SelectLargerSyntaxNode",
+      "V": "vim::SelectSmallerSyntaxNode"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "i": "vim::InsertBefore",
+      "a": "vim::InsertAfter",
+      "o": "vim::InsertLineBelow",
+      "O": "vim::InsertLineAbove",
+      "space a e": "assistant::InlineAssist"
+    }
+  },
+  {
+    "context": "vim_mode == normal || EmptyPane || ProjectPanel",
+    "bindings": {
+      "space space": "command_palette::Toggle",
+      "space b p": "pane::ActivatePreviousItem",
+      "space b n": "pane::ActivateNextItem",
+      "space p o": ["projects::OpenRecent", { "create_new_window": true }],
+      "space p r": ["projects::OpenRecent", { "create_new_window": false }],
+      "alt-cmd-o": ["projects::OpenRecent", { "create_new_window": true }],
+      "space f t": "workspace::ToggleLeftDock",
+      "space f f": "file_finder::Toggle",
+      "space f y": [
+        "task::Spawn",
+        { "task_name": "start yazi", "reveal_target": "dock" }
+      ],
+      "space n c": "workspace::ClearAllNotifications",
+      "space w c": "pane::CloseActiveItem",
+      "space w v": "pane::SplitRight",
+      "space w h": "pane::SplitDown",
+      "space s s": "workspace::NewSearch",
+      "space w w": "workspace::ActivateNextPane",
+      "space o l": "workspace::ToggleLeftDock",
+      "space o d": [
+        "task::Spawn",
+        { "task_name": "start rainfrog", "reveal_target": "dock" }
+      ],
+      "space g g": [
+        "task::Spawn",
+        { "task_name": "start neogit", "reveal_target": "center" }
+      ],
+      "space g l": [
+        "task::Spawn",
+        { "task_name": "start lazygit file log", "reveal_target": "center" }
+      ]
+    }
+  }
+]

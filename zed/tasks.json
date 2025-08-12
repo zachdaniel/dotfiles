@@ -1,0 +1,26 @@
+[
+  {
+    "label": "start neogit",
+    "command": "cd $ZED_WORKTREE_ROOT && nvim +Neogit",
+    "hide": "on_success",
+    "shell": {
+      "program": "zsh"
+    }
+  },
+  {
+    "label": "start rainfrog",
+    "command": "rainfrog",
+    "hide": "on_success",
+    "shell": {
+      "program": "zsh"
+    }
+  },
+  {
+    "label": "start yazi",
+    "command": "yazi",
+    "hide": "on_success",
+    "shell": {
+      "program": "zsh"
+    }
+  }
+]
