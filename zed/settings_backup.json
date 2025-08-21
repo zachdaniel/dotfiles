@@ -156,9 +156,10 @@
     },
     "always_allow_tool_actions": true,
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-5"
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
     },
+    "version": "2"
   },
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "terminal": {

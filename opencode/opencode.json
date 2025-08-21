@@ -1,34 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "layout": "stretch",
-  "mode": {
-    "feature": {
-      "model": "anthropic/claude-sonnet-4-20250514",
-      "prompt": "{file:./prompts/feature.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "fix": {
-      "model": "anthropic/claude-sonnet-4-20250514",
-      "prompt": "{file:./prompts/fix.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "task": {
-      "model": "anthropic/claude-sonnet-4-20250514",
-      "prompt": "{file:./prompts/task.md}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
+  "agent": {
     "reflect": {
       "model": "anthropic/claude-sonnet-4-20250514",
       "prompt": "{file:./prompts/reflect.md}",
@@ -38,12 +11,24 @@
         "bash": true
       }
     },
-    "plan": {
-      "model": "anthropic/claude-haiku-4-20250514",
+    "code-reviewer": {
+      "description": "Reviews code for best practices and potential issues",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
       "tools": {
         "write": false,
-        "edit": false,
-        "bash": false
+        "edit": false
+      }
+    },
+    "usage-rules-reader": {
+      "description": "ALWAYS call this before writing code, or when encountering an unexpected error. Researches documentation using usage rules for guides and API reference for Elixir and any relevant libraries.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-20250514",
+      "prompt": "You are an expert programmer gathering usage rules and reference. Research documentation using usage rules for guides and API reference for Elixir and any relevant libraries.",
+      "tools": {
+        "write": false,
+        "edit": false
       }
     }
   }

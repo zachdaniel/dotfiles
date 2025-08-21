@@ -175,7 +175,7 @@ fi
 # Function to get Claude's response
 get_claude_response() {
   local prompt_to_send="$1"
-  echo "$prompt_to_send" | /Users/zachdaniel/.claude/local/claude --dangerously-skip-permissions "${args[@]}"
+  echo "$prompt_to_send" | claude --dangerously-skip-permissions "${args[@]}"
 }
 
 # Function to handle response
