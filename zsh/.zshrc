@@ -9,13 +9,12 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
-if [ -n "$TMUX" ]; then
+if [ -n "$TMUX" ] || [ "$GUI" = "zed" ]; then
   eval "$(direnv hook zsh)"
   eval "$(starship init zsh)"
-else
+elif [ "$GUI" != "zed" ]; then
   tmux
 fi
-
 
 # bun completions
 [ -s "/Users/zachdaniel/.bun/_bun" ] && source "/Users/zachdaniel/.bun/_bun"

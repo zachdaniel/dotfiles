@@ -158,11 +158,14 @@
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-5"
-    },
+    }
   },
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "terminal": {
-    "font_family": "JetBrainsMono Nerd Font"
+    "font_family": "JetBrainsMono Nerd Font",
+    "env": {
+      "GUI": "zed"
+    }
   },
   "vim_mode": true,
   // streaming settings
