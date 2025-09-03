@@ -103,7 +103,7 @@ require("blink.cmp").setup({
   appearance = {
     nerd_font_variant = 'mono'
   },
-  completion = { documentation = { auto_show = true, window = { border = "rounded"} } },
+  completion = { documentation = { auto_show = true, window = { border = "rounded" } } },
   sources = {
     default = { 'lsp', 'path', 'snippets', 'buffer' },
   },
@@ -197,27 +197,27 @@ require('conform').setup({
 })
 
 vim.api.nvim_create_user_command("FormatToggle", function(args)
-  local is_global = not args.bang
-  if is_global then
-    vim.g.disable_autoformat = not vim.g.disable_autoformat
-    if vim.g.disable_autoformat then
-      vim.notify("Autoformat-on-save disabled globally", "info", { title = "conform.nvim" })
+    local is_global = not args.bang
+    if is_global then
+      vim.g.disable_autoformat = not vim.g.disable_autoformat
+      if vim.g.disable_autoformat then
+        vim.notify("Autoformat-on-save disabled globally", "info", { title = "conform.nvim" })
+      else
+        vim.notify("Autoformat-on-save enabled globally", "info", { title = "conform.nvim" })
+      end
     else
-      vim.notify("Autoformat-on-save enabled globally", "info", { title = "conform.nvim" })
+      vim.b.disable_autoformat = not vim.b.disable_autoformat
+      if vim.b.disable_autoformat then
+        vim.notify("Autoformat-on-save disabled for this buffer", "info", { title = "conform.nvim" })
+      else
+        vim.notify("Autoformat-on-save enabled for this buffer", "info", { title = "conform.nvim" })
+      end
     end
-  else
-    vim.b.disable_autoformat = not vim.b.disable_autoformat
-    if vim.b.disable_autoformat then
-      vim.notify("Autoformat-on-save disabled for this buffer", "info", { title = "conform.nvim" })
-    else
-      vim.notify("Autoformat-on-save enabled for this buffer", "info", { title = "conform.nvim" })
-    end
-  end
-end,
-{
-  desc = "Toggle autoformat-on-save",
-  bang = true,
-})
+  end,
+  {
+    desc = "Toggle autoformat-on-save",
+    bang = true,
+  })
 
 -- Mason/LSP
 
@@ -425,9 +425,9 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 vim.keymap.set('n', '<leader>?', function()
-  require("which-key").show({global = false})
-end,
-{ desc = "Buffer local keymaps"}
+    require("which-key").show({ global = false })
+  end,
+  { desc = "Buffer local keymaps" }
 )
 
 vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end, { desc = "Flash" })
@@ -478,7 +478,8 @@ end, { desc = "Find file" })
 
 vim.keymap.set("n", "<leader><leader>", function() require("snacks").picker.commands() end, { desc = "Commands" })
 
-vim.keymap.set("n", "<leader>nn", function() require("snacks").picker.notifications() end, { desc = "Notification History" })
+vim.keymap.set("n", "<leader>nn", function() require("snacks").picker.notifications() end,
+  { desc = "Notification History" })
 
 vim.keymap.set("n", "<leader>ss", function()
   require("snacks").picker.grep({ hidden = true })
@@ -513,77 +514,3 @@ vim.api.nvim_create_autocmd("FileType", {
     end, 50)
   end,
 })
-
-
--- had to do this to work around treesitter crash
--- keeping just in case
--- local ts_utils = require("nvim-treesitter.ts_utils")
---
--- local node_list = {}
--- local current_index = nil
---
--- function start_select()
---   node_list = {}
---   current_index = nil
---   current_index = 1
---   vim.cmd("normal! v")
--- end
---
--- function find_expand_node(node)
---   local start_row, start_col, end_row, end_col = node:range()
---   local parent = node:parent()
---   if parent == nil then
---     return nil
---   end
---   local parent_start_row, parent_start_col, parent_end_row, parent_end_col = parent:range()
---   if
---       start_row == parent_start_row
---       and start_col == parent_start_col
---       and end_row == parent_end_row
---       and end_col == parent_end_col
---   then
---     return find_expand_node(parent)
---   end
---   return parent
--- end
---
--- function select_parent_node()
---   if current_index == nil then
---     return
---   end
---
---   local node = node_list[current_index - 1]
---   local parent = nil
---   if node == nil then
---     parent = ts_utils.get_node_at_cursor()
---   else
---     parent = find_expand_node(node)
---   end
---   if not parent then
---     vim.cmd("normal! gv")
---     return
---   end
---
---   table.insert(node_list, parent)
---   current_index = current_index + 1
---   local start_row, start_col, end_row, end_col = parent:range()
---   vim.fn.setpos(".", { 0, start_row + 1, start_col + 1, 0 })
---   vim.cmd("normal! v")
---   vim.fn.setpos(".", { 0, end_row + 1, end_col, 0 })
--- end
---
--- function restore_last_selection()
---   if not current_index or current_index <= 1 then
---     return
---   end
---
---   current_index = current_index - 1
---   local node = node_list[current_index]
---   local start_row, start_col, end_row, end_col = node:range()
---   vim.fn.setpos(".", { 0, start_row + 1, start_col + 1, 0 })
---   vim.cmd("normal! v")
---   vim.fn.setpos(".", { 0, end_row + 1, end_col, 0 })
--- end
---
--- vim.api.nvim_set_keymap("v", "v", ":lua select_parent_node()<CR>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("v", "V", ":lua restore_last_selection()<CR>", { noremap = true, silent = true })
