@@ -4,16 +4,6 @@
     "edit_prediction_provider": "zed"
   },
   "tab_size": 2,
-  "lsp": {
-    "elixir-ls": {
-      "settings": {
-        "dialyzerEnabeld": true,
-        "incrementalDialyzer": true,
-        "enableTestLenses": false,
-        "fetchDeps": false
-      }
-    }
-  },
   "file_scan_exclusions": [
     "deps/",
     "**/.git",
@@ -32,31 +22,35 @@
     "show": "auto",
     "display_in": "active_editor"
   },
+  "languages": {
+    "Elixir": {
+      "language_servers": ["expert"]
+    }
+  },
+  "scroll_sensitivity": 0.8,
   "context_servers": {
-    // "ash_dev": {
-    //   "command": {
-    //     "path": "/Users/zachdaniel/.bin/mcp-proxy",
-    //     "args": [
-    //       "http://localhost:4000/ash_ai/mcp",
-    //       "--rewrite-protocol-version"
-    //     ],
-    //     "env": {}
-    //   },
-    //   "settings": {}
-    // },
-    // // "playwright": {
-    // //   "command": {
-    // //     "path": "npx",
-    // //     "args": ["@playwright/mcp@latest"]
-    // //   }
-    // // },
-    // "Tidewave Phoenix": {
-    //   "command": {
-    //     "path": "/Users/zachdaniel/.bin/mcp-proxy",
-    //     "args": ["http://localhost:4000/tidewave/mcp"]
-    //   },
-    //   "settings": {}
-    // }
+    "tidewave": {
+      "source": "custom",
+      "enabled": true,
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://localhost:4000/tidewave/mcp",
+        "--allow-http"
+      ],
+      "env": {}
+    },
+    "ash-ai-dev-server": {
+      "source": "custom",
+      "enabled": true,
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://localhost:4000/ash_ai/mcp",
+        "--allow-http"
+      ],
+      "env": {}
+    }
   },
   "agent": {
     "commit_message_model": {
@@ -156,29 +150,34 @@
     },
     "always_allow_tool_actions": true,
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-5"
+      "provider": "anthropic",
+      "model": "claude-opus-4-1-thinking-latest"
     }
   },
-  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "Monaspace Neon Var",
   "terminal": {
-    "font_family": "JetBrainsMono Nerd Font",
+    "font_family": "Monaspace Neon Var",
+    "line_height": "standard",
     "env": {
       "GUI": "zed"
     }
   },
   "vim_mode": true,
-  // streaming settings
-  // "ui_font_size": 24,
-  // "buffer_font_size": 24,
-  // "agent_font_size": 24,
-  // regular settings
-  "ui_font_size": 18,
-  "buffer_font_size": 18,
-  "agent_font_size": 18,
+  "profiles": {
+    "standard": {
+      "ui_font_size": 18,
+      "buffer_font_size": 18,
+      "agent_font_size": 18
+    },
+    "streaming": {
+      "ui_font_size": 24,
+      "buffer_font_size": 24,
+      "agent_font_size": 24
+    }
+  },
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Catppuccin Mocha"
+    "dark": "Catppuccin Mocha (Blur) [Heavy]"
   }
 }

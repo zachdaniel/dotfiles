@@ -25,12 +25,12 @@ export JAVA_HOME=/usr/libexec/java_home
 ## Set editors
 
 # A cool editor for local and remote sessions
-export EDITOR='nvim'
-export ELIXIR_EDITOR="nvim +__LINE__ __FILE__"
+export EDITOR='zed'
+export ELIXIR_EDITOR="zed __FILE__:__LINE__"
 
 export VISUAL=$EDITOR
 
-export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=4
+export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=$(($(sysctl -n hw.physicalcpu) / 2))
 
 export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
@@ -49,3 +49,5 @@ export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
 
 # uv
 export PATH="/Users/zachdaniel/.local/bin:$PATH"
+
+source ~/.envrc

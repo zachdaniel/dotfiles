@@ -9,7 +9,12 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
-if [ -n "$TMUX" ] || [ "$GUI" = "zed" ]; then
+# Set PLZ_FULL_CMD for the plz command to know about pipelines
+preexec() {
+  export PLZ_FULL_CMD="$1"
+}
+
+if [ -n "$TMUX" ] || [ "$GUI" = "zed" ] || [ "$GUI" = "warp" ] ; then
   eval "$(direnv hook zsh)"
   eval "$(starship init zsh)"
 elif [ "$GUI" != "zed" ]; then

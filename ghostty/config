@@ -41,5 +41,5 @@ background-opacity = 0.95
 background-blur = true
 # macos-titlebar-style = hidden
 font-family = ""
-font-family = "Monospace Neon Var"
+font-family = "Monaspace Neon Var"
 # keybind = shift+enter=text:\n

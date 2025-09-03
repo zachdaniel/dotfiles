@@ -1,6 +1,7 @@
 .envrc
 .DS_Store
 .elixir_ls
+.expert
 .lexical
 .elixir-tools
 assets/vendor
