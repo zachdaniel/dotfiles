@@ -26,7 +26,11 @@ vim.pack.add({
   "https://github.com/mg979/vim-visual-multi",
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/quicker.nvim",
-  "https://github.com/rachartier/tiny-inline-diagnostic.nvim"
+  "https://github.com/HakonHarnes/img-clip.nvim",
+  "https://github.com/rachartier/tiny-inline-diagnostic.nvim",
+  "https://github.com/Kaiser-Yang/blink-cmp-avante",
+  "https://github.com/MunifTanjim/nui.nvim",
+  "https://github.com/yetone/avante.nvim",
 })
 
 -- Colorscheme
@@ -105,7 +109,14 @@ require("blink.cmp").setup({
   },
   completion = { documentation = { auto_show = true, window = { border = "rounded" } } },
   sources = {
-    default = { 'lsp', 'path', 'snippets', 'buffer' },
+    -- Add 'avante' to the list
+    default = { 'avante', 'lsp', 'path', 'snippets', 'buffer' },
+    providers = {
+      avante = {
+        module = 'blink-cmp-avante',
+        name = 'Avante'
+      }
+    },
   },
   cmdline = {
     keymap = { preset = 'super-tab' },
@@ -155,6 +166,7 @@ require("nvim-treesitter.configs").setup({
   },
 })
 
+
 -- treewalker
 require("treewalker").setup({
   highlight = true,
@@ -173,7 +185,7 @@ require('tiny-inline-diagnostic').setup()
 
 -- render markdown
 require("render-markdown").setup({
-  file_types = { "markdown" },
+  file_types = { "markdown", "Avante" },
   bullet = {
     -- cleaner bullet points
     icons = { "•", "∙" },
@@ -303,6 +315,34 @@ require('colorizer').setup({
 
 require("bqf").setup({})
 require("quicker").setup({})
+
+-- Avante
+require("img-clip").setup({
+  default = {
+    embed_image_as_base64 = false,
+    prompt_for_file_name = false,
+    drag_and_drop = {
+      insert_mode = true,
+    }
+  }
+})
+
+require("avante_lib").load()
+require("avante").setup({
+  provider = "claude",
+  providers = {
+    claude = {
+      endpoint = "https://api.anthropic.com",
+      model = "claude-sonnet-4-20250514",
+      timeout = 30000, -- Timeout in milliseconds
+      extra_request_body = {
+        temperature = 0.75,
+        max_tokens = 20480,
+      },
+    }
+  }
+})
+
 
 -- Keymap
 require("which-key").add({
@@ -512,5 +552,128 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd("normal! gg")
       vim.cmd("startinsert!")
     end, 50)
+  end,
+})
+
+--- Build Avante from source when plugin is changed
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PackChanged",
+  callback = function(event)
+    if event.data.spec and event.data.spec.name == "avante.nvim" then
+      -- Try multiple possible paths
+      local possible_paths = {
+        vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "avante.nvim"),
+        vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "start", "avante.nvim"),
+        vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "opt", "avante.nvim"),
+      }
+      
+      local plugin_path = nil
+      for _, path in ipairs(possible_paths) do
+        if vim.fn.isdirectory(path) == 1 then
+          plugin_path = path
+          break
+        end
+      end
+      
+      if not plugin_path then
+        vim.notify("Avante plugin directory not found during PackChanged. Checked: " .. vim.inspect(possible_paths), vim.log.levels.ERROR)
+        return
+      end
+      
+      vim.notify("Building Avante from source at: " .. plugin_path, vim.log.levels.INFO)
+      
+      -- Set up environment for building from source
+      local env = vim.fn.environ()
+      env.BUILD_FROM_SOURCE = "true"
+      
+      vim.fn.jobstart({"make", "BUILD_FROM_SOURCE=true"}, {
+        cwd = plugin_path,
+        env = env,
+        on_stdout = function(_, data)
+          if data and #data > 0 and data[1] ~= "" then
+            vim.notify("Build output: " .. table.concat(data, "\n"), vim.log.levels.INFO)
+          end
+        end,
+        on_stderr = function(_, data)
+          if data and #data > 0 and data[1] ~= "" then
+            vim.notify("Build stderr: " .. table.concat(data, "\n"), vim.log.levels.WARN)
+          end
+        end,
+        on_exit = function(_, exit_code)
+          if exit_code == 0 then
+            vim.notify("Avante build completed successfully! Restart Neovim to use the updated plugin.", vim.log.levels.INFO)
+          else
+            vim.notify("Avante build failed with exit code: " .. exit_code, vim.log.levels.ERROR)
+          end
+        end,
+      })
+    end
+  end,
+})
+
+-- Manual command to build Avante
+vim.api.nvim_create_user_command("AvanteBuild", function()
+  -- Try multiple possible paths
+  local possible_paths = {
+    vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "avante.nvim"),
+    vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "start", "avante.nvim"),
+    vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "opt", "avante.nvim"),
+  }
+  
+  local plugin_path = nil
+  for _, path in ipairs(possible_paths) do
+    if vim.fn.isdirectory(path) == 1 then
+      plugin_path = path
+      break
+    end
+  end
+  
+  if not plugin_path then
+    vim.notify("Avante plugin directory not found. Checked: " .. vim.inspect(possible_paths), vim.log.levels.ERROR)
+    return
+  end
+  
+  vim.notify("Building Avante from source at: " .. plugin_path, vim.log.levels.INFO)
+  
+  local env = vim.fn.environ()
+  env.BUILD_FROM_SOURCE = "true"
+  
+  vim.fn.jobstart({"make", "BUILD_FROM_SOURCE=true"}, {
+    cwd = plugin_path,
+    env = env,
+    on_stdout = function(_, data)
+      if data and #data > 0 and data[1] ~= "" then
+        vim.notify("Build output: " .. table.concat(data, "\n"), vim.log.levels.INFO)
+      end
+    end,
+    on_stderr = function(_, data)
+      if data and #data > 0 and data[1] ~= "" then
+        vim.notify("Build stderr: " .. table.concat(data, "\n"), vim.log.levels.WARN)
+      end
+    end,
+    on_exit = function(_, exit_code)
+      if exit_code == 0 then
+        vim.notify("Avante build completed successfully! Restart Neovim to use the updated plugin.", vim.log.levels.INFO)
+      else
+        vim.notify("Avante build failed with exit code: " .. exit_code, vim.log.levels.ERROR)
+      end
+    end,
+  })
+end, { desc = "Build Avante from source manually" })
+
+vim.api.nvim_create_autocmd('PackChanged', {
+  desc = 'Handle nvim-treesitter updates',
+  group = vim.api.nvim_create_augroup('nvim-treesitter-pack-changed-update-handler', { clear = true }),
+  callback = function(event)
+    if event.data.kind == 'update' and event.data.spec.name == 'nvim-treesitter' then
+      vim.notify('nvim-treesitter updated, running TSUpdate...', vim.log.levels.INFO)
+      ---@diagnostic disable-next-line: param-type-mismatch
+      local ok = pcall(vim.cmd, 'TSUpdate')
+      if ok then
+        vim.notify('TSUpdate completed successfully!', vim.log.levels.INFO)
+      else
+        vim.notify('TSUpdate command not available yet, skipping', vim.log.levels.WARN)
+      end
+    end
   end,
 })
