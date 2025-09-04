@@ -36,9 +36,9 @@ export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
 
 if [[ -o interactive ]] then
-  eval "$(/opt/homebrew/bin/mise activate zsh)"
+  eval "$(/Users/zachdaniel/.local/bin/mise activate zsh)"
 else
-  eval "$(/opt/homebrew/bin/mise activate zsh --shims)"
+  eval "$(/Users/zachdaniel/.local/bin/mis activate zsh --shims)"
 fi
 
 export LDFLAGS="${LDFLAGS} -L/opt/homebrew/opt/icu4c@76/lib"
@@ -51,3 +51,4 @@ export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
 export PATH="/Users/zachdaniel/.local/bin:$PATH"
 
 source ~/.envrc
+. "/Users/zachdaniel/.local/share/bob/env/env.sh"

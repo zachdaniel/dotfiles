@@ -1,4 +1,5 @@
 vim.pack.add({
+  "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/nvim-treesitter/nvim-treesitter",
   "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
   "https://github.com/mbbill/undotree",
@@ -31,6 +32,7 @@ vim.pack.add({
   "https://github.com/Kaiser-Yang/blink-cmp-avante",
   "https://github.com/MunifTanjim/nui.nvim",
   "https://github.com/yetone/avante.nvim",
+  "https://github.com/folke/lazydev.nvim"
 })
 
 -- Colorscheme
@@ -44,7 +46,7 @@ vim.opt.number = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
---- don't do line wrapping
+--- don"t do line wrapping
 vim.opt.wrap = false
 
 --- use spaces instead of tabs
@@ -88,7 +90,7 @@ vim.opt.autoread = true
 vim.o.undofile = true
 vim.o.shortmess = "at"
 
---- I know what mode I'm in
+--- I know what mode I"m in
 vim.opt.showmode = false
 
 --- folding
@@ -101,33 +103,52 @@ require("gitsigns").setup({
   current_line_blame = true
 })
 
+-- LazyDev
+require("lazydev").setup({
+  library = {
+    -- See the configuration section for more details
+    -- Load luvit types when the `vim.uv` word is found
+    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+  },
+})
+
 -- Blink
 require("blink.cmp").setup({
-  keymap = { preset = 'super-tab' },
+  keymap = { preset = "super-tab" },
   appearance = {
-    nerd_font_variant = 'mono'
+    nerd_font_variant = "mono"
   },
-  completion = { documentation = { auto_show = true, window = { border = "rounded" } } },
+  completion = {
+    menu = {
+      border = "rounded"
+    },
+    documentation = {
+      auto_show = true,
+      window = { border = "rounded" }
+    }
+  },
   sources = {
-    -- Add 'avante' to the list
-    default = { 'avante', 'lsp', 'path', 'snippets', 'buffer' },
+    -- Add lazydev, avante to the list
+    default = { "lazydev", "avante", "lsp", "path", "snippets", "buffer" },
     providers = {
+      lazydev = {
+        name = "LazyDev",
+        module = "lazydev.integrations.blink",
+        -- make lazydev completions top priority (see `:h blink.cmp`)
+        score_offset = 100,
+      },
       avante = {
-        module = 'blink-cmp-avante',
-        name = 'Avante'
+        module = "blink-cmp-avante",
+        name = "Avante"
       }
     },
   },
   cmdline = {
-    keymap = { preset = 'super-tab' },
+    keymap = { preset = "super-tab" },
     completion = { menu = { auto_show = true } }
   },
   fuzzy = { implementation = "prefer_rust_with_warning" }
 })
-
--- visual multi
-
--- require("vim-visual-multi").setup({})
 
 -- treesitter
 require("nvim-treesitter.configs").setup({
@@ -176,12 +197,12 @@ require("treewalker").setup({
 
   -- The color of the above highlight. Must be a valid vim highlight group.
   -- (see :h highlight-group for options)
-  highlight_group = 'ColorColumn',
+  highlight_group = "ColorColumn",
 })
 
 -- inline diagnostics
 vim.diagnostic.config({ virtual_text = false })
-require('tiny-inline-diagnostic').setup()
+require("tiny-inline-diagnostic").setup()
 
 -- render markdown
 require("render-markdown").setup({
@@ -198,7 +219,7 @@ require("render-markdown").setup({
 
 -- Conform
 
-require('conform').setup({
+require("conform").setup({
   format_on_save = function(bufnr)
     -- Disable with a global or buffer-local variable
     if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -249,8 +270,6 @@ require("lsp_signature").setup({
 
 -- Mini
 
-local minifiles = require("mini.files")
-local minimove = require("mini.move")
 
 require("mini.statusline").setup({})
 
@@ -258,10 +277,10 @@ require("mini.files").setup({})
 require("mini.move").setup({
   mappings = {
     -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
-    left = 'H',
-    right = 'L',
-    down = 'J',
-    up = 'K',
+    left = "H",
+    right = "L",
+    down = "J",
+    up = "K",
   }
 })
 
@@ -304,10 +323,10 @@ require("nvim-tmux-navigation").setup({
 
 -- Colorizer
 
-require('colorizer').setup({
-  '*',
+require("colorizer").setup({
+  "*",
   html = {
-    mode = 'foreground'
+    mode = "foreground"
   }
 })
 
@@ -327,7 +346,6 @@ require("img-clip").setup({
   }
 })
 
-require("avante_lib").load()
 require("avante").setup({
   provider = "claude",
   providers = {
@@ -362,9 +380,9 @@ require("which-key").add({
   { "<leader>x", group = "debug" }
 })
 
--- Don't yank when pasting
+-- Don"t yank when pasting
 
-vim.keymap.set("v", "p", '"_dP', { noremap = true, silent = true })
+vim.keymap.set("v", "p", "'_dP", { noremap = true, silent = true })
 
 -- Quickfix
 vim.keymap.set("n", "<leader>xx", function()
@@ -375,14 +393,20 @@ vim.keymap.set("n", "<leader>xc", function()
   require("quicker").close()
 end, { desc = "Close Quickfix" })
 
-vim.keymap.set("n", ">", function()
-  require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
-  vim.api.nvim_win_set_height(0, math.min(25, vim.api.nvim_buf_line_count(0)))
-end, { desc = "Expand quickfix context" })
+-- Set up quickfix-specific keymaps
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    vim.keymap.set("n", ">", function()
+      require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+      vim.api.nvim_win_set_height(0, math.min(25, vim.api.nvim_buf_line_count(0)))
+    end, { desc = "Expand quickfix context", buffer = true })
 
-vim.keymap.set("n", "<", function()
-  require("quicker").collapse()
-end, { desc = "Collapse quickfix context" })
+    vim.keymap.set("n", "<", function()
+      require("quicker").collapse()
+    end, { desc = "Collapse quickfix context", buffer = true })
+  end,
+})
 
 -- Windows
 
@@ -434,7 +458,7 @@ vim.keymap.set("n", "<leader>qh", function()
 end, { desc = "Dismiss highlights" })
 
 -- Files
-vim.keymap.set('n', '<leader>fd', function()
+vim.keymap.set("n", "<leader>fd", function()
   local confirm = vim.fn.confirm("Delete buffer and file?", "&Yes\n&No", 2)
 
   if confirm == 1 then
@@ -442,14 +466,14 @@ vim.keymap.set('n', '<leader>fd', function()
     require("snacks").bufdelete({ force = true })
   end
 end, { desc = "Delete current file" })
-vim.keymap.set('n', '<leader>fv', '<cmd>:vnew<cr>', { desc = "Create a new file in a vertical split" })
-vim.keymap.set('n', '<leader>fh', '<cmd>:new<cr>', { desc = "Create a new file in a horizontal split" })
+vim.keymap.set("n", "<leader>fv", "<cmd>:vnew<cr>", { desc = "Create a new file in a vertical split" })
+vim.keymap.set("n", "<leader>fh", "<cmd>:new<cr>", { desc = "Create a new file in a horizontal split" })
 
 vim.keymap.set("n", "<leader>ft", function()
   local buf_name = vim.api.nvim_buf_get_name(0)
   local path = vim.fn.filereadable(buf_name) == 1 and buf_name or vim.fn.getcwd()
-  minifiles.open(path)
-  minifiles.reveal_cwd()
+  require("mini.files").open(path)
+  require("mini.files").reveal_cwd()
 end, { desc = "Open Mini Files" })
 
 -- undotree
@@ -464,7 +488,7 @@ end, { desc = "Open Undotree" })
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
-vim.keymap.set('n', '<leader>?', function()
+vim.keymap.set("n", "<leader>?", function()
     require("which-key").show({ global = false })
   end,
   { desc = "Buffer local keymaps" }
@@ -555,124 +579,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
---- Build Avante from source when plugin is changed
-vim.api.nvim_create_autocmd("User", {
-  pattern = "PackChanged",
+vim.api.nvim_create_autocmd("PackChanged", {
+  desc = "Handle nvim-treesitter updates",
+  group = vim.api.nvim_create_augroup("nvim-treesitter-pack-changed-update-handler", { clear = true }),
   callback = function(event)
-    if event.data.spec and event.data.spec.name == "avante.nvim" then
-      -- Try multiple possible paths
-      local possible_paths = {
-        vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "avante.nvim"),
-        vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "start", "avante.nvim"),
-        vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "opt", "avante.nvim"),
-      }
-      
-      local plugin_path = nil
-      for _, path in ipairs(possible_paths) do
-        if vim.fn.isdirectory(path) == 1 then
-          plugin_path = path
-          break
-        end
-      end
-      
-      if not plugin_path then
-        vim.notify("Avante plugin directory not found during PackChanged. Checked: " .. vim.inspect(possible_paths), vim.log.levels.ERROR)
-        return
-      end
-      
-      vim.notify("Building Avante from source at: " .. plugin_path, vim.log.levels.INFO)
-      
-      -- Set up environment for building from source
-      local env = vim.fn.environ()
-      env.BUILD_FROM_SOURCE = "true"
-      
-      vim.fn.jobstart({"make", "BUILD_FROM_SOURCE=true"}, {
-        cwd = plugin_path,
-        env = env,
-        on_stdout = function(_, data)
-          if data and #data > 0 and data[1] ~= "" then
-            vim.notify("Build output: " .. table.concat(data, "\n"), vim.log.levels.INFO)
-          end
-        end,
-        on_stderr = function(_, data)
-          if data and #data > 0 and data[1] ~= "" then
-            vim.notify("Build stderr: " .. table.concat(data, "\n"), vim.log.levels.WARN)
-          end
-        end,
-        on_exit = function(_, exit_code)
-          if exit_code == 0 then
-            vim.notify("Avante build completed successfully! Restart Neovim to use the updated plugin.", vim.log.levels.INFO)
-          else
-            vim.notify("Avante build failed with exit code: " .. exit_code, vim.log.levels.ERROR)
-          end
-        end,
-      })
-    end
-  end,
-})
-
--- Manual command to build Avante
-vim.api.nvim_create_user_command("AvanteBuild", function()
-  -- Try multiple possible paths
-  local possible_paths = {
-    vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "core", "opt", "avante.nvim"),
-    vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "start", "avante.nvim"),
-    vim.fs.joinpath(vim.fn.stdpath("data"), "site", "pack", "deps", "opt", "avante.nvim"),
-  }
-  
-  local plugin_path = nil
-  for _, path in ipairs(possible_paths) do
-    if vim.fn.isdirectory(path) == 1 then
-      plugin_path = path
-      break
-    end
-  end
-  
-  if not plugin_path then
-    vim.notify("Avante plugin directory not found. Checked: " .. vim.inspect(possible_paths), vim.log.levels.ERROR)
-    return
-  end
-  
-  vim.notify("Building Avante from source at: " .. plugin_path, vim.log.levels.INFO)
-  
-  local env = vim.fn.environ()
-  env.BUILD_FROM_SOURCE = "true"
-  
-  vim.fn.jobstart({"make", "BUILD_FROM_SOURCE=true"}, {
-    cwd = plugin_path,
-    env = env,
-    on_stdout = function(_, data)
-      if data and #data > 0 and data[1] ~= "" then
-        vim.notify("Build output: " .. table.concat(data, "\n"), vim.log.levels.INFO)
-      end
-    end,
-    on_stderr = function(_, data)
-      if data and #data > 0 and data[1] ~= "" then
-        vim.notify("Build stderr: " .. table.concat(data, "\n"), vim.log.levels.WARN)
-      end
-    end,
-    on_exit = function(_, exit_code)
-      if exit_code == 0 then
-        vim.notify("Avante build completed successfully! Restart Neovim to use the updated plugin.", vim.log.levels.INFO)
-      else
-        vim.notify("Avante build failed with exit code: " .. exit_code, vim.log.levels.ERROR)
-      end
-    end,
-  })
-end, { desc = "Build Avante from source manually" })
-
-vim.api.nvim_create_autocmd('PackChanged', {
-  desc = 'Handle nvim-treesitter updates',
-  group = vim.api.nvim_create_augroup('nvim-treesitter-pack-changed-update-handler', { clear = true }),
-  callback = function(event)
-    if event.data.kind == 'update' and event.data.spec.name == 'nvim-treesitter' then
-      vim.notify('nvim-treesitter updated, running TSUpdate...', vim.log.levels.INFO)
+    if event.data.kind == "update" and event.data.spec.name == "nvim-treesitter" then
+      vim.notify("nvim-treesitter updated, running TSUpdate...", vim.log.levels.INFO)
       ---@diagnostic disable-next-line: param-type-mismatch
-      local ok = pcall(vim.cmd, 'TSUpdate')
+      local ok = pcall(vim.cmd, "TSUpdate")
       if ok then
-        vim.notify('TSUpdate completed successfully!', vim.log.levels.INFO)
+        vim.notify("TSUpdate completed successfully!", vim.log.levels.INFO)
       else
-        vim.notify('TSUpdate command not available yet, skipping', vim.log.levels.WARN)
+        vim.notify("TSUpdate command not available yet, skipping", vim.log.levels.WARN)
       end
     end
   end,
