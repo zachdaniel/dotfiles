@@ -32,7 +32,8 @@ vim.pack.add({
   "https://github.com/Kaiser-Yang/blink-cmp-avante",
   "https://github.com/MunifTanjim/nui.nvim",
   "https://github.com/yetone/avante.nvim",
-  "https://github.com/folke/lazydev.nvim"
+  "https://github.com/folke/lazydev.nvim",
+  "https://github.com/adriankarlen/plugin-view.nvim"
 })
 
 -- Colorscheme
@@ -268,6 +269,15 @@ require("lsp_signature").setup({
   }
 })
 
+vim.lsp.config('expert', {
+  flags = {
+    allow_incremental_sync = false,
+    -- When I set the below option to nil and have incremental sync on, I got substantial improvements with the fixes
+    -- I had in place until a weird edge case popped up
+    -- debounce_text_changes = nil
+  }
+})
+
 -- Mini
 
 
@@ -347,7 +357,8 @@ require("img-clip").setup({
 })
 
 require("avante").setup({
-  provider = "claude",
+  mode = "legacy",
+  provider = "claude-code",
   providers = {
     claude = {
       endpoint = "https://api.anthropic.com",
@@ -361,6 +372,8 @@ require("avante").setup({
   }
 })
 
+
+require("plugin-view").setup()
 
 -- Keymap
 require("which-key").add({
@@ -549,6 +562,11 @@ vim.keymap.set("n", "<leader>ss", function()
   require("snacks").picker.grep({ hidden = true })
 end, { desc = "Search all files" })
 
+-- Create Plugins command
+vim.api.nvim_create_user_command("Plugins", function()
+  require("plugin-view").open()
+end, { desc = "Open plugin view" })
+
 -- Autocmds
 vim.api.nvim_create_autocmd({ "RecordingEnter" }, {
   callback = function()
@@ -576,6 +594,20 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd("normal! gg")
       vim.cmd("startinsert!")
     end, 50)
+  end,
+})
+
+--- Make :w and :wq save mini.files buffers like pressing =
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "minifiles",
+  callback = function(args)
+    local bufnr = args.buf
+
+    -- Set up buffer-local abbreviations for :w and :wq
+    vim.api.nvim_buf_call(bufnr, function()
+      vim.cmd("cabbrev <buffer> w lua require('mini.files').synchronize()")
+      vim.cmd("cabbrev <buffer> wq lua require('mini.files').synchronize(); require('mini.files').close()")
+    end)
   end,
 })
 
