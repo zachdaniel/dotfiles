@@ -32,6 +32,7 @@
     ~/.config/nushell/env.nu: nushell/env.nu
     ~/.claude/commands: claude/commands
     ~/.claude/agents: claude/agents
+    ~/.config/gh-dash: gh-dash
     ~/.claude/settings.json: claude/settings.json
     ~/.claude/CLAUDE.md: agents/AGENTS.md
     ~/.config/opencode/opencode.json: opencode/opencode.json

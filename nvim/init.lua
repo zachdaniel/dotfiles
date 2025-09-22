@@ -10,7 +10,7 @@ vim.pack.add({
   "https://github.com/echasnovski/mini.icons",
   "https://github.com/catppuccin/nvim.git",
   "https://github.com/folke/flash.nvim",
-  "https://github.com/Saghen/blink.cmp",
+  { src = "https://github.com/Saghen/blink.cmp", version = vim.version.range("1.0") },
   "https://github.com/williamboman/mason.nvim",
   "https://github.com/ray-x/lsp_signature.nvim",
   "https://github.com/neovim/nvim-lspconfig",
@@ -33,7 +33,14 @@ vim.pack.add({
   "https://github.com/MunifTanjim/nui.nvim",
   "https://github.com/yetone/avante.nvim",
   "https://github.com/folke/lazydev.nvim",
-  "https://github.com/adriankarlen/plugin-view.nvim"
+  "https://github.com/adriankarlen/plugin-view.nvim",
+  "https://github.com/Owen-Dechow/videre.nvim",
+  -- Optional: add YAML support
+  -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
+  -- Optional: add TOML support
+  -- "https://github.com/Owen-Dechow/graph_view_toml_parser",
+  -- Optional | Experimental: add XML support
+  -- "https://github.com/a-usr/xml2lua.nvim",
 })
 
 -- Colorscheme
@@ -217,6 +224,15 @@ require("render-markdown").setup({
     icons = { "󰉫 ", "󰉬 ", "󰉭 ", "󰉮 ", "󰉯 ", "󰉰 " },
   },
 })
+
+-- Videre
+require('videre').setup {
+  round_units = false,
+  simple_statusline = false,
+  -- If you are just starting out with Videre,
+  --   setting this to `false` will give you
+  --   descriptions of available keymaps.
+}
 
 -- Conform
 
