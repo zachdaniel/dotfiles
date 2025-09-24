@@ -43,6 +43,10 @@ vim.pack.add({
   -- "https://github.com/a-usr/xml2lua.nvim",
 })
 
+require("catppuccin").setup({
+  transparent_background = true
+})
+
 -- Colorscheme
 vim.cmd.colorscheme "catppuccin"
 
