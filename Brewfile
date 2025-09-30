@@ -33,6 +33,7 @@ brew "fd"
 brew "fzf"
 brew "imagemagick"
 brew "lua"
+brew "ngrok"
 
 # Fly.io
 brew "flyctl"
