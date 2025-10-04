@@ -26,6 +26,11 @@ elif [ "$GUI" != "zed" ]; then
   tmux
 fi
 
+autoload -Uz compinit
+compinit
+fpath=(~/.zsh $fpath)
+    zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+
 # bun completions
 [ -s "/Users/zachdaniel/.bun/_bun" ] && source "/Users/zachdaniel/.bun/_bun"
 

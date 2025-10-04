@@ -15,12 +15,16 @@
 - shell:
     - ["~/.dotfiles/priv_scripts/cargo-install"]
 
+- shell:
+    - [mkdir -p ~/.hammerspoon]
+
 - link:
     ~/.config/nvim: nvim
     ~/.config/kitty: kitty
     ~/.wezterm.lua: wezterm/wezterm.lua
     ~/.config/direnv: direnv
     ~/.config/ghostty: ghostty
+    ~/.hammerspoon/init.lua: hammerspoon/init.lua
     ~/.config/zellij: zellij
     ~/.config/yabai: yabai
     ~/.config/skhd: skhd

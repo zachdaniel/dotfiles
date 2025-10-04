@@ -33,7 +33,8 @@ brew "fd"
 brew "fzf"
 brew "imagemagick"
 brew "lua"
-brew "ngrok"
+cask "ngrok"
+cask "1password-cli"
 
 # Fly.io
 brew "flyctl"
@@ -69,6 +70,7 @@ brew "rainfrog"
 
 # Window management
 cask "nikitabobko/tap/aerospace"
+cask "hammerspoon"
 cask "deskpad"
 
 # Task bar manager

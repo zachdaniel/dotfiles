@@ -4,5 +4,6 @@
   "preferredNotifChannel": "terminal_bell",
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
-  }
+  },
+  "alwaysThinkingEnabled": true
 }

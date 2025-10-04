@@ -29,12 +29,12 @@ vim.pack.add({
   "https://github.com/stevearc/quicker.nvim",
   "https://github.com/HakonHarnes/img-clip.nvim",
   "https://github.com/rachartier/tiny-inline-diagnostic.nvim",
-  "https://github.com/Kaiser-Yang/blink-cmp-avante",
   "https://github.com/MunifTanjim/nui.nvim",
-  "https://github.com/yetone/avante.nvim",
   "https://github.com/folke/lazydev.nvim",
   "https://github.com/adriankarlen/plugin-view.nvim",
   "https://github.com/Owen-Dechow/videre.nvim",
+  "https://github.com/nvim-lualine/lualine.nvim",
+  "https://github.com/folke/sidekick.nvim"
   -- Optional: add YAML support
   -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
   -- Optional: add TOML support
@@ -46,6 +46,30 @@ vim.pack.add({
 require("catppuccin").setup({
   transparent_background = true
 })
+
+require('lualine').setup {
+  options = {
+    theme = "catppuccin",
+  },
+  sections = {
+    lualine_c = {
+      {
+        function()
+          return " "
+        end,
+        color = function()
+          local status = require("sidekick.status").get()
+          if status then
+            return status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or "Special"
+          end
+        end,
+        cond = function()
+          local status = require("sidekick.status")
+          return status.get() ~= nil
+        end,
+      } }
+  }
+}
 
 -- Colorscheme
 vim.cmd.colorscheme "catppuccin"
@@ -124,9 +148,23 @@ require("lazydev").setup({
   },
 })
 
+vim.lsp.inline_completion.enable()
+
 -- Blink
 require("blink.cmp").setup({
-  keymap = { preset = "super-tab" },
+  keymap = {
+    preset = "super-tab",
+    ["<Tab>"] = {
+      "snippet_forward",
+      function() -- sidekick next edit suggestion
+        return require("sidekick").nes_jump_or_apply()
+      end,
+      function() -- if you are using Neovim's native inline completions
+        return vim.lsp.inline_completion.get()
+      end,
+      "fallback",
+    },
+  },
   appearance = {
     nerd_font_variant = "mono"
   },
@@ -140,18 +178,14 @@ require("blink.cmp").setup({
     }
   },
   sources = {
-    -- Add lazydev, avante to the list
-    default = { "lazydev", "avante", "lsp", "path", "snippets", "buffer" },
+    -- Add lazydev to the list
+    default = { "lazydev", "lsp", "path", "snippets", "buffer" },
     providers = {
       lazydev = {
         name = "LazyDev",
         module = "lazydev.integrations.blink",
         -- make lazydev completions top priority (see `:h blink.cmp`)
         score_offset = 100,
-      },
-      avante = {
-        module = "blink-cmp-avante",
-        name = "Avante"
       }
     },
   },
@@ -218,7 +252,7 @@ require("tiny-inline-diagnostic").setup()
 
 -- render markdown
 require("render-markdown").setup({
-  file_types = { "markdown", "Avante" },
+  file_types = { "markdown" },
   bullet = {
     -- cleaner bullet points
     icons = { "•", "∙" },
@@ -228,6 +262,18 @@ require("render-markdown").setup({
     icons = { "󰉫 ", "󰉬 ", "󰉭 ", "󰉮 ", "󰉯 ", "󰉰 " },
   },
 })
+
+-- Sidekick
+vim.lsp.enable("copilot")
+
+require("sidekick").setup({
+  cli = {
+    mux = {
+      backend = "tmux",
+      enabled = true
+    }
+  }
+});
 
 -- Videre
 require('videre').setup {
@@ -278,7 +324,7 @@ vim.api.nvim_create_user_command("FormatToggle", function(args)
 require("mason").setup()
 
 require("mason-lspconfig").setup({
-  ensure_installed = { "lua_ls", "expert" },
+  ensure_installed = { "lua_ls", "expert", "copilot" },
   automatic_enable = true
 })
 
@@ -301,7 +347,7 @@ vim.lsp.config('expert', {
 -- Mini
 
 
-require("mini.statusline").setup({})
+-- require("mini.statusline").setup({})
 
 require("mini.files").setup({})
 require("mini.move").setup({
@@ -364,35 +410,6 @@ require("colorizer").setup({
 
 require("bqf").setup({})
 require("quicker").setup({})
-
--- Avante
-require("img-clip").setup({
-  default = {
-    embed_image_as_base64 = false,
-    prompt_for_file_name = false,
-    drag_and_drop = {
-      insert_mode = true,
-    }
-  }
-})
-
-require("avante").setup({
-  mode = "legacy",
-  provider = "claude-code",
-  providers = {
-    claude = {
-      endpoint = "https://api.anthropic.com",
-      model = "claude-sonnet-4-20250514",
-      timeout = 30000, -- Timeout in milliseconds
-      extra_request_body = {
-        temperature = 0.75,
-        max_tokens = 20480,
-      },
-    }
-  }
-})
-
-
 require("plugin-view").setup()
 
 -- Keymap
@@ -553,6 +570,30 @@ end, { desc = "Open Neogit" })
 vim.keymap.set("n", "<leader>gv", function()
   require("neogit").open({ kind = "vsplit" })
 end, { desc = "Open Neogit" })
+
+-- sidekick
+vim.keymap.set({ "n", "i" }, "<tab>", function()
+  -- if there is a next edit, jump to it, otherwise apply it if any
+  if not require("sidekick").nes_jump_or_apply() then
+    return "<Tab>" -- fallback to normal tab
+  end
+end, { expr = true, desc = "Goto/Apply Next Edit Suggestion" })
+
+vim.keymap.set({ "n", "v" }, "<c-.>", function()
+  require("sidekick.cli").focus()
+end, { desc = "Sidekick Switch Focus" })
+
+vim.keymap.set({ "n", "v" }, "<leader>aa", function()
+  require("sidekick.cli").toggle({ focus = true })
+end, { desc = "Sidekick Toggle CLI" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ac", function()
+  require("sidekick.cli").toggle({ name = "claude", focus = true })
+end, { desc = "Sidekick Claude Toggle" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ap", function()
+  require("sidekick.cli").select_prompt()
+end, { desc = "Sidekick Ask Prompt" })
 
 -- snacks
 vim.keymap.set("n", "<leader>.", function() require("snacks").scratch() end, { desc = "Open persistent scratch" })
