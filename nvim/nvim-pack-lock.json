@@ -50,19 +50,23 @@
       "src": "https://github.com/echasnovski/mini.icons"
     },
     "mini.nvim": {
-      "rev": "79654ef",
+      "rev": "61a5d44",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "neogit": {
       "rev": "90dcfa7b",
       "src": "https://github.com/NeogitOrg/neogit"
     },
+    "neovim-tips": {
+      "rev": "d69e3ec",
+      "src": "https://github.com/saxon1964/neovim-tips"
+    },
     "nui.nvim": {
       "rev": "de74099",
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
     "nvim": {
-      "rev": "c891845",
+      "rev": "e79d09f",
       "src": "https://github.com/catppuccin/nvim.git"
     },
     "nvim-bqf": {
@@ -114,7 +118,7 @@
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "sidekick.nvim": {
-      "rev": "0ab6a23",
+      "rev": "e869205",
       "src": "https://github.com/folke/sidekick.nvim"
     },
     "snacks.nvim": {

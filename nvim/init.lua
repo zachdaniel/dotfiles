@@ -34,7 +34,8 @@ vim.pack.add({
   "https://github.com/adriankarlen/plugin-view.nvim",
   "https://github.com/Owen-Dechow/videre.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
-  "https://github.com/folke/sidekick.nvim"
+  "https://github.com/folke/sidekick.nvim",
+  "https://github.com/saxon1964/neovim-tips"
   -- Optional: add YAML support
   -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
   -- Optional: add TOML support
@@ -412,6 +413,14 @@ require("bqf").setup({})
 require("quicker").setup({})
 require("plugin-view").setup()
 
+-- Neovim Tips
+require("neovim_tips").setup({
+  user_file = vim.fn.stdpath("config") .. "/neovim_tips/user_tips.md",
+  user_tip_prefix = "[User] ",
+  warn_on_conflicts = true,
+  daily_tip = 1,
+})
+
 -- Keymap
 require("which-key").add({
   mode = { "n", "v" },
@@ -427,7 +436,8 @@ require("which-key").add({
   { "<leader>t", group = "terminal" },
   { "<leader>b", group = "buffer" },
   { "<leader>w", group = "window" },
-  { "<leader>x", group = "debug" }
+  { "<leader>x", group = "debug" },
+  { "<leader>nt", group = "neovim tips" }
 })
 
 -- Don"t yank when pasting
@@ -622,6 +632,14 @@ vim.keymap.set("n", "<leader>nn", function() require("snacks").picker.notificati
 vim.keymap.set("n", "<leader>ss", function()
   require("snacks").picker.grep({ hidden = true })
 end, { desc = "Search all files" })
+
+-- neovim tips
+vim.keymap.set("n", "<leader>nto", "<cmd>NeovimTips<CR>", { desc = "Neovim tips" })
+vim.keymap.set("n", "<leader>nte", "<cmd>NeovimTipsEdit<CR>", { desc = "Edit your Neovim tips" })
+vim.keymap.set("n", "<leader>nta", "<cmd>NeovimTipsAdd<CR>", { desc = "Add your Neovim tip" })
+vim.keymap.set("n", "<leader>nth", "<cmd>help neovim-tips<CR>", { desc = "Neovim tips help" })
+vim.keymap.set("n", "<leader>ntr", "<cmd>NeovimTipsRandom<CR>", { desc = "Show random tip" })
+vim.keymap.set("n", "<leader>ntp", "<cmd>NeovimTipsPdf<CR>", { desc = "Open Neovim tips PDF" })
 
 -- Create Plugins command
 vim.api.nvim_create_user_command("Plugins", function()
