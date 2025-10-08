@@ -2,7 +2,6 @@ vim.pack.add({
   "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/nvim-treesitter/nvim-treesitter",
   "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
-  "https://github.com/mbbill/undotree",
   "https://github.com/aaronik/treewalker.nvim",
   "https://github.com/MeanderingProgrammer/render-markdown.nvim",
   "https://github.com/nvim-lua/plenary.nvim",
@@ -35,7 +34,7 @@ vim.pack.add({
   "https://github.com/Owen-Dechow/videre.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/folke/sidekick.nvim",
-  "https://github.com/saxon1964/neovim-tips"
+  "https://github.com/saxon1964/neovim-tips",
   -- Optional: add YAML support
   -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
   -- Optional: add TOML support
@@ -43,6 +42,8 @@ vim.pack.add({
   -- Optional | Experimental: add XML support
   -- "https://github.com/a-usr/xml2lua.nvim",
 })
+
+vim.cmd "packadd nvim.undotree"
 
 require("catppuccin").setup({
   transparent_background = true
@@ -424,19 +425,19 @@ require("neovim_tips").setup({
 -- Keymap
 require("which-key").add({
   mode = { "n", "v" },
-  { "<leader>a", group = "ai" },
-  { "<leader>c", group = "code" },
-  { "<leader>f", group = "file" },
-  { "<leader>g", group = "git" },
-  { "<leader>h", group = "share" },
-  { "<leader>q", group = "quit" },
-  { "<leader>n", group = "notifications" },
-  { "<leader>s", group = "search" },
-  { "<leader>o", group = "open",         icon = "|>" },
-  { "<leader>t", group = "terminal" },
-  { "<leader>b", group = "buffer" },
-  { "<leader>w", group = "window" },
-  { "<leader>x", group = "debug" },
+  { "<leader>a",  group = "ai" },
+  { "<leader>c",  group = "code" },
+  { "<leader>f",  group = "file" },
+  { "<leader>g",  group = "git" },
+  { "<leader>h",  group = "share" },
+  { "<leader>q",  group = "quit" },
+  { "<leader>n",  group = "notifications" },
+  { "<leader>s",  group = "search" },
+  { "<leader>o",  group = "open",         icon = "|>" },
+  { "<leader>t",  group = "terminal" },
+  { "<leader>b",  group = "buffer" },
+  { "<leader>w",  group = "window" },
+  { "<leader>x",  group = "debug" },
   { "<leader>nt", group = "neovim tips" }
 })
 
@@ -539,7 +540,7 @@ end, { desc = "Open Mini Files" })
 -- undotree
 
 vim.keymap.set("n", "<leader>ou", function()
-  vim.cmd("UndotreeToggle")
+  vim.cmd("Undotree")
 end, { desc = "Open Undotree" })
 
 -- navigation

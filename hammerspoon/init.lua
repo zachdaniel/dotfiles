@@ -6,7 +6,7 @@ hs.loadSpoon("SpoonInstall")
 
 -- Configure repositories and update them
 -- spoon.SpoonInstall:asyncUpdateAllRepos()
-hs.allowAppleScript()
+hs.allowAppleScript(true);
 
 -- Load and configure PaperWM
 -- PaperWM = hs.loadSpoon("PaperWM")

@@ -6,7 +6,7 @@
       "version": "1.0.0 - 1.1.0"
     },
     "conform.nvim": {
-      "rev": "9d859cb",
+      "rev": "fbcb4fa",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "diffview.nvim": {
@@ -38,7 +38,7 @@
       "src": "https://github.com/nvim-lualine/lualine.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "155eac5",
+      "rev": "6bdb14f",
       "src": "https://github.com/williamboman/mason-lspconfig.nvim"
     },
     "mason.nvim": {
@@ -50,7 +50,7 @@
       "src": "https://github.com/echasnovski/mini.icons"
     },
     "mini.nvim": {
-      "rev": "61a5d44",
+      "rev": "fbb6ad0",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "neogit": {
@@ -58,7 +58,7 @@
       "src": "https://github.com/NeogitOrg/neogit"
     },
     "neovim-tips": {
-      "rev": "d69e3ec",
+      "rev": "6c2d8e3",
       "src": "https://github.com/saxon1964/neovim-tips"
     },
     "nui.nvim": {
@@ -66,11 +66,11 @@
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
     "nvim": {
-      "rev": "e79d09f",
+      "rev": "af58927",
       "src": "https://github.com/catppuccin/nvim.git"
     },
     "nvim-bqf": {
-      "rev": "17680cd",
+      "rev": "a77b17e",
       "src": "https://github.com/kevinhwang91/nvim-bqf"
     },
     "nvim-colorizer.lua": {
@@ -114,11 +114,11 @@
       "src": "https://github.com/stevearc/quicker.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "7e6af36",
+      "rev": "f3321d0",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "sidekick.nvim": {
-      "rev": "e869205",
+      "rev": "aa216b5",
       "src": "https://github.com/folke/sidekick.nvim"
     },
     "snacks.nvim": {

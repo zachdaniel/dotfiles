@@ -25,6 +25,7 @@
     ~/.config/direnv: direnv
     ~/.config/ghostty: ghostty
     ~/.hammerspoon/init.lua: hammerspoon/init.lua
+    ~/.config/sketchybar: sketchybar
     ~/.config/zellij: zellij
     ~/.config/yabai: yabai
     ~/.config/skhd: skhd
