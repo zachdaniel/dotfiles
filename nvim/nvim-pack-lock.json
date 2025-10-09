@@ -14,7 +14,7 @@
       "src": "https://github.com/sindrets/diffview.nvim"
     },
     "flash.nvim": {
-      "rev": "b68bda0",
+      "rev": "2febce6",
       "src": "https://github.com/folke/flash.nvim"
     },
     "gitsigns.nvim": {
@@ -26,7 +26,7 @@
       "src": "https://github.com/HakonHarnes/img-clip.nvim"
     },
     "lazydev.nvim": {
-      "rev": "258d2a5",
+      "rev": "e28ce52",
       "src": "https://github.com/folke/lazydev.nvim"
     },
     "lsp_signature.nvim": {
@@ -114,15 +114,15 @@
       "src": "https://github.com/stevearc/quicker.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "f3321d0",
+      "rev": "2064980",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "sidekick.nvim": {
-      "rev": "aa216b5",
+      "rev": "cf3d4aa",
       "src": "https://github.com/folke/sidekick.nvim"
     },
     "snacks.nvim": {
-      "rev": "bfe8c26",
+      "rev": "dae80fb",
       "src": "https://github.com/folke/snacks.nvim"
     },
     "tiny-inline-diagnostic.nvim": {
@@ -146,7 +146,7 @@
       "src": "https://github.com/mg979/vim-visual-multi"
     },
     "which-key.nvim": {
-      "rev": "904308e",
+      "rev": "b4177e3",
       "src": "https://github.com/folke/which-key.nvim"
     }
   }

@@ -22,8 +22,6 @@
     ~/.config/nvim: nvim
     ~/.config/direnv: direnv
     ~/.hammerspoon/init.lua: hammerspoon/init.lua
-    ~/.config/yabai: yabai
-    ~/.config/skhd: skhd
     ~/.config/.profile: .profile
     ~/.config/.bashrc: .bashrc
     ~/.config/starship.toml: starship.toml
