@@ -9,7 +9,7 @@ vim.pack.add({
   "https://github.com/echasnovski/mini.icons",
   "https://github.com/catppuccin/nvim.git",
   "https://github.com/folke/flash.nvim",
-  { src = "https://github.com/Saghen/blink.cmp", version = vim.version.range("1.0") },
+  "https://github.com/Saghen/blink.cmp",
   "https://github.com/williamboman/mason.nvim",
   "https://github.com/ray-x/lsp_signature.nvim",
   "https://github.com/neovim/nvim-lspconfig",
