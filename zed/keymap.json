@@ -71,10 +71,6 @@
       "alt-cmd-o": ["projects::OpenRecent", { "create_new_window": true }],
       "space f t": "workspace::ToggleLeftDock",
       "space f f": "file_finder::Toggle",
-      "space f y": [
-        "task::Spawn",
-        { "task_name": "start yazi", "reveal_target": "dock" }
-      ],
       "space n c": "workspace::ClearAllNotifications",
       "space w c": "pane::CloseActiveItem",
       "space w v": "pane::SplitRight",

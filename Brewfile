@@ -55,18 +55,12 @@ cask "zed@preview"
 brew "eza"
 brew "tmux"
 cask "kitty"
-cask "ghostty"
 cask "wezterm"
 brew "zsh"
-brew "nushell"
 brew "starship"
 brew "neovim"
-brew "cbonsai" # used for dashboard
 brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
-brew "superfile" # TUI file manager
-brew "yazi"
-brew "rainfrog"
 
 # Window management
 cask "nikitabobko/tap/aerospace"
@@ -83,5 +77,3 @@ cask "slack"
 cask "cleanshot"
 cask "orbstack"
 tap "FelixKratz/formulae"
-cask "font-sketchybar-app-font"
-brew "sketchybar"

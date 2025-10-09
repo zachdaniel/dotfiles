@@ -11,6 +11,8 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
 
+# exec-on-workspace-change = ['/bin/bash', '-c', '...']
+
 # Start AeroSpace at login
 start-at-login = true
 

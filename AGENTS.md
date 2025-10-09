@@ -7,7 +7,6 @@ This is a dotfiles repository that manages configuration files for a macOS devel
 - Kitty terminal
 - Zsh shell (with Oh My Zsh)
 - Git (including lazygit)
-- Yazi file manager
 - Various development tools
 
 ## Common Commands
@@ -44,7 +43,6 @@ The repository uses dotbot for managing symlinks. The main configuration is in `
 - `kitty/`: Kitty terminal configuration
 - `zsh/`: Zsh shell configuration files (.zshrc, .zshenv, .zprofile)
 - `git/`: Git configuration and lazygit settings
-- `yazi/`: Yazi file manager with custom plugins
 - `scripts/`: User scripts (publicly accessible)
 - `priv_scripts/`: Private utility scripts (cargo-install, project management)
 
@@ -53,7 +51,6 @@ The Neovim setup uses lazy.nvim for plugin management with configurations in `nv
 - LSP configurations
 - AI assistants (Claude Code)
 - Git integration (Neogit, Gitsigns)
-- File navigation (Telescope, Yazi integration)
 - Code completion and snippets (Blink)
 
 ### Symlink Mappings

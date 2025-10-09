@@ -20,21 +20,14 @@
 
 - link:
     ~/.config/nvim: nvim
-    ~/.config/kitty: kitty
-    ~/.wezterm.lua: wezterm/wezterm.lua
     ~/.config/direnv: direnv
-    ~/.config/ghostty: ghostty
     ~/.hammerspoon/init.lua: hammerspoon/init.lua
-    ~/.config/sketchybar: sketchybar
-    ~/.config/zellij: zellij
     ~/.config/yabai: yabai
     ~/.config/skhd: skhd
     ~/.config/.profile: .profile
     ~/.config/.bashrc: .bashrc
     ~/.config/starship.toml: starship.toml
     ~/.tmux.conf: tmux.conf
-    ~/.config/nushell/config.nu: nushell/config.nu
-    ~/.config/nushell/env.nu: nushell/env.nu
     ~/.claude/commands: claude/commands
     ~/.claude/agents: claude/agents
     ~/.config/gh-dash: gh-dash
@@ -50,7 +43,6 @@
     ~/.gitignore: git/gitignore
     ~/.gitconfig: git/gitconfig
     ~/.config/lazygit/config.yml: git/.lazygit.yml
-    ~/.config/yazi: yazi
     ~/scripts: scripts
     ~/.ignore: .ignore
     ~/.aerospace.toml: aerospace/.aerospace.toml

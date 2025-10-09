@@ -14,13 +14,5 @@
     "shell": {
       "program": "zsh"
     }
-  },
-  {
-    "label": "start yazi",
-    "command": "yazi",
-    "hide": "on_success",
-    "shell": {
-      "program": "zsh"
-    }
   }
 ]

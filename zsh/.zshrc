@@ -9,16 +9,6 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
-# Set PLZ_FULL_CMD for the plz command to know about pipelines
-preexec() {
-  export PLZ_FULL_CMD="$1"
-  
-  # Rename tmux window to 'nvim' when running nvim
-  if [ -n "$TMUX" ] && [[ "$1" =~ ^nvim($|[[:space:]]) ]]; then
-    tmux rename-window "nvim"
-  fi
-}
-
 if [ -n "$TMUX" ] || [ "$GUI" = "zed" ] || [ "$GUI" = "warp" ] ; then
   eval "$(direnv hook zsh)"
   eval "$(starship init zsh)"

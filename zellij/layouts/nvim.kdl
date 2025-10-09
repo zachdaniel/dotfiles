@@ -1,9 +1,0 @@
-layout {
-    pane split_direction="horizontal" {
-        pane focus=true
-        pane size="25%" borderless=true
-        pane size="1" borderless=true {
-          plugin location="status-bar"
-        }
-    }
-}
