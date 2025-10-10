@@ -152,7 +152,9 @@ require("lazydev").setup({
 
 vim.lsp.inline_completion.enable()
 
+
 -- Blink
+vim.cmd("BlinkCmp build")
 require("blink.cmp").setup({
   keymap = {
     preset = "super-tab",

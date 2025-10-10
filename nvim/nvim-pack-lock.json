@@ -1,7 +1,7 @@
 {
   "plugins": {
     "blink.cmp": {
-      "rev": "2b44b9c",
+      "rev": "cc8c9b7",
       "src": "https://github.com/Saghen/blink.cmp"
     },
     "conform.nvim": {
@@ -49,7 +49,7 @@
       "src": "https://github.com/echasnovski/mini.icons"
     },
     "mini.nvim": {
-      "rev": "fbb6ad0",
+      "rev": "57c1611",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "neogit": {
@@ -57,7 +57,7 @@
       "src": "https://github.com/NeogitOrg/neogit"
     },
     "neovim-tips": {
-      "rev": "6c2d8e3",
+      "rev": "523156e",
       "src": "https://github.com/saxon1964/neovim-tips"
     },
     "nui.nvim": {
@@ -77,7 +77,7 @@
       "src": "https://github.com/norcalli/nvim-colorizer.lua"
     },
     "nvim-lspconfig": {
-      "rev": "e688b48",
+      "rev": "623bcf0",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {
@@ -113,15 +113,15 @@
       "src": "https://github.com/stevearc/quicker.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "2064980",
+      "rev": "d538564",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "sidekick.nvim": {
-      "rev": "cf3d4aa",
+      "rev": "d4e205e",
       "src": "https://github.com/folke/sidekick.nvim"
     },
     "snacks.nvim": {
-      "rev": "dae80fb",
+      "rev": "d91fc7d",
       "src": "https://github.com/folke/snacks.nvim"
     },
     "tiny-inline-diagnostic.nvim": {
