@@ -5,7 +5,8 @@ vim.pack.add({
   "https://github.com/aaronik/treewalker.nvim",
   "https://github.com/MeanderingProgrammer/render-markdown.nvim",
   "https://github.com/nvim-lua/plenary.nvim",
-  "https://github.com/sindrets/diffview.nvim",
+  -- "https://github.com/santhosh-tekuri/wordiff.nvim",
+  -- "https://github.com/sindrets/diffview.nvim",
   "https://github.com/echasnovski/mini.icons",
   "https://github.com/catppuccin/nvim.git",
   "https://github.com/folke/flash.nvim",
@@ -18,7 +19,6 @@ vim.pack.add({
   "https://github.com/stevearc/conform.nvim",
   "https://github.com/lewis6991/gitsigns.nvim",
   "https://github.com/echasnovski/mini.nvim",
-  "https://github.com/folke/which-key.nvim",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/NeogitOrg/neogit",
   "https://github.com/norcalli/nvim-colorizer.lua",
@@ -43,6 +43,7 @@ vim.pack.add({
   -- "https://github.com/a-usr/xml2lua.nvim",
 })
 
+vim.cmd "packadd nvim.difftool"
 vim.cmd "packadd nvim.undotree"
 
 require("catppuccin").setup({
@@ -154,7 +155,14 @@ vim.lsp.inline_completion.enable()
 
 
 -- Blink
-vim.cmd("BlinkCmp build")
+-- want to do this but only if its not built already?
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   callback = function()
+--     vim.cmd("BlinkCmp build")
+--   end,
+--   once = true,
+-- })
+--
 require("blink.cmp").setup({
   keymap = {
     preset = "super-tab",
@@ -364,6 +372,82 @@ require("mini.move").setup({
   }
 })
 
+local miniclue = require("mini.clue")
+miniclue.setup({
+  triggers = {
+    -- Leader triggers
+    { mode = 'n', keys = '<Leader>' },
+    { mode = 'v', keys = '<Leader>' },
+    -- Built-in completion
+    { mode = 'i', keys = '<C-x>' },
+    -- `g` key
+    { mode = 'n', keys = 'g' },
+    { mode = 'x', keys = 'g' },
+    -- Marks
+    { mode = 'n', keys = "'" },
+    { mode = 'n', keys = '`' },
+    { mode = 'x', keys = "'" },
+    { mode = 'x', keys = '`' },
+    -- Registers
+    { mode = 'n', keys = '"' },
+    { mode = 'x', keys = '"' },
+    { mode = 'i', keys = '<C-r>' },
+    { mode = 'c', keys = '<C-r>' },
+    -- Window commands
+    { mode = 'n', keys = '<C-w>' },
+    -- `z` key
+    { mode = 'n', keys = 'z' },
+    { mode = 'x', keys = 'z' },
+    -- Bracket keys
+    { mode = 'n', keys = '[' },
+    { mode = 'n', keys = ']' },
+  },
+  clues = {
+    -- Enhance this by adding descriptions for <Leader> mapping groups
+    miniclue.gen_clues.builtin_completion(),
+    miniclue.gen_clues.g(),
+    miniclue.gen_clues.marks(),
+    miniclue.gen_clues.registers(),
+    miniclue.gen_clues.windows(),
+    miniclue.gen_clues.z(),
+    -- Leader group clues
+    { mode = 'n', keys = '<Leader>a',  desc = '+ai' },
+    { mode = 'v', keys = '<Leader>a',  desc = '+ai' },
+    { mode = 'n', keys = '<Leader>c',  desc = '+code' },
+    { mode = 'v', keys = '<Leader>c',  desc = '+code' },
+    { mode = 'n', keys = '<Leader>f',  desc = '+file' },
+    { mode = 'v', keys = '<Leader>f',  desc = '+file' },
+    { mode = 'n', keys = '<Leader>g',  desc = '+git' },
+    { mode = 'v', keys = '<Leader>g',  desc = '+git' },
+    { mode = 'n', keys = '<Leader>h',  desc = '+share' },
+    { mode = 'v', keys = '<Leader>h',  desc = '+share' },
+    { mode = 'n', keys = '<Leader>q',  desc = '+quit' },
+    { mode = 'v', keys = '<Leader>q',  desc = '+quit' },
+    { mode = 'n', keys = '<Leader>n',  desc = '+notifications' },
+    { mode = 'v', keys = '<Leader>n',  desc = '+notifications' },
+    { mode = 'n', keys = '<Leader>s',  desc = '+search' },
+    { mode = 'v', keys = '<Leader>s',  desc = '+search' },
+    { mode = 'n', keys = '<Leader>o',  desc = '+open' },
+    { mode = 'v', keys = '<Leader>o',  desc = '+open' },
+    { mode = 'n', keys = '<Leader>t',  desc = '+terminal' },
+    { mode = 'v', keys = '<Leader>t',  desc = '+terminal' },
+    { mode = 'n', keys = '<Leader>b',  desc = '+buffer' },
+    { mode = 'v', keys = '<Leader>b',  desc = '+buffer' },
+    { mode = 'n', keys = '<Leader>w',  desc = '+window' },
+    { mode = 'v', keys = '<Leader>w',  desc = '+window' },
+    { mode = 'n', keys = '<Leader>x',  desc = '+debug' },
+    { mode = 'v', keys = '<Leader>x',  desc = '+debug' },
+    { mode = 'n', keys = '<Leader>nt', desc = '+neovim tips' },
+    { mode = 'v', keys = '<Leader>nt', desc = '+neovim tips' },
+  },
+  window = {
+    delay = 200,
+    config = {
+      width = 'auto',
+    },
+  },
+})
+
 -- Snacks
 require("snacks").setup({
   indent = {},
@@ -424,26 +508,11 @@ require("neovim_tips").setup({
   daily_tip = 1,
 })
 
--- Keymap
-require("which-key").add({
-  mode = { "n", "v" },
-  { "<leader>a",  group = "ai" },
-  { "<leader>c",  group = "code" },
-  { "<leader>f",  group = "file" },
-  { "<leader>g",  group = "git" },
-  { "<leader>h",  group = "share" },
-  { "<leader>q",  group = "quit" },
-  { "<leader>n",  group = "notifications" },
-  { "<leader>s",  group = "search" },
-  { "<leader>o",  group = "open",         icon = "|>" },
-  { "<leader>t",  group = "terminal" },
-  { "<leader>b",  group = "buffer" },
-  { "<leader>w",  group = "window" },
-  { "<leader>x",  group = "debug" },
-  { "<leader>nt", group = "neovim tips" }
-})
+-- ============================================================================
+-- Keymaps
+-- ============================================================================
 
--- Don"t yank when pasting
+-- Don't yank when pasting
 
 vim.keymap.set("v", "p", "'_dP", { noremap = true, silent = true })
 
@@ -552,9 +621,9 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 vim.keymap.set("n", "<leader>?", function()
-    require("which-key").show({ global = false })
+    vim.cmd("help index")
   end,
-  { desc = "Buffer local keymaps" }
+  { desc = "Show help index" }
 )
 
 vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end, { desc = "Flash" })
