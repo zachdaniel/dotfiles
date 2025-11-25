@@ -58,7 +58,6 @@ cask "kitty"
 cask "wezterm"
 brew "zsh"
 brew "starship"
-brew "neovim"
 brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
 

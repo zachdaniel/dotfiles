@@ -5,7 +5,7 @@ vim.pack.add({
   "https://github.com/aaronik/treewalker.nvim",
   "https://github.com/MeanderingProgrammer/render-markdown.nvim",
   "https://github.com/nvim-lua/plenary.nvim",
-  -- "https://github.com/santhosh-tekuri/wordiff.nvim",
+  "https://github.com/santhosh-tekuri/wordiff.nvim",
   -- "https://github.com/sindrets/diffview.nvim",
   "https://github.com/echasnovski/mini.icons",
   "https://github.com/catppuccin/nvim.git",
@@ -21,7 +21,6 @@ vim.pack.add({
   "https://github.com/echasnovski/mini.nvim",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/NeogitOrg/neogit",
-  "https://github.com/norcalli/nvim-colorizer.lua",
   "https://github.com/alexghergh/nvim-tmux-navigation",
   "https://github.com/mg979/vim-visual-multi",
   "https://github.com/kylechui/nvim-surround",
@@ -35,6 +34,7 @@ vim.pack.add({
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/folke/sidekick.nvim",
   "https://github.com/saxon1964/neovim-tips",
+  "https://github.com/pmizio/typescript-tools.nvim"
   -- Optional: add YAML support
   -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
   -- Optional: add TOML support
@@ -187,7 +187,7 @@ require("blink.cmp").setup({
     documentation = {
       auto_show = true,
       window = { border = "rounded" }
-    }
+    },
   },
   sources = {
     -- Add lazydev to the list
@@ -275,6 +275,9 @@ require("render-markdown").setup({
   },
 })
 
+-- Typescript
+require("typescript-tools").setup({})
+
 -- Sidekick
 vim.lsp.enable("copilot")
 
@@ -299,6 +302,10 @@ require('videre').setup {
 -- Conform
 
 require("conform").setup({
+  formatters_by_ft = {
+    typescript = { "prettierd", "prettier" }, -- Use prettierd for speed
+    typescriptreact = { "prettierd", "prettier" },
+  },
   format_on_save = function(bufnr)
     -- Disable with a global or buffer-local variable
     if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -357,9 +364,6 @@ vim.lsp.config('expert', {
 })
 
 -- Mini
-
-
--- require("mini.statusline").setup({})
 
 require("mini.files").setup({})
 require("mini.move").setup({
@@ -450,6 +454,14 @@ miniclue.setup({
 
 -- Snacks
 require("snacks").setup({
+  dashboard = {
+    enabled = true,
+    sections = {
+      { section = "header" },
+      { section = "keys",  gap = 1, padding = 1 },
+      -- Removed "startup" section to avoid lazy.nvim dependency
+    }
+  },
   indent = {},
   picker = {
     matcher = {
@@ -457,10 +469,7 @@ require("snacks").setup({
     }
   },
   notifier = { enabled = true },
-  image = {},
-  scratch = {
-    root = "~/.scratch/"
-  }
+  image = {}
 })
 
 -- Neogit
@@ -483,15 +492,6 @@ require("nvim-surround").setup({
 --
 require("nvim-tmux-navigation").setup({
   disable_when_zoomed = true, -- defaults to false
-})
-
--- Colorizer
-
-require("colorizer").setup({
-  "*",
-  html = {
-    mode = "foreground"
-  }
 })
 
 -- Quicker
@@ -681,11 +681,7 @@ end, { desc = "Sidekick Ask Prompt" })
 vim.keymap.set("n", "<leader>.", function() require("snacks").scratch() end, { desc = "Open persistent scratch" })
 
 vim.keymap.set("n", "<leader>fs", function()
-  if vim.tbl_isempty(require("snacks").scratch.list()) then
-    require("snacks").scratch()
-  else
-    require("snacks").scratch.select()
-  end
+  require("snacks").picker.scratch()
 end, { desc = "Find scratch" })
 
 vim.keymap.set("n", "<leader>fn", function()

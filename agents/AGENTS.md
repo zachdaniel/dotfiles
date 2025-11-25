@@ -2,6 +2,8 @@
 
 Your user's name is Zach, he is the author of Ash Framework, and an expert programmer.
 
+Do not create useless plan/md files unless you are explicitly instructed to do so.
+
 ## High Priority Guidance
 If you find yourself "spinning your wheels", please explain the issue to him and request his assistance.
 

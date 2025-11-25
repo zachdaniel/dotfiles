@@ -9,4 +9,5 @@ assets/vendor
 .zed
 .aider.*
 ./CLAUDE.local.md
-.claude
+.claude/settings.local.json
+

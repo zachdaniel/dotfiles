@@ -10,7 +10,7 @@ hs.allowAppleScript(true);
 
 -- Load and configure PaperWM
 -- PaperWM = hs.loadSpoon("PaperWM")
--- PaperWM.swipe_fingers = 3
+-- PaperWM.swipe_fingers = 4
 -- PaperWM.swipe_gain = 2.0
 -- PaperWM:bindHotkeys({
 --   -- switch to a new focused window in tiled grid (aligned with aerospace)
