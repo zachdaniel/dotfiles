@@ -1,4 +1,15 @@
 {
+  "context_servers": {
+    "mcp-server-linear": {
+      "enabled": true,
+      "settings": {
+        "linear_api_key": "YOUR_LINEAR_ACCESS_TOKEN"
+      },
+    }
+  },
+  "prettier": {
+    "allowed": false
+  },
   "icon_theme": "Catppuccin Mocha",
   "features": {
     "edit_prediction_provider": "zed"
@@ -24,34 +35,12 @@
   },
   "languages": {
     "Elixir": {
-      "language_servers": ["expert"]
+      "language_servers": [
+        "elixir-ls"
+      ]
     }
   },
   "scroll_sensitivity": 0.8,
-  "context_servers": {
-    "tidewave": {
-      "source": "custom",
-      "enabled": true,
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "http://localhost:4000/tidewave/mcp",
-        "--allow-http"
-      ],
-      "env": {}
-    },
-    "ash-ai-dev-server": {
-      "source": "custom",
-      "enabled": true,
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "http://localhost:4000/ash_ai/mcp",
-        "--allow-http"
-      ],
-      "env": {}
-    }
-  },
   "agent": {
     "commit_message_model": {
       "provider": "zed.dev",
@@ -62,91 +51,6 @@
     "inline_assistant_model": {
       "provider": "zed.dev",
       "model": "claude-sonnet-4-latest"
-    },
-    "profiles": {
-      "web": {
-        "name": "Web",
-        "tools": {
-          "terminal": true,
-          "batch_tool": true,
-          "code_actions": true,
-          "code_symbols": true,
-          "copy_path": false,
-          "create_file": true,
-          "delete_path": false,
-          "diagnostics": true,
-          "edit_file": true,
-          "fetch": true,
-          "list_directory": false,
-          "move_path": false,
-          "now": true,
-          "find_path": true,
-          "read_file": true,
-          "grep": true,
-          "rename": true,
-          "symbol_info": true,
-          "thinking": true
-        },
-        "enable_all_context_servers": true,
-        "context_servers": {
-          "ash_dev": {
-            "tools": {}
-          },
-          "Tidewave Phoenix": {
-            "tools": {
-              "glob_project_files": false,
-              "grep_project_files": false,
-              "list_project_files": false,
-              "shell_eval": false,
-              "get_ecto_schemas": false,
-              "read_project_file": false,
-              "write_project_file": false,
-              "edit_project_file": false
-            }
-          }
-        }
-      },
-      "code": {
-        "name": "Code",
-        "tools": {},
-        "enable_all_context_servers": true,
-        "context_servers": {
-          "Tidewave Phoenix": {
-            "tools": {
-              "get_ecto_schemas": false,
-              "read_project_file": false,
-              "write_project_file": false,
-              "edit_project_file": false
-            }
-          }
-        }
-      },
-      "write": {
-        "name": "Write",
-        "tools": {
-          "terminal": true,
-          "batch_tool": true,
-          "code_actions": true,
-          "code_symbols": true,
-          "copy_path": false,
-          "create_file": true,
-          "delete_path": false,
-          "diagnostics": true,
-          "edit_file": true,
-          "fetch": true,
-          "list_directory": false,
-          "move_path": false,
-          "now": true,
-          "find_path": true,
-          "read_file": true,
-          "grep": true,
-          "rename": true,
-          "symbol_info": true,
-          "thinking": true
-        },
-        "enable_all_context_servers": true,
-        "context_servers": {}
-      }
     },
     "always_allow_tool_actions": true,
     "default_model": {
@@ -167,17 +71,29 @@
     "standard": {
       "ui_font_size": 18,
       "buffer_font_size": 18,
-      "agent_font_size": 18
+      "agent_ui_font_size": 18,
+      "agent_buffer_font_size": 18
     },
     "streaming": {
       "ui_font_size": 24,
       "buffer_font_size": 24,
-      "agent_font_size": 24
+      "agent_buffer_font_size": 24,
+      "agent_ui_font_size": 24
     }
+  },
+  "lsp": {
+    "elixir-ls": {
+      "settings": {
+        "projectDir": "platform"
+      }
+    }
+  },
+  "experimental.theme_overrides": {
+    "background.appearance": "blurred"
   },
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Catppuccin Mocha (Blur) [Heavy]"
+    "dark": "Duskfox - blurred"
   }
 }

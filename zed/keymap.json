@@ -61,7 +61,7 @@
     }
   },
   {
-    "context": "vim_mode == normal || EmptyPane || ProjectPanel",
+    "context": "vim_mode == normal || EmptyPane || ProjectPanel || GitPanel || OutlinePanel || CollabPanel",
     "bindings": {
       "space space": "command_palette::Toggle",
       "space b p": "pane::ActivatePreviousItem",
@@ -78,18 +78,7 @@
       "space s s": "workspace::NewSearch",
       "space w w": "workspace::ActivateNextPane",
       "space o l": "workspace::ToggleLeftDock",
-      "space o d": [
-        "task::Spawn",
-        { "task_name": "start rainfrog", "reveal_target": "dock" }
-      ],
-      "space g g": [
-        "task::Spawn",
-        { "task_name": "start neogit", "reveal_target": "center" }
-      ],
-      "space g l": [
-        "task::Spawn",
-        { "task_name": "start lazygit file log", "reveal_target": "center" }
-      ]
+      "space g g": "git_panel::ToggleFocus"
     }
   }
 ]
