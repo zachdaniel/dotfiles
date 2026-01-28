@@ -33,7 +33,12 @@
     "context": "Editor",
     "use_key_equivalents": true,
     "bindings": {
-      "ctrl-n": ["editor::SelectNext", { "replace_newest": false }] // Add selection to Next Find Match
+      "ctrl-n": [
+        "editor::SelectNext",
+        {
+          "replace_newest": false
+        }
+      ] // Add selection to Next Find Match
     }
   },
   {
@@ -66,9 +71,24 @@
       "space space": "command_palette::Toggle",
       "space b p": "pane::ActivatePreviousItem",
       "space b n": "pane::ActivateNextItem",
-      "space p o": ["projects::OpenRecent", { "create_new_window": true }],
-      "space p r": ["projects::OpenRecent", { "create_new_window": false }],
-      "alt-cmd-o": ["projects::OpenRecent", { "create_new_window": true }],
+      "space p o": [
+        "projects::OpenRecent",
+        {
+          "create_new_window": true
+        }
+      ],
+      "space p r": [
+        "projects::OpenRecent",
+        {
+          "create_new_window": false
+        }
+      ],
+      "alt-cmd-o": [
+        "projects::OpenRecent",
+        {
+          "create_new_window": true
+        }
+      ],
       "space f t": "workspace::ToggleLeftDock",
       "space f f": "file_finder::Toggle",
       "space n c": "workspace::ClearAllNotifications",
@@ -78,7 +98,13 @@
       "space s s": "workspace::NewSearch",
       "space w w": "workspace::ActivateNextPane",
       "space o l": "workspace::ToggleLeftDock",
-      "space g g": "git_panel::ToggleFocus"
+      "space g g": [
+        "task::Spawn",
+        {
+          "task_name": "start neogit",
+          "reveal_target": "center"
+        }
+      ]
     }
   }
 ]
