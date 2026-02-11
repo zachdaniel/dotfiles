@@ -36,7 +36,7 @@
   "languages": {
     "Elixir": {
       "language_servers": [
-        "elixir-ls"
+        "expert"
       ]
     }
   },

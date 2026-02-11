@@ -44,6 +44,8 @@
     ~/scripts: scripts
     ~/.ignore: .ignore
     ~/.aerospace.toml: aerospace/.aerospace.toml
+    ~/.config/nushell: nushell
+    ~/Library/Application Support/nushell: nushell
 
 - shell:
     - ["cd ~/.dotfiles && brew bundle"]
