@@ -8,9 +8,12 @@ vim.pack.add({
   "https://github.com/santhosh-tekuri/wordiff.nvim",
   -- "https://github.com/sindrets/diffview.nvim",
   "https://github.com/echasnovski/mini.icons",
-  "https://github.com/catppuccin/nvim.git",
+  "https://github.com/scottmckendry/cyberdream.nvim",
   "https://github.com/folke/flash.nvim",
-  "https://github.com/Saghen/blink.cmp",
+  {
+    src = "https://github.com/Saghen/blink.cmp",
+    version = vim.version.range("^1"),
+  },
   "https://github.com/williamboman/mason.nvim",
   "https://github.com/ray-x/lsp_signature.nvim",
   "https://github.com/neovim/nvim-lspconfig",
@@ -45,13 +48,13 @@ vim.pack.add({
 vim.cmd "packadd nvim.difftool"
 vim.cmd "packadd nvim.undotree"
 
-require("catppuccin").setup({
-  transparent_background = true
+require("cyberdream").setup({
+  transparent = true
 })
 
 require('lualine').setup {
   options = {
-    theme = "catppuccin",
+    theme = "cyberdream",
   },
   sections = {
     lualine_c = {
@@ -74,7 +77,7 @@ require('lualine').setup {
 }
 
 -- Colorscheme
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "cyberdream"
 
 -- Basic Options
 --- line numbers
@@ -152,16 +155,6 @@ require("lazydev").setup({
 
 vim.lsp.inline_completion.enable()
 
-
--- Blink
--- want to do this but only if its not built already?
--- vim.api.nvim_create_autocmd("VimEnter", {
---   callback = function()
---     vim.cmd("BlinkCmp build")
---   end,
---   once = true,
--- })
---
 require("blink.cmp").setup({
   keymap = {
     preset = "super-tab",
@@ -354,13 +347,12 @@ require("lsp_signature").setup({
 })
 
 vim.lsp.config('expert', {
-  flags = {
-    allow_incremental_sync = false,
-    -- When I set the below option to nil and have incremental sync on, I got substantial improvements with the fixes
-    -- I had in place until a weird edge case popped up
-    -- debounce_text_changes = nil
-  }
+  cmd = { 'expert', '--stdio' },
+  root_markers = { 'mix.exs', '.git' },
+  filetypes = { 'elixir', 'eelixir', 'heex' },
 })
+
+vim.lsp.enable 'expert'
 
 -- Mini
 

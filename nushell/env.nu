@@ -1,5 +1,11 @@
 # XDG
 $env.XDG_CONFIG_HOME = ($env.HOME | path join ".config")
+$env.FOO = "bar"
+
+# Carapace
+$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
+mkdir $"($nu.cache-dir)"
+/opt/homebrew/bin/carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
 
 # Homebrew
 let brew_prefix = "/opt/homebrew"
@@ -7,12 +13,12 @@ $env.HOMEBREW_PREFIX = $brew_prefix
 $env.HOMEBREW_CELLAR = ($brew_prefix | path join "Cellar")
 $env.HOMEBREW_REPOSITORY = $brew_prefix
 
-# Erlang options
+# Erlang/OTP
 $env.KERL_BUILD_DOCS = "yes"
 $env.KERL_CONFIGURE_OPTIONS = $"--with-ssl=($brew_prefix)/opt/openssl"
 $env.ERL_AFLAGS = "-kernel shell_history enabled"
 
-# PYENV
+# Python
 $env.PYENV_ROOT = ($env.HOME | path join ".pyenv")
 
 # Java
@@ -20,7 +26,7 @@ $env.JAVA_HOME = "/usr/libexec/java_home"
 
 # Editors
 $env.EDITOR = "nvim"
-$env.ELIXIR_EDITOR = "nvim +[line_number] [filename]"
+$env.ELIXIR_EDITOR = "nvim +__LINE__ __FILE__"
 $env.VISUAL = $env.EDITOR
 
 # Elixir
@@ -49,6 +55,7 @@ $env.PATH = (
     | prepend $"($env.HOME)/.local/bin"
     | prepend $"($env.HOME)/.bun/bin"
     | prepend $"($env.HOME)/.sst/bin"
+    | prepend "/Applications/Obsidian.app/Contents/MacOS"
     | uniq
 )
 

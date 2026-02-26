@@ -485,6 +485,10 @@
 	<true/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
+	<key>NeverWarnAboutShortLivedSessions_D25CBCF5-4A74-49E5-A29B-F2437BA9607B</key>
+	<true/>
+	<key>NeverWarnAboutShortLivedSessions_D25CBCF5-4A74-49E5-A29B-F2437BA9607B_selection</key>
+	<integer>0</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1796,6 +1800,8 @@
 	<key>SeparateWindowTitlePerTab</key>
 	<true/>
 	<key>ShowFullScreenTabBar</key>
+	<false/>
+	<key>ShowSecureKeyboardEntryIndicator</key>
 	<false/>
 	<key>SoundForEsc</key>
 	<false/>

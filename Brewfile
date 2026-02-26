@@ -35,6 +35,7 @@ brew "imagemagick"
 brew "lua"
 cask "ngrok"
 cask "1password-cli"
+brew "carapace"
 
 # Fly.io
 brew "flyctl"

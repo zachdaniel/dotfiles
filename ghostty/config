@@ -1,0 +1,55 @@
+# Theme
+palette = 0=#16181a
+palette = 1=#ff6e5e
+palette = 2=#5eff6c
+palette = 3=#f1ff5e
+palette = 4=#5ea1ff
+palette = 5=#bd5eff
+palette = 6=#5ef1ff
+palette = 7=#ffffff
+palette = 8=#3c4048
+palette = 9=#ff6e5e
+palette = 10=#5eff6c
+palette = 11=#f1ff5e
+palette = 12=#5ea1ff
+palette = 13=#bd5eff
+palette = 14=#5ef1ff
+palette = 15=#ffffff
+
+background = #16181a
+foreground = #ffffff
+cursor-color = #ffffff
+cursor-style = bar
+cursor-opacity = 0.8
+selection-background = #3c4048
+selection-foreground = #ffffff
+
+# Transparency
+background-opacity = 0.85
+background-blur = 15
+
+# Font
+font-size = 13
+font-thicken = true
+
+# Window
+macos-titlebar-style = hidden
+macos-option-as-alt = true
+window-padding-x = 14
+window-padding-y = 10
+window-padding-balance = true
+window-padding-color = extend
+window-save-state = always
+
+# Shell integration
+shell-integration = detect
+term = xterm-256color
+
+# Misc
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = true
+mouse-hide-while-typing = true
+unfocused-split-opacity = 0.7
+resize-overlay = never
+minimum-contrast = 3

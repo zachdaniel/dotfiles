@@ -46,6 +46,7 @@
     ~/.aerospace.toml: aerospace/.aerospace.toml
     ~/.config/nushell: nushell
     ~/Library/Application Support/nushell: nushell
+    ~/.config/ghostty: ghostty
 
 - shell:
     - ["cd ~/.dotfiles && brew bundle"]
