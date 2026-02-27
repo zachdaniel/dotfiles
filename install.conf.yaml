@@ -28,6 +28,7 @@
     ~/.tmux.conf: tmux.conf
     ~/.claude/commands: claude/commands
     ~/.claude/agents: claude/agents
+    ~/.claude/skills: claude/skills
     ~/.config/gh-dash: gh-dash
     ~/.claude/settings.json: claude/settings.json
     ~/.claude/CLAUDE.md: agents/AGENTS.md
