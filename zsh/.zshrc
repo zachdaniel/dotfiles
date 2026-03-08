@@ -9,12 +9,22 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
-if [ -n "$TMUX" ] || [ "$GUI" = "zed" ] || [ "$GUI" = "warp" ] ; then
-  eval "$(direnv hook zsh)"
-  eval "$(starship init zsh)"
-elif [ "$GUI" != "zed" ]; then
-  tmux
-fi
+eval "$(direnv hook zsh)"
+eval "$(starship init zsh)"
+
+# Ghostty split navigation
+ghostty-nav-left()  { ghostty-nav left  2>/dev/null }
+ghostty-nav-down()  { ghostty-nav down  2>/dev/null }
+ghostty-nav-up()    { ghostty-nav up    2>/dev/null }
+ghostty-nav-right() { ghostty-nav right 2>/dev/null }
+zle -N ghostty-nav-left
+zle -N ghostty-nav-down
+zle -N ghostty-nav-up
+zle -N ghostty-nav-right
+bindkey '^h' ghostty-nav-left
+bindkey '^j' ghostty-nav-down
+bindkey '^k' ghostty-nav-up
+bindkey '^l' ghostty-nav-right
 
 autoload -Uz compinit
 compinit

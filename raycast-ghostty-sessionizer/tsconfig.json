@@ -1,0 +1,12 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}

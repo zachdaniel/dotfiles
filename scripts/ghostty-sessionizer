@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+    selected=$({ find ~/dev -mindepth 2 -maxdepth 2 -type d | while read -r dir; do
+        for marker in .git mix.exs Cargo.toml package.json go.mod pyproject.toml Gemfile build.zig flake.nix Makefile dune-project .project-root; do
+            if [[ -e "$dir/$marker" ]]; then echo "$dir"; break; fi
+        done
+    done; echo ~/.dotfiles; } | fzf --tiebreak=end)
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+# Resolve to absolute path
+selected=$(cd "$selected" && pwd)
+selected_name=$(basename "$selected" | tr . _)
+
+result=$(osascript \
+    -e 'tell application "Ghostty"' \
+    -e "    set matches to every window whose name is \"$selected_name\"" \
+    -e '    if (count of matches) > 0 then' \
+    -e '        activate window (item 1 of matches)' \
+    -e '        return "found"' \
+    -e '    else' \
+    -e '        return "not_found"' \
+    -e '    end if' \
+    -e 'end tell')
+
+if [[ "$result" == "not_found" ]]; then
+    osascript \
+        -e 'tell application "Ghostty"' \
+        -e '    activate' \
+        -e '    set cfg to new surface configuration' \
+        -e "    set initial working directory of cfg to \"$selected\"" \
+        -e "    set command of cfg to \"/bin/bash -c 'printf \\\"\\\\e]0;${selected_name}\\\\a\\\" && exec /opt/homebrew/bin/nu'\"" \
+        -e '    set win to new window with configuration cfg' \
+        -e 'end tell'
+fi

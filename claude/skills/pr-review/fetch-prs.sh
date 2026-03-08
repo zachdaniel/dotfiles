@@ -50,7 +50,7 @@ ALL_OUTPUT="[]"
 CHECKED_REPOS=()
 
 for REPO_PATH in "${REPOS[@]}"; do
-  REPO_SLUG=$(gh -C "$REPO_PATH" repo view --json nameWithOwner -q '.nameWithOwner' 2>/dev/null) || continue
+  REPO_SLUG=$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s/\.git$//' ) || continue
   [[ -z "$REPO_SLUG" ]] && continue
 
   if [[ "$ALL_PRS" == "true" ]]; then

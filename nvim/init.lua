@@ -24,7 +24,6 @@ vim.pack.add({
   "https://github.com/echasnovski/mini.nvim",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/NeogitOrg/neogit",
-  "https://github.com/alexghergh/nvim-tmux-navigation",
   "https://github.com/mg979/vim-visual-multi",
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/quicker.nvim",
@@ -75,6 +74,7 @@ require('lualine').setup {
       } }
   }
 }
+
 
 -- Colorscheme
 vim.cmd.colorscheme "cyberdream"
@@ -159,13 +159,29 @@ require("blink.cmp").setup({
   keymap = {
     preset = "super-tab",
     ["<Tab>"] = {
+      function(cmp) -- prefer blink/LSP completions when menu is visible
+        if cmp.is_visible() then
+          return cmp.accept({ select = true })
+        end
+      end,
       "snippet_forward",
-      function() -- sidekick next edit suggestion
+      function() -- sidekick NES as fallback when no LSP completions
         return require("sidekick").nes_jump_or_apply()
       end,
-      function() -- if you are using Neovim's native inline completions
+      function() -- native inline completions as fallback
         return vim.lsp.inline_completion.get()
       end,
+      "fallback",
+    },
+    ["<S-Tab>"] = { -- force-accept sidekick/copilot even when LSP menu is open
+      function()
+        return require("sidekick").nes_jump_or_apply()
+      end,
+      function()
+        return vim.lsp.inline_completion.get()
+      end,
+      "select_prev",
+      "snippet_backward",
       "fallback",
     },
   },
@@ -278,7 +294,20 @@ require("sidekick").setup({
     mux = {
       backend = "tmux",
       enabled = true
-    }
+    },
+    win = {
+      keys = {
+        shift_enter = {
+          "<S-CR>",
+          function(self)
+            if self:is_running() then
+              vim.api.nvim_chan_send(vim.b[self.buf].terminal_job_id, "\x1b[13;2u")
+            end
+          end,
+          desc = "Shift+Enter (newline without submit)"
+        },
+      },
+    },
   }
 });
 
@@ -331,6 +360,25 @@ vim.api.nvim_create_user_command("FormatToggle", function(args)
   })
 
 -- Mason/LSP
+vim.api.nvim_create_autocmd("LspProgress", {
+  callback = function(ev)
+    local value = ev.data.params.value or {}
+    local msg = value.message or "done"
+    -- rust analyszer in particular has really long LSP messages so truncate them
+    if #msg > 40 then
+      msg = msg:sub(1, 37) .. "..."
+    end
+
+    -- :h LspProgress
+    vim.api.nvim_echo({ { msg } }, false, {
+      id = "lsp",
+      kind = "progress",
+      title = value.title,
+      status = value.kind ~= "end" and "running" or "success",
+      percent = value.percentage,
+    })
+  end,
+})
 
 require("mason").setup()
 
@@ -458,7 +506,8 @@ require("snacks").setup({
     }
   },
   notifier = { enabled = true },
-  image = {}
+  image = {},
+  terminal = {},
 })
 
 -- Neogit
@@ -477,11 +526,6 @@ require("nvim-surround").setup({
   }
 })
 
--- tmux navigation
---
-require("nvim-tmux-navigation").setup({
-  disable_when_zoomed = true, -- defaults to false
-})
 
 -- Quicker
 
@@ -613,12 +657,19 @@ vim.keymap.set("o", "r", function() require("flash").remote() end, { desc = "Rem
 vim.keymap.set({ "o", "x" }, "R", function() require("flash").treesitter_search() end, { desc = "Treesitter Search" })
 vim.keymap.set("c", "<c-s>", function() require("flash").toggle() end, { desc = "Toggle Flash Search" })
 
-vim.keymap.set("n", "<C-h>", require("nvim-tmux-navigation").NvimTmuxNavigateLeft)
-vim.keymap.set("n", "<C-j>", require("nvim-tmux-navigation").NvimTmuxNavigateDown)
-vim.keymap.set("n", "<C-k>", require("nvim-tmux-navigation").NvimTmuxNavigateUp)
-vim.keymap.set("n", "<C-l>", require("nvim-tmux-navigation").NvimTmuxNavigateRight)
-vim.keymap.set("n", "<C-\\>", require("nvim-tmux-navigation").NvimTmuxNavigateLastActive)
-vim.keymap.set("n", "<C-Space>", require("nvim-tmux-navigation").NvimTmuxNavigateNext)
+-- Ghostty split navigation: navigate neovim windows, fall through to ghostty at edges
+local function ghostty_navigate(direction)
+  local ghostty_dir = ({ h = "left", j = "down", k = "up", l = "right" })[direction]
+  local win = vim.api.nvim_get_current_win()
+  vim.cmd("wincmd " .. direction)
+  if vim.api.nvim_get_current_win() == win then
+    vim.fn.jobstart({ "ghostty-nav", ghostty_dir }, { detach = true })
+  end
+end
+vim.keymap.set("n", "<C-h>", function() ghostty_navigate("h") end)
+vim.keymap.set("n", "<C-j>", function() ghostty_navigate("j") end)
+vim.keymap.set("n", "<C-k>", function() ghostty_navigate("k") end)
+vim.keymap.set("n", "<C-l>", function() ghostty_navigate("l") end)
 
 -- neogit
 
@@ -635,10 +686,9 @@ vim.keymap.set("n", "<leader>gv", function()
 end, { desc = "Open Neogit" })
 
 -- sidekick
-vim.keymap.set({ "n", "i" }, "<tab>", function()
-  -- if there is a next edit, jump to it, otherwise apply it if any
+vim.keymap.set("n", "<tab>", function()
   if not require("sidekick").nes_jump_or_apply() then
-    return "<Tab>" -- fallback to normal tab
+    return "<Tab>"
   end
 end, { expr = true, desc = "Goto/Apply Next Edit Suggestion" })
 
@@ -650,13 +700,19 @@ vim.keymap.set({ "n", "v" }, "<leader>aa", function()
   require("sidekick.cli").toggle({ focus = true })
 end, { desc = "Sidekick Toggle CLI" })
 
-vim.keymap.set({ "n", "v" }, "<leader>ac", function()
+vim.keymap.set({ "n", "v", "i", "x", "t" }, "<leader>ac", function()
   require("sidekick.cli").toggle({ name = "claude", focus = true })
 end, { desc = "Sidekick Claude Toggle" })
 
 vim.keymap.set({ "n", "v" }, "<leader>ap", function()
   require("sidekick.cli").select_prompt()
 end, { desc = "Sidekick Ask Prompt" })
+
+
+-- snacks terminal
+vim.keymap.set("n", "<leader>tt", function() Snacks.terminal() end, { desc = "Toggle Terminal" })
+vim.keymap.set("n", "<leader>tf", function() Snacks.terminal(nil, { win = { style = "terminal" } }) end,
+  { desc = "Toggle Floating Terminal" })
 
 -- snacks
 vim.keymap.set("n", "<leader>.", function() require("snacks").scratch() end, { desc = "Open persistent scratch" })
@@ -702,7 +758,9 @@ vim.api.nvim_create_autocmd({ "RecordingLeave" }, {
 --- Autoread files when they change on the filesystem
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
   callback = function()
-    vim.cmd("checktime")
+    if vim.bo.buftype ~= "terminal" then
+      vim.cmd("checktime")
+    end
   end,
 })
 

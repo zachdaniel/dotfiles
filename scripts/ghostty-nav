@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+direction="$1"
+osascript -e '
+tell application "Ghostty"
+    set allTerms to every terminal of selected tab of window 1
+    repeat with t in allTerms
+        if perform action "goto_split:'"$direction"'" on t then return
+    end repeat
+end tell
+' 2>/dev/null 1>/dev/null

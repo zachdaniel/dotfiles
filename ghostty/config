@@ -39,7 +39,10 @@ window-padding-x = 14
 window-padding-y = 10
 window-padding-balance = true
 window-padding-color = extend
-window-save-state = always
+window-save-state = never
+
+# Shell
+command = /opt/homebrew/bin/nu
 
 # Shell integration
 shell-integration = detect
@@ -53,3 +56,5 @@ mouse-hide-while-typing = true
 unfocused-split-opacity = 0.7
 resize-overlay = never
 minimum-contrast = 3
+
+

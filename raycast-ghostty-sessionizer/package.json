@@ -1,0 +1,32 @@
+{
+  "name": "ghostty-sessionizer",
+  "title": "Ghostty Sessionizer",
+  "description": "Switch to or create Ghostty windows for projects",
+  "icon": "command-icon.png",
+  "author": "zachdaniel",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "switch-project",
+      "title": "Switch Project",
+      "subtitle": "Ghostty",
+      "description": "Find or create a Ghostty window for a project",
+      "mode": "view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.93.3"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^1.0.11",
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.2",
+    "eslint": "^8.57.1",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "lint": "ray lint"
+  }
+}
