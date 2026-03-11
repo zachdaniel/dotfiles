@@ -10,6 +10,7 @@ hs.allowAppleScript(true);
 
 -- Load and configure PaperWM
 PaperWM = hs.loadSpoon("PaperWM")
+PaperWM.default_width = 0.5
 PaperWM.swipe_fingers = 4
 PaperWM.swipe_gain = 2.0
 PaperWM:bindHotkeys({

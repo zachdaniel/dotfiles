@@ -130,6 +130,7 @@ vim.opt.autoread = true
 --- undo
 vim.o.undofile = true
 vim.o.shortmess = "at"
+vim.opt.winborder = "rounded"
 
 --- I know what mode I"m in
 vim.opt.showmode = false
@@ -496,7 +497,6 @@ require("snacks").setup({
     sections = {
       { section = "header" },
       { section = "keys",  gap = 1, padding = 1 },
-      -- Removed "startup" section to avoid lazy.nvim dependency
     }
   },
   indent = {},

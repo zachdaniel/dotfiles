@@ -57,4 +57,8 @@ unfocused-split-opacity = 0.7
 resize-overlay = never
 minimum-contrast = 3
 
-
+# Split navigation (ctrl+shift+hjkl always works, even in TUI apps like Claude Code)
+keybind = ctrl+shift+h=goto_split:left
+keybind = ctrl+shift+j=goto_split:down
+keybind = ctrl+shift+k=goto_split:up
+keybind = ctrl+shift+l=goto_split:right

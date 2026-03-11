@@ -2,9 +2,6 @@
 direction="$1"
 osascript -e '
 tell application "Ghostty"
-    set allTerms to every terminal of selected tab of window 1
-    repeat with t in allTerms
-        if perform action "goto_split:'"$direction"'" on t then return
-    end repeat
+    perform action "goto_split:'"$direction"'" on focused terminal of selected tab of front window
 end tell
 ' 2>/dev/null 1>/dev/null

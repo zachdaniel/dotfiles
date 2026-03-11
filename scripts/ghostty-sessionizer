@@ -16,26 +16,56 @@ fi
 
 # Resolve to absolute path
 selected=$(cd "$selected" && pwd)
-selected_name=$(basename "$selected" | tr . _)
+SESSION_FILE="${TMPDIR:-/tmp}/ghostty-sessions"
+touch "$SESSION_FILE"
 
-result=$(osascript \
-    -e 'tell application "Ghostty"' \
-    -e "    set matches to every window whose name is \"$selected_name\"" \
-    -e '    if (count of matches) > 0 then' \
-    -e '        activate window (item 1 of matches)' \
-    -e '        return "found"' \
-    -e '    else' \
-    -e '        return "not_found"' \
-    -e '    end if' \
-    -e 'end tell')
+# Look up stored window ID for this project
+stored_id=$(grep "^${selected}	" "$SESSION_FILE" | tail -1 | cut -f2)
+
+result="not_found"
+if [[ -n "$stored_id" ]]; then
+    result=$(osascript <<EOF
+tell application "Ghostty"
+    set allWins to every window
+    set targetIdx to -1
+    repeat with i from 1 to count of allWins
+        if id of (item i of allWins) is "$stored_id" then
+            set targetIdx to i
+            exit repeat
+        end if
+    end repeat
+end tell
+
+if targetIdx is not -1 then
+    tell application "System Events"
+        tell process "Ghostty"
+            perform action "AXRaise" of window targetIdx
+        end tell
+    end tell
+    tell application "Ghostty" to activate
+    return "found"
+else
+    return "not_found"
+end if
+EOF
+)
+fi
 
 if [[ "$result" == "not_found" ]]; then
-    osascript \
-        -e 'tell application "Ghostty"' \
-        -e '    activate' \
-        -e '    set cfg to new surface configuration' \
-        -e "    set initial working directory of cfg to \"$selected\"" \
-        -e "    set command of cfg to \"/bin/bash -c 'printf \\\"\\\\e]0;${selected_name}\\\\a\\\" && exec /opt/homebrew/bin/nu'\"" \
-        -e '    set win to new window with configuration cfg' \
-        -e 'end tell'
+    # Clean stale entry if any
+    grep -v "^${selected}	" "$SESSION_FILE" > "${SESSION_FILE}.tmp" 2>/dev/null && mv "${SESSION_FILE}.tmp" "$SESSION_FILE"
+
+    new_id=$(osascript <<EOF
+tell application "Ghostty"
+    activate
+    set cfg to new surface configuration
+    set initial working directory of cfg to "$selected"
+    set win to new window with configuration cfg
+    return id of win
+end tell
+EOF
+)
+
+    # Store the mapping
+    echo "${selected}	${new_id}" >> "$SESSION_FILE"
 fi
