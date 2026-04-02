@@ -1,7 +1,7 @@
 vim.pack.add({
   "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/nvim-treesitter/nvim-treesitter",
-  "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+  -- "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
   "https://github.com/aaronik/treewalker.nvim",
   "https://github.com/MeanderingProgrammer/render-markdown.nvim",
   "https://github.com/nvim-lua/plenary.nvim",
@@ -35,7 +35,8 @@ vim.pack.add({
   "https://github.com/Owen-Dechow/videre.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/folke/sidekick.nvim",
-  "https://github.com/pmizio/typescript-tools.nvim"
+  "https://github.com/pmizio/typescript-tools.nvim",
+  "https://github.com/jim-at-jibba/nvim-redraft"
   -- Optional: add YAML support
   -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
   -- Optional: add TOML support
@@ -116,6 +117,8 @@ vim.opt.ignorecase = true
 
 --- use nice colors from modern terminals
 vim.opt.termguicolors = true
+
+vim.opt.cmdheight = 2
 
 --- leader key
 vim.g.mapleader = " "
@@ -217,42 +220,60 @@ require("blink.cmp").setup({
   fuzzy = { implementation = "prefer_rust_with_warning" }
 })
 
--- treesitter
-require("nvim-treesitter.configs").setup({
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "erlang", "elixir", "rust", "javascript", "typescript", "markdown" },
+-- treesitter (new main branch API for nvim 0.12+)
+vim.g._ts_force_sync_parsing = true
+require("nvim-treesitter").setup()
 
-  auto_install = true,
+-- add nvim-treesitter's runtime queries to rtp
+local ts_path = vim.fn.stdpath("data") .. "/site/pack/core/opt/nvim-treesitter/runtime"
+vim.opt.rtp:prepend(ts_path)
 
-  highlight = {
-    enable = true,
-  },
-
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = false,
-      scope_incremental = false,
-      node_incremental = "v",
-      node_decremental = "V",
-    },
-  },
-  textobjects = {
-    move = {
-      enable = true,
-      goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
-      goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-      goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
-      goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
-    },
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {},
-      selection_modes = {},
-      include_surrounding_whitespace = true,
-    },
-  },
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
 })
+
+-- incremental node selection with v/V
+do
+  local node_stack = {}
+  vim.keymap.set("n", "v", function()
+    node_stack = {}
+    local node = vim.treesitter.get_node()
+    if not node then return "v" end
+    table.insert(node_stack, node)
+    local sr, sc, er, ec = node:range()
+    vim.api.nvim_buf_set_mark(0, "<", sr + 1, sc, {})
+    vim.api.nvim_buf_set_mark(0, ">", er + 1, ec - 1, {})
+    vim.cmd("normal! gv")
+  end)
+
+  vim.keymap.set("x", "v", function()
+    local node = node_stack[#node_stack]
+    if not node then return end
+    local parent = node:parent()
+    if not parent then return end
+    table.insert(node_stack, parent)
+    local sr, sc, er, ec = parent:range()
+    vim.api.nvim_buf_set_mark(0, "<", sr + 1, sc, {})
+    vim.api.nvim_buf_set_mark(0, ">", er + 1, ec - 1, {})
+    vim.cmd("normal! gv")
+  end)
+
+  vim.keymap.set("x", "V", function()
+    if #node_stack <= 1 then
+      vim.cmd("normal! V")
+      return
+    end
+    table.remove(node_stack)
+    local node = node_stack[#node_stack]
+    if not node then return end
+    local sr, sc, er, ec = node:range()
+    vim.api.nvim_buf_set_mark(0, "<", sr + 1, sc, {})
+    vim.api.nvim_buf_set_mark(0, ">", er + 1, ec - 1, {})
+    vim.cmd("normal! gv")
+  end)
+end
 
 
 -- treewalker
@@ -273,6 +294,7 @@ require("tiny-inline-diagnostic").setup()
 
 -- render markdown
 require("render-markdown").setup({
+  enabled = false,
   file_types = { "markdown" },
   bullet = {
     -- cleaner bullet points
@@ -286,6 +308,15 @@ require("render-markdown").setup({
 
 -- Typescript
 require("typescript-tools").setup({})
+
+-- Redraft
+require("nvim-redraft").setup({
+  llm = {
+    provider = "anthropic",
+    model = "claude-opus-4-20250514",
+  },
+  diff_mode = true,
+})
 
 -- Sidekick
 vim.lsp.enable("copilot")
@@ -325,8 +356,13 @@ require('videre').setup {
 
 require("conform").setup({
   formatters_by_ft = {
-    typescript = { "prettierd", "prettier" }, -- Use prettierd for speed
-    typescriptreact = { "prettierd", "prettier" },
+    typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
+    typescriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+    javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
+    javascriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+    json = { "biome", "prettierd", "prettier", stop_after_first = true },
+    jsonc = { "biome", "prettierd", "prettier", stop_after_first = true },
+    css = { "biome", "prettierd", "prettier", stop_after_first = true },
   },
   format_on_save = function(bufnr)
     -- Disable with a global or buffer-local variable
@@ -372,6 +408,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
 
     -- :h LspProgress
     vim.api.nvim_echo({ { msg } }, false, {
+      source = "lsp",
       id = "lsp",
       kind = "progress",
       title = value.title,
@@ -503,7 +540,7 @@ miniclue.setup({
 -- Snacks
 require("snacks").setup({
   dashboard = {
-    enabled = true,
+    enabled = false,
     sections = {
       { section = "header" },
       { section = "keys",  gap = 1, padding = 1 },
@@ -601,10 +638,6 @@ end, { desc = "Close window" })
 
 -- Open
 
-vim.keymap.set("n", "<leader>od", function()
-  require("snacks").dashboard()
-end, { desc = "Open Dashboard" })
-
 
 vim.keymap.set("n", "<leader>bc", function()
   vim.cmd("bd")
@@ -633,6 +666,11 @@ vim.keymap.set("n", "<leader>fd", function()
     require("snacks").bufdelete({ force = true })
   end
 end, { desc = "Delete current file" })
+vim.keymap.set("n", "<leader>fc", function()
+  local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
+  vim.fn.setreg("+", path)
+  vim.notify("Copied: " .. path)
+end, { desc = "Copy relative file path" })
 vim.keymap.set("n", "<leader>fv", "<cmd>:vnew<cr>", { desc = "Create a new file in a vertical split" })
 vim.keymap.set("n", "<leader>fh", "<cmd>:new<cr>", { desc = "Create a new file in a horizontal split" })
 
@@ -710,7 +748,7 @@ vim.keymap.set({ "n", "v" }, "<leader>aa", function()
   require("sidekick.cli").toggle({ focus = true })
 end, { desc = "Sidekick Toggle CLI" })
 
-vim.keymap.set({ "n", "v", "i", "x", "t" }, "<leader>ac", function()
+vim.keymap.set({ "n", "v", "x", "t" }, "<leader>ac", function()
   require("sidekick.cli").toggle({ name = "claude", focus = true })
 end, { desc = "Sidekick Claude Toggle" })
 
@@ -718,6 +756,10 @@ vim.keymap.set({ "n", "v" }, "<leader>ap", function()
   require("sidekick.cli").select_prompt()
 end, { desc = "Sidekick Ask Prompt" })
 
+
+-- redraft
+vim.keymap.set("v", "<leader>ae", function() require("nvim-redraft").edit() end, { desc = "AI Edit Selection" })
+vim.keymap.set("n", "<leader>am", function() require("nvim-redraft").select_model() end, { desc = "Select AI Model" })
 
 -- snacks terminal
 vim.keymap.set("n", "<leader>tt", function() Snacks.terminal() end, { desc = "Toggle Terminal" })
@@ -796,6 +838,20 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd("cabbrev <buffer> w lua require('mini.files').synchronize()")
       vim.cmd("cabbrev <buffer> wq lua require('mini.files').synchronize(); require('mini.files').close()")
     end)
+  end,
+})
+
+vim.api.nvim_create_autocmd("PackChanged", {
+  desc = "Build nvim-redraft after install/update",
+  group = vim.api.nvim_create_augroup("nvim-redraft-build", { clear = true }),
+  callback = function(event)
+    if event.data.spec.name == "nvim-redraft" then
+      local dir = event.data.spec.path .. "/ts"
+      vim.notify("nvim-redraft: building TypeScript...", vim.log.levels.INFO)
+      vim.system({ "npm", "install" }, { cwd = dir }):wait()
+      vim.system({ "npm", "run", "build" }, { cwd = dir }):wait()
+      vim.notify("nvim-redraft: build complete!", vim.log.levels.INFO)
+    end
   end,
 })
 

@@ -1,12 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "includeCoAuthoredBy": false,
-  "model": "opus",
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true
+  },
+  "voiceEnabled": true,
   "preferredNotifChannel": "terminal_bell",
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
-  },
-  "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true
   }
 }
