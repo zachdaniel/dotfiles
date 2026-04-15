@@ -43,6 +43,7 @@ window-save-state = never
 
 # Shell
 command = /opt/homebrew/bin/nu
+env = LC_ALL=en_US.UTF-8
 
 # Shell integration
 shell-integration = detect

@@ -26,27 +26,15 @@ result="not_found"
 if [[ -n "$stored_id" ]]; then
     result=$(osascript <<EOF
 tell application "Ghostty"
-    set allWins to every window
-    set targetIdx to -1
-    repeat with i from 1 to count of allWins
-        if id of (item i of allWins) is "$stored_id" then
-            set targetIdx to i
-            exit repeat
+    repeat with w in every window
+        if id of w is "$stored_id" then
+            activate window w
+            activate
+            return "found"
         end if
     end repeat
-end tell
-
-if targetIdx is not -1 then
-    tell application "System Events"
-        tell process "Ghostty"
-            perform action "AXRaise" of window targetIdx
-        end tell
-    end tell
-    tell application "Ghostty" to activate
-    return "found"
-else
     return "not_found"
-end if
+end tell
 EOF
 )
 fi
@@ -55,16 +43,29 @@ if [[ "$result" == "not_found" ]]; then
     # Clean stale entry if any
     grep -v "^${selected}	" "$SESSION_FILE" > "${SESSION_FILE}.tmp" 2>/dev/null && mv "${SESSION_FILE}.tmp" "$SESSION_FILE"
 
-    new_id=$(osascript <<EOF
+    # Capture existing window IDs
+    before=$(osascript -e 'tell application "Ghostty" to return id of every window' 2>/dev/null)
+
+    open -na Ghostty.app --args --working-directory="$selected"
+
+    # Wait for the new window to appear and grab its ID
+    new_id=""
+    for _ in $(seq 1 20); do
+        sleep 0.25
+        new_id=$(osascript <<INNEREOF
 tell application "Ghostty"
-    activate
-    set cfg to new surface configuration
-    set initial working directory of cfg to "$selected"
-    set win to new window with configuration cfg
-    return id of win
+    repeat with w in every window
+        set wid to id of w
+        if "$before" does not contain wid then
+            return wid
+        end if
+    end repeat
+    return ""
 end tell
-EOF
+INNEREOF
 )
+        if [[ -n "$new_id" ]]; then break; fi
+    done
 
     # Store the mapping
     echo "${selected}	${new_id}" >> "$SESSION_FILE"

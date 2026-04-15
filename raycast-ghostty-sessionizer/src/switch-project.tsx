@@ -1,6 +1,7 @@
 import { ActionPanel, Action, List, closeMainWindow, showToast, Toast } from "@raycast/api";
+import { usePromise } from "@raycast/utils";
 import { execSync } from "child_process";
-import { existsSync, readdirSync, statSync } from "fs";
+import { access, readdir, stat } from "fs/promises";
 import { homedir } from "os";
 import { join } from "path";
 
@@ -16,7 +17,19 @@ interface Project {
   org: string;
 }
 
-function getProjects(): Project[] {
+async function hasMarker(dir: string): Promise<boolean> {
+  for (const m of PROJECT_MARKERS) {
+    try {
+      await access(join(dir, m));
+      return true;
+    } catch {
+      // marker not found, try next
+    }
+  }
+  return false;
+}
+
+async function getProjects(): Promise<Project[]> {
   const home = homedir();
   const devDir = join(home, "dev");
   const projects: Project[] = [];
@@ -26,18 +39,19 @@ function getProjects(): Project[] {
 
   // ~/dev/<org>/<project> (depth 2), only if it looks like a project
   try {
-    for (const org of readdirSync(devDir)) {
+    const orgs = await readdir(devDir);
+    for (const org of orgs) {
       if (org.startsWith(".")) continue;
       const orgPath = join(devDir, org);
       try {
-        if (!statSync(orgPath).isDirectory()) continue;
-        for (const entry of readdirSync(orgPath)) {
+        if (!(await stat(orgPath)).isDirectory()) continue;
+        const entries = await readdir(orgPath);
+        for (const entry of entries) {
           if (entry.startsWith(".")) continue;
           const entryPath = join(orgPath, entry);
           try {
-            if (!statSync(entryPath).isDirectory()) continue;
-            const isProject = PROJECT_MARKERS.some((m) => existsSync(join(entryPath, m)));
-            if (isProject) {
+            if (!(await stat(entryPath)).isDirectory()) continue;
+            if (await hasMarker(entryPath)) {
               projects.push({ name: entry, path: entryPath, org });
             }
           } catch {
@@ -67,11 +81,11 @@ function switchToProject(project: Project) {
 }
 
 export default function Command() {
-  const projects = getProjects();
+  const { data: projects, isLoading } = usePromise(getProjects);
 
   return (
-    <List searchBarPlaceholder="Search projects...">
-      {projects.map((project) => (
+    <List searchBarPlaceholder="Search projects..." isLoading={isLoading}>
+      {(projects ?? []).map((project) => (
         <List.Item
           key={project.path}
           title={project.name}

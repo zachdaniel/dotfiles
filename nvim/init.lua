@@ -1,7 +1,6 @@
 vim.pack.add({
   "https://github.com/nvim-tree/nvim-web-devicons",
-  "https://github.com/nvim-treesitter/nvim-treesitter",
-  -- "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+  "https://github.com/romus204/tree-sitter-manager.nvim",
   "https://github.com/aaronik/treewalker.nvim",
   "https://github.com/MeanderingProgrammer/render-markdown.nvim",
   "https://github.com/nvim-lua/plenary.nvim",
@@ -36,7 +35,7 @@ vim.pack.add({
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/folke/sidekick.nvim",
   "https://github.com/pmizio/typescript-tools.nvim",
-  "https://github.com/jim-at-jibba/nvim-redraft"
+  "https://github.com/jim-at-jibba/nvim-redraft",
   -- Optional: add YAML support
   -- "https://github.com/Owen-Dechow/graph_view_yaml_parser",
   -- Optional: add TOML support
@@ -142,6 +141,7 @@ vim.opt.showmode = false
 vim.opt.foldmethod = "indent"
 vim.opt.foldlevelstart = 99
 
+
 -- Gitsigns
 
 require("gitsigns").setup({
@@ -220,13 +220,11 @@ require("blink.cmp").setup({
   fuzzy = { implementation = "prefer_rust_with_warning" }
 })
 
--- treesitter (new main branch API for nvim 0.12+)
+-- treesitter
 vim.g._ts_force_sync_parsing = true
-require("nvim-treesitter").setup()
-
--- add nvim-treesitter's runtime queries to rtp
-local ts_path = vim.fn.stdpath("data") .. "/site/pack/core/opt/nvim-treesitter/runtime"
-vim.opt.rtp:prepend(ts_path)
+require("tree-sitter-manager").setup({
+  ensure_installed = { "lua", "elixir", "heex", "eex", "typescript", "tsx", "javascript", "json", "markdown", "markdown_inline", "css", "html", "bash", "regex", "vim", "vimdoc" },
+})
 
 vim.api.nvim_create_autocmd("FileType", {
   callback = function()
@@ -796,16 +794,6 @@ vim.api.nvim_create_user_command("Plugins", function()
 end, { desc = "Open plugin view" })
 
 -- Autocmds
-vim.api.nvim_create_autocmd({ "RecordingEnter" }, {
-  callback = function()
-    vim.opt.cmdheight = 1
-  end,
-})
-vim.api.nvim_create_autocmd({ "RecordingLeave" }, {
-  callback = function()
-    vim.opt.cmdheight = 0
-  end,
-})
 
 --- Autoread files when they change on the filesystem
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
@@ -855,19 +843,3 @@ vim.api.nvim_create_autocmd("PackChanged", {
   end,
 })
 
-vim.api.nvim_create_autocmd("PackChanged", {
-  desc = "Handle nvim-treesitter updates",
-  group = vim.api.nvim_create_augroup("nvim-treesitter-pack-changed-update-handler", { clear = true }),
-  callback = function(event)
-    if event.data.kind == "update" and event.data.spec.name == "nvim-treesitter" then
-      vim.notify("nvim-treesitter updated, running TSUpdate...", vim.log.levels.INFO)
-      ---@diagnostic disable-next-line: param-type-mismatch
-      local ok = pcall(vim.cmd, "TSUpdate")
-      if ok then
-        vim.notify("TSUpdate completed successfully!", vim.log.levels.INFO)
-      else
-        vim.notify("TSUpdate command not available yet, skipping", vim.log.levels.WARN)
-      end
-    end
-  end,
-})
