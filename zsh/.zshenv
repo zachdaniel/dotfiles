@@ -2,7 +2,7 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 export PYENV_ROOT="$HOME/.pyenv"
 
 ## Set erlang options
@@ -30,7 +30,7 @@ export ELIXIR_EDITOR="zed __FILE__:__LINE__"
 
 export VISUAL=$EDITOR
 
-export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=$(($(sysctl -n hw.physicalcpu) / 2))
+export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=$(($(/usr/sbin/sysctl -n hw.physicalcpu) / 2))
 
 export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
@@ -50,5 +50,5 @@ export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
 # uv
 export PATH="/Users/zachdaniel/.local/bin:$PATH"
 
-source ~/.envrc
-. "/Users/zachdaniel/.local/share/bob/env/env.sh"
+[ -f ~/.envrc ] && source ~/.envrc
+[ -f "$HOME/.local/share/bob/env/env.sh" ] && . "$HOME/.local/share/bob/env/env.sh"
