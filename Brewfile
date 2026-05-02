@@ -42,7 +42,7 @@ brew "flyctl"
 
 # Database
 brew "postgis"
-brew "postgresql@17"
+brew "postgresql@18"
 brew "mysql"
 
 # Environment
