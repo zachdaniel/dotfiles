@@ -56,6 +56,7 @@ cask "zed@preview"
 brew "eza"
 cask "ghostty"
 brew "zsh"
+brew "nushell"
 brew "starship"
 brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
