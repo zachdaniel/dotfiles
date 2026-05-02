@@ -87,10 +87,11 @@
         fi
         NU_PATH="$(command -v nu)"
         if [ -n "$NU_PATH" ]; then
-          if ! grep -qx "$NU_PATH" /etc/shells; then
-            echo "$NU_PATH" | sudo tee -a /etc/shells >/dev/null
-          fi
-          if [ "$SHELL" != "$NU_PATH" ]; then
+          CURRENT_SHELL="$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}')"
+          if [ "$CURRENT_SHELL" != "$NU_PATH" ]; then
+            if ! grep -qx "$NU_PATH" /etc/shells; then
+              echo "$NU_PATH" | sudo tee -a /etc/shells >/dev/null
+            fi
             chsh -s "$NU_PATH"
           fi
         fi
