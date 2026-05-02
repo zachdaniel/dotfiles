@@ -50,5 +50,8 @@ export PATH="/opt/homebrew/opt/icu4c@76/sbin:$PATH"
 # uv
 export PATH="/Users/zachdaniel/.local/bin:$PATH"
 
+# bob (neovim version manager)
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+
 [ -f ~/.envrc ] && source ~/.envrc
 [ -f "$HOME/.local/share/bob/env/env.sh" ] && . "$HOME/.local/share/bob/env/env.sh"
