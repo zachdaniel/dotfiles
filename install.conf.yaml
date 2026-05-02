@@ -64,3 +64,8 @@
       stdin: true
       stdout: true
       stderr: true
+
+- shell:
+    - command: cd ~/.dotfiles/raycast-ghostty-sessionizer && npm install
+      stdout: true
+      stderr: true
