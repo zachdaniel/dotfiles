@@ -17,6 +17,14 @@
     - ["~/.dotfiles/priv_scripts/cargo-install"]
 
 - shell:
+    - command: |
+        export PATH="$HOME/.cargo/bin:$PATH"
+        bob install nightly
+        bob use nightly
+      stdout: true
+      stderr: true
+
+- shell:
     - [mkdir -p ~/.hammerspoon]
 
 - link:
