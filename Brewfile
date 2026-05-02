@@ -54,16 +54,13 @@ cask "zed@preview"
 
 # terminal & neovim
 brew "eza"
-brew "tmux"
-cask "kitty"
-cask "wezterm"
+cask "ghostty"
 brew "zsh"
 brew "starship"
 brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
 
 # Window management
-cask "nikitabobko/tap/aerospace"
 cask "hammerspoon"
 cask "deskpad"
 
