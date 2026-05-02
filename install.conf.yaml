@@ -19,8 +19,9 @@
 - shell:
     - command: |
         export PATH="$HOME/.cargo/bin:$PATH"
-        bob install nightly
-        bob use nightly
+        if [ ! -L "$HOME/.local/share/bob/nvim-bin/nvim" ]; then
+          bob use nightly
+        fi
       stdout: true
       stderr: true
 
