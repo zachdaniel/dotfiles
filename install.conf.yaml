@@ -26,7 +26,6 @@
     ~/.config/.profile: .profile
     ~/.config/.bashrc: .bashrc
     ~/.config/starship.toml: starship.toml
-    ~/.tmux.conf: tmux.conf
     ~/.claude/commands: claude/commands
     ~/.claude/agents: claude/agents
     ~/.claude/skills: claude/skills
@@ -47,7 +46,6 @@
     ~/.config/lazygit/config.yml: git/.lazygit.yml
     ~/scripts: scripts
     ~/.ignore: .ignore
-    ~/.aerospace.toml: aerospace/.aerospace.toml
     ~/.config/nushell: nushell
     ~/Library/Application Support/nushell: nushell
     ~/.config/ghostty: ghostty
