@@ -13,6 +13,7 @@ brew "bat"
 # ai
 tap "sst/tap"
 cask "claude-code"
+cask "claude"
 brew "sst/tap/opencode"
 
 # deps: postgres
