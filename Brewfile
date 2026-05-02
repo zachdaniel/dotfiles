@@ -61,6 +61,7 @@ brew "starship"
 brew "luarocks" # used for formatting lua
 brew "lazygit" # TUI git terminal
 brew "node"
+brew "tree-sitter"
 
 # Window management
 cask "hammerspoon"
