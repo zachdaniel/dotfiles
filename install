@@ -2,6 +2,15 @@
 
 set -e
 
+PARENT_CMD="$(ps -o comm= -p "$PPID" 2>/dev/null | tr -d ' ')"
+case "$PARENT_CMD" in
+  *nu|*nushell)
+    echo "Error: do not run ./install from nushell — some commands break under nu."
+    echo "Run it from bash or zsh instead, e.g.: bash ./install"
+    exit 1
+    ;;
+esac
+
 CONFIG="install.conf.yaml"
 DOTBOT_DIR="dotbot"
 
