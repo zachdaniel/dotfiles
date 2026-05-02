@@ -43,29 +43,16 @@ if [[ "$result" == "not_found" ]]; then
     # Clean stale entry if any
     grep -v "^${selected}	" "$SESSION_FILE" > "${SESSION_FILE}.tmp" 2>/dev/null && mv "${SESSION_FILE}.tmp" "$SESSION_FILE"
 
-    # Capture existing window IDs
-    before=$(osascript -e 'tell application "Ghostty" to return id of every window' 2>/dev/null)
-
-    open -na Ghostty.app --args --working-directory="$selected"
-
-    # Wait for the new window to appear and grab its ID
-    new_id=""
-    for _ in $(seq 1 20); do
-        sleep 0.25
-        new_id=$(osascript <<INNEREOF
+    new_id=$(osascript <<EOF
 tell application "Ghostty"
-    repeat with w in every window
-        set wid to id of w
-        if "$before" does not contain wid then
-            return wid
-        end if
-    end repeat
-    return ""
+    activate
+    set cfg to new surface configuration
+    set initial working directory of cfg to "$selected"
+    set win to new window with configuration cfg
+    return id of win
 end tell
-INNEREOF
+EOF
 )
-        if [[ -n "$new_id" ]]; then break; fi
-    done
 
     # Store the mapping
     echo "${selected}	${new_id}" >> "$SESSION_FILE"

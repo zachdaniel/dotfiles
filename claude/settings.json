@@ -6,12 +6,13 @@
     "lua-lsp@claude-plugins-official": true
   },
   "effortLevel": "high",
-  "voiceEnabled": true,
+  "fastMode": true,
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "preferredNotifChannel": "terminal_bell",
+  "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
   },
-  "fastMode": true
+  "editorMode": "vim"
 }

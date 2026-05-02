@@ -1,4 +1,16 @@
 {
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "context_servers": {
     "mcp-server-linear": {
       "enabled": true,
@@ -42,6 +54,7 @@
   },
   "scroll_sensitivity": 0.8,
   "agent": {
+    "dock": "right",
     "commit_message_model": {
       "provider": "zed.dev",
       "model": "claude-sonnet-4-latest"

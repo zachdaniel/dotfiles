@@ -52,4 +52,8 @@ PaperWM:bindHotkeys({
   -- move focused window to a new space and tile
   move_window_1       = { { "alt", "shift" }, "1" }
 })
+
+-- Exclude Stickies from tiling so its windows float
+PaperWM.window_filter = PaperWM.window_filter:setAppFilter("Stickies", false)
+
 PaperWM:start()
