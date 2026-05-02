@@ -1,6 +1,7 @@
 - defaults:
     link:
       relink: true
+      create: true
     brewfile:
       stdout: true
       stderr: true
