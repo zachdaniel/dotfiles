@@ -103,6 +103,10 @@ vim.opt.clipboard = "unnamedplus"
 --- scrolloffset
 vim.opt.scrolloff = 999
 
+--- keep the cursor centered even at the end of the buffer
+--- (scrolloff alone won't pad past the last line)
+vim.opt.scrolloffpad = 1
+
 --- visual block mode
 --- allows for visual blocks to expand past
 --- the end of their lines
@@ -842,4 +846,3 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end
   end,
 })
-
