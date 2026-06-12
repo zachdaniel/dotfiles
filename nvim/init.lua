@@ -1,3 +1,11 @@
+-- diffs.nvim reads vim.g.diffs at load time, so this must precede vim.pack.add
+vim.g.diffs = {
+  integrations = {
+    neogit = true,
+    gitsigns = true,
+  },
+}
+
 vim.pack.add({
   "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/romus204/tree-sitter-manager.nvim",
@@ -8,6 +16,7 @@ vim.pack.add({
   -- "https://github.com/sindrets/diffview.nvim",
   "https://github.com/echasnovski/mini.icons",
   "https://github.com/scottmckendry/cyberdream.nvim",
+  "https://github.com/folke/which-key.nvim",
   "https://github.com/folke/flash.nvim",
   {
     src = "https://github.com/Saghen/blink.cmp",
@@ -24,7 +33,9 @@ vim.pack.add({
   "https://github.com/folke/snacks.nvim",
   "https://github.com/NeogitOrg/neogit",
   "https://github.com/mg979/vim-visual-multi",
+  "https://github.com/barrettruth/diffs.nvim",
   "https://github.com/kylechui/nvim-surround",
+  "https://github.com/gregorias/nvim-surround-wk",
   "https://github.com/stevearc/quicker.nvim",
   "https://github.com/HakonHarnes/img-clip.nvim",
   "https://github.com/rachartier/tiny-inline-diagnostic.nvim",
@@ -227,7 +238,7 @@ require("blink.cmp").setup({
 -- treesitter
 vim.g._ts_force_sync_parsing = true
 require("tree-sitter-manager").setup({
-  ensure_installed = { "lua", "elixir", "heex", "eex", "typescript", "tsx", "javascript", "json", "markdown", "markdown_inline", "css", "html", "bash", "regex", "vim", "vimdoc" },
+  ensure_installed = { "lua", "elixir", "heex", "eex", "typescript", "tsx", "javascript", "json", "markdown", "markdown_inline", "css", "html", "bash", "regex", "vim", "vimdoc", "diff" },
 })
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -347,11 +358,7 @@ require("sidekick").setup({
 
 -- Videre
 require('videre').setup {
-  round_units = false,
-  simple_statusline = false,
-  -- If you are just starting out with Videre,
-  --   setting this to `false` will give you
-  --   descriptions of available keymaps.
+  box_style = "rounded"
 }
 
 -- Conform
@@ -465,76 +472,50 @@ require("mini.move").setup({
   }
 })
 
-local miniclue = require("mini.clue")
-miniclue.setup({
+-- Which-key
+-- Built-in plugins/presets cover what mini.clue's gen_clues did:
+-- g/z/window/bracket clues via presets, marks (' and `), registers
+-- (" in n/x, <C-r> in i/c), plus spelling (z=).
+require("which-key").setup({
+  preset = "modern",
+  delay = 200,
+  win = { border = "rounded" },
   triggers = {
-    -- Leader triggers
-    { mode = 'n', keys = '<Leader>' },
-    { mode = 'v', keys = '<Leader>' },
-    -- Built-in completion
-    { mode = 'i', keys = '<C-x>' },
-    -- `g` key
-    { mode = 'n', keys = 'g' },
-    { mode = 'x', keys = 'g' },
-    -- Marks
-    { mode = 'n', keys = "'" },
-    { mode = 'n', keys = '`' },
-    { mode = 'x', keys = "'" },
-    { mode = 'x', keys = '`' },
-    -- Registers
-    { mode = 'n', keys = '"' },
-    { mode = 'x', keys = '"' },
-    { mode = 'i', keys = '<C-r>' },
-    { mode = 'c', keys = '<C-r>' },
-    -- Window commands
-    { mode = 'n', keys = '<C-w>' },
-    -- `z` key
-    { mode = 'n', keys = 'z' },
-    { mode = 'x', keys = 'z' },
-    -- Bracket keys
-    { mode = 'n', keys = '[' },
-    { mode = 'n', keys = ']' },
+    { "<auto>", mode = "nxso" },
+    -- built-in completion clues, like mini.clue's gen_clues.builtin_completion()
+    { "<C-x>",  mode = "i" },
   },
-  clues = {
-    -- Enhance this by adding descriptions for <Leader> mapping groups
-    miniclue.gen_clues.builtin_completion(),
-    miniclue.gen_clues.g(),
-    miniclue.gen_clues.marks(),
-    miniclue.gen_clues.registers(),
-    miniclue.gen_clues.windows(),
-    miniclue.gen_clues.z(),
-    -- Leader group clues
-    { mode = 'n', keys = '<Leader>a', desc = '+ai' },
-    { mode = 'v', keys = '<Leader>a', desc = '+ai' },
-    { mode = 'n', keys = '<Leader>c', desc = '+code' },
-    { mode = 'v', keys = '<Leader>c', desc = '+code' },
-    { mode = 'n', keys = '<Leader>f', desc = '+file' },
-    { mode = 'v', keys = '<Leader>f', desc = '+file' },
-    { mode = 'n', keys = '<Leader>g', desc = '+git' },
-    { mode = 'v', keys = '<Leader>g', desc = '+git' },
-    { mode = 'n', keys = '<Leader>h', desc = '+share' },
-    { mode = 'v', keys = '<Leader>h', desc = '+share' },
-    { mode = 'n', keys = '<Leader>q', desc = '+quit' },
-    { mode = 'v', keys = '<Leader>q', desc = '+quit' },
-    { mode = 'n', keys = '<Leader>n', desc = '+notifications' },
-    { mode = 'v', keys = '<Leader>n', desc = '+notifications' },
-    { mode = 'n', keys = '<Leader>s', desc = '+search' },
-    { mode = 'v', keys = '<Leader>s', desc = '+search' },
-    { mode = 'n', keys = '<Leader>o', desc = '+open' },
-    { mode = 'v', keys = '<Leader>o', desc = '+open' },
-    { mode = 'n', keys = '<Leader>t', desc = '+terminal' },
-    { mode = 'v', keys = '<Leader>t', desc = '+terminal' },
-    { mode = 'n', keys = '<Leader>b', desc = '+buffer' },
-    { mode = 'v', keys = '<Leader>b', desc = '+buffer' },
-    { mode = 'n', keys = '<Leader>w', desc = '+window' },
-    { mode = 'v', keys = '<Leader>w', desc = '+window' },
-    { mode = 'n', keys = '<Leader>x', desc = '+debug' },
-    { mode = 'v', keys = '<Leader>x', desc = '+debug' }
-  },
-  window = {
-    delay = 200,
-    config = {
-      width = 'auto',
+  spec = {
+    {
+      mode = { "n", "v" },
+      { "<leader>a", group = "ai" },
+      { "<leader>b", group = "buffer" },
+      { "<leader>c", group = "code" },
+      { "<leader>f", group = "file" },
+      { "<leader>g", group = "git" },
+      { "<leader>h", group = "share" },
+      { "<leader>n", group = "notifications" },
+      { "<leader>o", group = "open" },
+      { "<leader>q", group = "quit" },
+      { "<leader>s", group = "search" },
+      { "<leader>t", group = "terminal" },
+      { "<leader>w", group = "window" },
+      { "<leader>x", group = "debug" },
+    },
+    {
+      mode = "i",
+      { "<C-x><C-l>", desc = "Whole lines" },
+      { "<C-x><C-n>", desc = "Keywords in current file" },
+      { "<C-x><C-k>", desc = "Keywords in 'dictionary'" },
+      { "<C-x><C-t>", desc = "Keywords in 'thesaurus'" },
+      { "<C-x><C-i>", desc = "Keywords in included files" },
+      { "<C-x><C-]>", desc = "Tags" },
+      { "<C-x><C-f>", desc = "File names" },
+      { "<C-x><C-d>", desc = "Definitions or macros" },
+      { "<C-x><C-v>", desc = "Vim command line" },
+      { "<C-x><C-u>", desc = "User defined completion" },
+      { "<C-x><C-o>", desc = "Omni completion" },
+      { "<C-x><C-s>", desc = "Spelling suggestions" },
     },
   },
 })
@@ -571,9 +552,14 @@ require("nvim-surround").setup({
       add = function()
         return { { "%{" }, { "}" } }
       end,
+      -- labels are required for nvim-surround-wk's which-key hints
+      label = "%{…}",
     }
   }
 })
+
+-- Which-key hints for nvim-surround; must run after both are set up
+require("nvim-surround-wk").setup()
 
 
 -- Quicker

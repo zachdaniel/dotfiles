@@ -82,3 +82,8 @@ if ("/opt/homebrew/bin/starship" | path exists) {
 if ($"($brew_prefix)/bin/mise" | path exists) {
     ^($"($brew_prefix)/bin/mise") activate nu | save -f ($nu.default-config-dir | path join "mise.nu")
 }
+
+# pnpm
+$env.PNPM_HOME = "/Users/zachdaniel/Library/pnpm"
+$env.PATH = ($env.PATH | split row (char esep) | prepend $env.PNPM_HOME )
+# pnpm end
