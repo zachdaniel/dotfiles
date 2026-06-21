@@ -4,6 +4,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true
   },
@@ -15,6 +16,5 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
-  },
-  "model": "claude-fable-5[1m]"
+  }
 }

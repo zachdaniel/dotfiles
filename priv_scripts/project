@@ -18,6 +18,7 @@ folder_list=(
 explicit_folders=(
   $HOME/.dotfiles
   $HOME/dev/overlays
+  $HOME/dev/vaults/obsidian
 )
 
 # Combine all folders into one array

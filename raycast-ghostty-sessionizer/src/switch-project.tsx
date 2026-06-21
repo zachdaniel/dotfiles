@@ -1,4 +1,11 @@
-import { ActionPanel, Action, List, closeMainWindow, showToast, Toast } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  List,
+  closeMainWindow,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { execSync } from "child_process";
 import { access, readdir, stat } from "fs/promises";
@@ -6,9 +13,18 @@ import { homedir } from "os";
 import { join } from "path";
 
 const PROJECT_MARKERS = [
-  ".git", "mix.exs", "Cargo.toml", "package.json", "go.mod",
-  "pyproject.toml", "Gemfile", "build.zig", "flake.nix", "Makefile",
-  "dune-project", ".project-root",
+  ".git",
+  "mix.exs",
+  "Cargo.toml",
+  "package.json",
+  "go.mod",
+  "pyproject.toml",
+  "Gemfile",
+  "build.zig",
+  "flake.nix",
+  "Makefile",
+  "dune-project",
+  ".project-root",
 ];
 
 interface Project {
@@ -36,6 +52,13 @@ async function getProjects(): Promise<Project[]> {
 
   // ~/.dotfiles
   projects.push({ name: ".dotfiles", path: join(home, ".dotfiles"), org: "~" });
+
+  // ~/dev/vaults/obsidian
+  projects.push({
+    name: "obsidian",
+    path: join(home, "dev", "vaults", "obsidian"),
+    org: "vaults",
+  });
 
   // ~/dev/<org>/<project> (depth 2), only if it looks like a project
   try {
@@ -76,7 +99,11 @@ function switchToProject(project: Project) {
       timeout: 10000,
     });
   } catch (e) {
-    showToast({ style: Toast.Style.Failure, title: "Failed to switch", message: String(e) });
+    showToast({
+      style: Toast.Style.Failure,
+      title: "Failed to switch",
+      message: String(e),
+    });
   }
 }
 

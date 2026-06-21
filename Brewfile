@@ -27,6 +27,7 @@ brew "pgvector"
 
 # Utilities
 brew "git"
+brew "weave" # entity-based-merge
 brew "gh"
 brew "ripgrep"
 brew "coreutils"

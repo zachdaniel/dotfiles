@@ -15,7 +15,7 @@ vim.pack.add({
   "https://github.com/santhosh-tekuri/wordiff.nvim",
   -- "https://github.com/sindrets/diffview.nvim",
   "https://github.com/echasnovski/mini.icons",
-  "https://github.com/scottmckendry/cyberdream.nvim",
+  "https://github.com/catppuccin/nvim",
   "https://github.com/folke/which-key.nvim",
   "https://github.com/folke/flash.nvim",
   {
@@ -58,13 +58,14 @@ vim.pack.add({
 vim.cmd "packadd nvim.difftool"
 vim.cmd "packadd nvim.undotree"
 
-require("cyberdream").setup({
-  transparent = true
+require("catppuccin").setup({
+  flavour = "mocha",
+  transparent_background = true,
 })
 
 require('lualine').setup {
   options = {
-    theme = "cyberdream",
+    theme = "catppuccin-mocha",
   },
   sections = {
     lualine_c = {
@@ -88,7 +89,7 @@ require('lualine').setup {
 
 
 -- Colorscheme
-vim.cmd.colorscheme "cyberdream"
+vim.cmd.colorscheme "catppuccin-mocha"
 
 -- Basic Options
 --- line numbers
