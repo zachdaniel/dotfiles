@@ -56,6 +56,7 @@ $env.PATH = (
     | prepend $"($env.HOME)/.bun/bin"
     | prepend $"($env.HOME)/.sst/bin"
     | prepend "/Applications/Obsidian.app/Contents/MacOS"
+    | prepend $"($env.HOME)/dev/ai/plz"
     | prepend "/usr/local/bin"
     | uniq
 )

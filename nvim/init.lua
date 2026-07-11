@@ -333,9 +333,11 @@ require("nvim-redraft").setup({
 })
 
 -- Sidekick
-vim.lsp.enable("copilot")
+-- copilot LSP removed: hit "completions limit reached" on Copilot free tier.
+-- vim.lsp.enable("copilot")
 
 require("sidekick").setup({
+  nes = { enabled = false }, -- NES disabled: relied on the copilot LSP above
   cli = {
     mux = {
       backend = "tmux",
@@ -431,8 +433,11 @@ vim.api.nvim_create_autocmd("LspProgress", {
 require("mason").setup()
 
 require("mason-lspconfig").setup({
-  ensure_installed = { "lua_ls", "expert", "copilot" },
-  automatic_enable = true
+  ensure_installed = { "lua_ls", "expert" },
+  -- copilot excluded: it's still installed in mason, and automatic_enable would
+  -- otherwise auto-start it (the "completions limit reached" source). Remove this
+  -- exclude (or :MasonUninstall copilot-language-server) to bring it back.
+  automatic_enable = { exclude = { "copilot" } }
 })
 
 require("lsp_signature").setup({
@@ -542,7 +547,9 @@ require("snacks").setup({
 })
 
 -- Neogit
-require("neogit").setup({})
+require("neogit").setup({
+  prompt_force_push = false, -- never offer force push on a rejected push (no accidental disasters)
+})
 
 -- Nvim Surround
 require("nvim-surround").setup({

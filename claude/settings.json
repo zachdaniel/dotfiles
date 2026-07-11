@@ -4,7 +4,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "claude-fable-5[1m]",
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true
   },
@@ -13,6 +13,7 @@
   "autoDreamEnabled": true,
   "editorMode": "vim",
   "preferredNotifChannel": "terminal_bell",
+  "agentPushNotifEnabled": true,
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
