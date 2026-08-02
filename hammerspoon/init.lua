@@ -57,3 +57,15 @@ PaperWM:bindHotkeys({
 PaperWM.window_filter = PaperWM.window_filter:setAppFilter("Stickies", false)
 
 PaperWM:start()
+
+-- move focused window to the active space on the next screen
+local function moveWindowToNextScreen()
+  local win = hs.window.focusedWindow()
+  if not win then return end
+  local next_screen = win:screen():next()
+  local space_id = hs.spaces.activeSpaceOnScreen(next_screen)
+  local index = PaperWM.space.MissionControl:getSpaceIndex(space_id)
+  if index then PaperWM.space.moveWindowToSpace(index) end
+end
+
+hs.hotkey.bind({ "alt", "shift" }, "m", moveWindowToNextScreen)
