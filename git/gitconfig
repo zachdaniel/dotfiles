@@ -17,6 +17,8 @@
 [core]
 	editor = nvim
 	excludesFile = ~/.gitignore
+	fsmonitor = true
+	untrackedCache = true
 [user]
 	name = Zach Daniel
 	email = zach@zachdaniel.dev

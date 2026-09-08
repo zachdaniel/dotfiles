@@ -621,6 +621,8 @@ require("snacks").setup({
 -- Neogit
 require("neogit").setup({
   prompt_force_push = false, -- never offer force push on a rejected push (no accidental disasters)
+  -- no --topo-order for the status buffer's recent commits; topo is very slow on huge repos
+  commit_order = "",
 })
 
 -- Nvim Surround

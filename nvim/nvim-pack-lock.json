@@ -38,7 +38,7 @@
       "src": "https://github.com/folke/lazydev.nvim"
     },
     "lsp_signature.nvim": {
-      "rev": "b7ace9ddb1640ce266012a45a672dfdaedfa5ec6",
+      "rev": "1997451c4c9956a1380d8bea4b0e33ebdf07976e",
       "src": "https://github.com/ray-x/lsp_signature.nvim"
     },
     "lualine.nvim": {
@@ -62,7 +62,7 @@
       "src": "https://github.com/echasnovski/mini.icons"
     },
     "mini.nvim": {
-      "rev": "9d01f392b33fb2ba36fbc87fc0bf4453e63ffb0a",
+      "rev": "455856f765c78220fe547fb0862708942b52c42c",
       "src": "https://github.com/echasnovski/mini.nvim"
     },
     "neogit": {
@@ -90,7 +90,7 @@
       "src": "https://github.com/norcalli/nvim-colorizer.lua"
     },
     "nvim-lspconfig": {
-      "rev": "ee1e369181a9e64904cdd7b739e98c70778cfc71",
+      "rev": "da1aff0332774a0f60d52bf972e815dfc226f276",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-redraft": {
@@ -154,7 +154,7 @@
       "src": "https://github.com/rachartier/tiny-inline-diagnostic.nvim"
     },
     "tree-sitter-manager.nvim": {
-      "rev": "023590c8f068788a0513a4409bf37ff7f9d1deff",
+      "rev": "1425eacb78bfee34face0fe06a8384ac3c4d9c8e",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"
     },
     "treewalker.nvim": {
