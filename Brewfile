@@ -72,6 +72,10 @@ cask "deskpad"
 # Task bar manager
 cask "jordanbaird-ice"
 
+# Calendar
+tap "douglasdemoura/tap"
+cask "chroncal"
+
 # Apps
 cask "raycast"
 cask "discord"

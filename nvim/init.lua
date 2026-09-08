@@ -32,7 +32,6 @@ vim.pack.add({
   "https://github.com/echasnovski/mini.nvim",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/NeogitOrg/neogit",
-  "https://github.com/mg979/vim-visual-multi",
   "https://github.com/barrettruth/diffs.nvim",
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/gregorias/nvim-surround-wk",
@@ -248,47 +247,109 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- incremental node selection with v/V
+-- Treesitter selection, multicursor-friendly (:h multicursor)
+--
+-- Lua inside a mapping runs once, at the primary cursor; the cascade replays the
+-- resolved keys at the extra cursors, and a Lua-driven Visual selection voids the
+-- replay. A normal-mode `v` mapping therefore broke *every* Visual sequence at the
+-- extra cursors (even `viw`), so `v` is plain Visual again and treesitter comes in
+-- two forms that do work:
+--   * Text objects `an` / `in` with an operator: `can`, `d2an`, `yin`, and `.`.
+--     Lua text objects are re-run at each cursor. `[count]` climbs parents;
+--     `in` strips bracketing delimiters. (`van` still only selects at the primary.)
+--   * In Visual mode `v` grows the selection to the enclosing node and `V`
+--     shrinks it back (plain `V` when there is nothing to shrink). `v v` selects
+--     the node under the cursor.
 do
-  local node_stack = {}
-  vim.keymap.set("n", "v", function()
-    node_stack = {}
-    local node = vim.treesitter.get_node()
-    if not node then return "v" end
-    table.insert(node_stack, node)
+  local history = {} ---@type table<string, {number, number, number, number}>
+
+  local function line_len(row) return #vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1] end
+
+  --- Node range as 0-indexed, end-inclusive {sr, sc, er, ec}.
+  local function node_range(node)
     local sr, sc, er, ec = node:range()
-    vim.api.nvim_buf_set_mark(0, "<", sr + 1, sc, {})
-    vim.api.nvim_buf_set_mark(0, ">", er + 1, ec - 1, {})
-    vim.cmd("normal! gv")
-  end)
+    if ec == 0 and er > sr then er = er - 1; ec = line_len(er) end
+    return { sr, sc, er, math.max(ec - 1, 0) }
+  end
+
+  --- Current Visual range as 0-indexed, end-inclusive.
+  local function visual_range()
+    local v, c = vim.fn.getpos("v"), vim.fn.getpos(".")
+    local s, e = v, c
+    if c[2] < v[2] or (c[2] == v[2] and c[3] < v[3]) then s, e = c, v end
+    return { s[2] - 1, s[3] - 1, e[2] - 1, e[3] - 1 }
+  end
+
+  local function key(r) return table.concat(r, ":") end
+  local function before(r1, c1, r2, c2) return r1 < r2 or (r1 == r2 and c1 <= c2) end
+  local function contains(o, i) return before(o[1], o[2], i[1], i[2]) and before(i[3], i[4], o[3], o[4]) end
+
+  --- Smallest node whose range strictly contains `range`.
+  local function enclosing_node(range)
+    local ok, node = pcall(vim.treesitter.get_node, { pos = { range[1], range[2] } })
+    if not ok then return nil end
+    while node do
+      local nr = node_range(node)
+      if contains(nr, range) and key(nr) ~= key(range) then return node end
+      node = node:parent()
+    end
+  end
+
+  --- Select an end-inclusive range charwise, from Normal or Visual mode.
+  local function select(r)
+    local in_visual = vim.fn.mode():match("^[vV\22]") ~= nil
+    vim.api.nvim_win_set_cursor(0, { r[1] + 1, r[2] })
+    vim.cmd(in_visual and "normal! o" or "normal! v")
+    vim.api.nvim_win_set_cursor(0, { r[3] + 1, r[4] })
+  end
 
   vim.keymap.set("x", "v", function()
-    local node = node_stack[#node_stack]
+    local cur = visual_range()
+    local node = enclosing_node(cur)
     if not node then return end
-    local parent = node:parent()
-    if not parent then return end
-    table.insert(node_stack, parent)
-    local sr, sc, er, ec = parent:range()
-    vim.api.nvim_buf_set_mark(0, "<", sr + 1, sc, {})
-    vim.api.nvim_buf_set_mark(0, ">", er + 1, ec - 1, {})
-    vim.cmd("normal! gv")
-  end)
+    local r = node_range(node)
+    history[key(r)] = cur
+    select(r)
+  end, { desc = "Grow selection to enclosing treesitter node" })
 
   vim.keymap.set("x", "V", function()
-    if #node_stack <= 1 then
-      vim.cmd("normal! V")
-      return
-    end
-    table.remove(node_stack)
-    local node = node_stack[#node_stack]
-    if not node then return end
-    local sr, sc, er, ec = node:range()
-    vim.api.nvim_buf_set_mark(0, "<", sr + 1, sc, {})
-    vim.api.nvim_buf_set_mark(0, ">", er + 1, ec - 1, {})
-    vim.cmd("normal! gv")
-  end)
-end
+    local r = history[key(visual_range())]
+    if r then select(r) else vim.cmd("normal! V") end
+  end, { desc = "Shrink selection (linewise Visual when nothing to shrink)" })
 
+  local function node_at_cursor(levels)
+    local ok, node = pcall(vim.treesitter.get_node)
+    if not ok or not node then return nil end
+    for _ = 2, levels do node = node:parent() or node end
+    return node
+  end
+
+  --- Select [sr, sc] .. [er, ec) (0-indexed, end-exclusive).
+  local function select_exclusive(sr, sc, er, ec)
+    if sc >= line_len(sr) and er > sr then sr, sc = sr + 1, 0 end -- starts past EOL: next line
+    if ec == 0 and er > sr then er = er - 1; ec = line_len(er) end -- ends at BOL: previous EOL
+    if sr > er then return end
+    select({ sr, sc, er, math.max(ec - 1, 0) })
+  end
+
+  vim.keymap.set({ "o", "x" }, "an", function()
+    local node = node_at_cursor(vim.v.count1)
+    if node then select_exclusive(node:range()) end
+  end, { desc = "Treesitter node ([count] climbs parents)" })
+
+  vim.keymap.set({ "o", "x" }, "in", function()
+    local node = node_at_cursor(vim.v.count1)
+    if not node then return end
+    local first, last = node:child(0), node:child(node:child_count() - 1)
+    -- Strip anonymous delimiters like ( ) { } [ ] when they bracket the node.
+    if first and last and first ~= last and not first:named() and not last:named() then
+      local _, _, sr, sc = first:range()
+      local er, ec = last:range()
+      if sr < er or (sr == er and sc < ec) then return select_exclusive(sr, sc, er, ec) end
+    end
+    select_exclusive(node:range())
+  end, { desc = "Inside treesitter node ([count] climbs parents)" })
+end
 
 -- treewalker
 require("treewalker").setup({
@@ -509,6 +570,17 @@ require("which-key").setup({
       { "<leader>x", group = "debug" },
     },
     {
+      mode = "n",
+      -- builtin multicursor (:h multicursor), descriptions only
+      { "Q",      desc = "Toggle multicursor ([count]Q: every search match)" },
+      { "gQ",     desc = "Restore multicursors" },
+      { "q=",     desc = "Toggle multicursor follow-mode" },
+      { "]C",     desc = "Next multicursor" },
+      { "[C",     desc = "Previous multicursor" },
+      { "g<C-a>", desc = "Multicursor counter (1, 2, 3, …)" },
+    },
+    { mode = "x", { "Q", desc = "Multicursor on each selected line" } },
+    {
       mode = "i",
       { "<C-x><C-l>", desc = "Whole lines" },
       { "<C-x><C-n>", desc = "Keywords in current file" },
@@ -688,6 +760,15 @@ end, { desc = "Open Undotree" })
 -- stay in visual mode as indenting/outdenting
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
+
+-- Multicursor (builtin, :h multicursor)
+-- Q toggles a cursor, [count]Q places one on every search match, {Visual}Q one
+-- per line, q= toggles follow-mode, gQ restores, ]C/[C jump between cursors.
+-- The default clear key <C-L> is taken by Ghostty navigation below, so use <Esc>.
+vim.keymap.set("n", "<Esc>", function()
+  vim.cmd("nohlsearch")
+  vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_create_namespace("nvim.multicursor"), 0, -1)
+end, { desc = "Clear multicursors and search highlight" })
 
 vim.keymap.set("n", "<leader>?", function()
     vim.cmd("help index")

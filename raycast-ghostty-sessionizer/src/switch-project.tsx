@@ -7,6 +7,7 @@ import {
   Toast,
 } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
+import { useState } from "react";
 import { execSync } from "child_process";
 import { access, readdir, stat } from "fs/promises";
 import { homedir } from "os";
@@ -107,12 +108,44 @@ function switchToProject(project: Project) {
   }
 }
 
+// Higher is better; null means no match.
+function score(project: Project, query: string): number | null {
+  const name = project.name.toLowerCase();
+  const q = query.toLowerCase();
+  if (q === "") return 0;
+  if (name === q) return 1000;
+  if (name.startsWith(q)) return 500 - name.length;
+  const idx = name.indexOf(q);
+  if (idx >= 0) return 250 - idx - name.length;
+  // subsequence match, e.g. "agq" -> "ash_graphql"
+  let i = 0;
+  for (const ch of name) {
+    if (ch === q[i]) i++;
+    if (i === q.length) return 100 - name.length;
+  }
+  if (project.org.toLowerCase().includes(q)) return 50;
+  return null;
+}
+
 export default function Command() {
   const { data: projects, isLoading } = usePromise(getProjects);
+  const [searchText, setSearchText] = useState("");
+
+  const filtered = (projects ?? [])
+    .map((project) => ({ project, s: score(project, searchText) }))
+    .filter((x): x is { project: Project; s: number } => x.s !== null)
+    .sort(
+      (a, b) => b.s - a.s || a.project.name.localeCompare(b.project.name),
+    );
 
   return (
-    <List searchBarPlaceholder="Search projects..." isLoading={isLoading}>
-      {(projects ?? []).map((project) => (
+    <List
+      searchBarPlaceholder="Search projects..."
+      isLoading={isLoading}
+      filtering={false}
+      onSearchTextChange={setSearchText}
+    >
+      {filtered.map(({ project }) => (
         <List.Item
           key={project.path}
           title={project.name}
