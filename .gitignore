@@ -1,3 +1,6 @@
 *.bak.*
 *.bak
 node_modules
+
+# Claude Code account-synced skills (managed by Claude, re-synced automatically)
+claude/skills/synced/
