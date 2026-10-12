@@ -11,7 +11,7 @@ export KERL_CONFIGURE_OPTIONS="--with-ssl=$(brew --prefix openssl)"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 ## Set paths
-export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 export PATH="/opt/homebrew/opt/qt@5/bin:$PATH"
 # export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/scripts/:$PATH"
@@ -35,7 +35,7 @@ export MIX_OS_DEPS_COMPILE_PARTITION_COUNT=$(($(/usr/sbin/sysctl -n hw.physicalc
 export LDFLAGS="-L/opt/homebrew/opt/icu4c@76/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/icu4c@76/include"
 
-if [[ -o interactive ]] then
+if [[ -o interactive && -z $CLAUDECODE ]] then
   eval "$(/opt/homebrew/bin/mise activate zsh)"
 else
   eval "$(/opt/homebrew/bin/mise activate zsh --shims)"

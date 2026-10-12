@@ -47,7 +47,7 @@ $env.PATH = (
     | prepend $"($brew_prefix)/bin"
     | prepend $"($env.HOME)/.cargo/bin"
     | prepend $"($env.HOME)/.local/share/bob/nvim-bin"
-    | prepend $"($brew_prefix)/opt/postgresql@17/bin"
+    | prepend $"($brew_prefix)/opt/postgresql@18/bin"
     | prepend $"($brew_prefix)/opt/qt@5/bin"
     | prepend $"($env.HOME)/scripts"
     | prepend $"($brew_prefix)/opt/icu4c@76/bin"

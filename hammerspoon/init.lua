@@ -31,14 +31,50 @@ end
 -- and PaperWM:start() has to re-register every app, which took 20s+.
 PaperWM.window_filter:keepActive()
 
--- move focused window to the active space on the next screen
+-- move focused window to the active space on the next screen.
+-- PaperWM.space.moveWindowToSpace drags the window in Mission Control (macOS
+-- blocks moving windows between spaces directly), which is slow and leaves
+-- PaperWM's state out of sync when the drag misses. Moving the frame onto the
+-- other display lands it in that display's active space without any of that.
 local function moveWindowToNextScreen()
   local win = hs.window.focusedWindow()
   if not win then return end
   local next_screen = win:screen():next()
-  local space_id = hs.spaces.activeSpaceOnScreen(next_screen)
-  local index = PaperWM.space.MissionControl:getSpaceIndex(space_id)
-  if index then PaperWM.space.moveWindowToSpace(index) end
+  local target_space = hs.spaces.activeSpaceOnScreen(next_screen)
+
+  local tiled = PaperWM.state.isTiled(win:id())
+  if tiled then PaperWM.floating.toggleFloating(win) end -- untile, retile old space
+  win:moveToScreen(next_screen, false, true, 0)
+  if not tiled then return end
+
+  -- re-tile once macOS reports the window on its new space. On timeout the
+  -- window is re-tiled wherever it ended up rather than left floating.
+  local deadline = hs.timer.secondsSinceEpoch() + 1
+  hs.timer.waitUntil(function()
+    return hs.spaces.windowSpaces(win)[1] == target_space or hs.timer.secondsSinceEpoch() > deadline
+  end, function() PaperWM.floating.toggleFloating(win) end, 0.05)
+end
+
+-- focus the frontmost window on the next screen
+local function focusNextScreen()
+  local win = hs.window.focusedWindow()
+  local screen = (win and win:screen() or hs.mouse.getCurrentScreen()):next()
+
+  -- off-strip windows overhang the neighbouring display, so trust PaperWM's
+  -- state over w:screen() for tiled windows. State is empty while paused, so
+  -- this falls back to w:screen().
+  local tiled_here = {}
+  for _, column in ipairs(PaperWM.state.windowList(hs.spaces.activeSpaceOnScreen(screen))) do
+    for _, w in ipairs(column) do tiled_here[w:id()] = true end
+  end
+
+  for _, w in ipairs(hs.window.orderedWindows()) do -- front to back
+    local id = w:id()
+    if tiled_here[id] or (not PaperWM.state.isTiled(id) and w:screen() == screen) then
+      w:focus()
+      return
+    end
+  end
 end
 
 -- PaperWM hotkeys. These are bound inside a modal (below) instead of via
@@ -94,7 +130,6 @@ for name, spec in pairs(tiling_hotkeys) do
     hs.showError("PaperWM: unknown action '" .. name .. "'")
   end
 end
-tiling_modal:bind({ "alt", "shift" }, "m", nil, moveWindowToNextScreen)
 
 -- Pause / resume tiling.
 -- PaperWM:stop() unsubscribes every window/screen/swipe/mouse watcher so
@@ -125,5 +160,7 @@ end
 
 -- always active, even while paused
 hs.hotkey.bind({ "cmd", "alt", "ctrl" }, "p", toggleTiling)
+hs.hotkey.bind({ "cmd", "shift" }, "m", focusNextScreen)
+hs.hotkey.bind({ "alt", "shift" }, "m", moveWindowToNextScreen)
 
 startTiling()

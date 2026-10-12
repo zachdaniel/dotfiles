@@ -5,11 +5,46 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/zachdaniel/.dotfiles/claude/hooks/direnv-env.sh"
+          }
+        ]
+      }
+    ],
+    "CwdChanged": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/zachdaniel/.dotfiles/claude/hooks/direnv-env.sh"
+          }
+        ]
+      }
+    ],
+    "FileChanged": [
+      {
+        "matcher": ".envrc",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/zachdaniel/.dotfiles/claude/hooks/direnv-env.sh"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true
   },
   "effortLevel": "high",
   "fastMode": true,
+  "tui": "fullscreen",
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "editorMode": "vim",
@@ -18,5 +53,10 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
   }
 }
