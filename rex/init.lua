@@ -106,6 +106,32 @@ for direction, key in pairs(VIM_KEYS) do
 end
 
 --------------------------------------------------------------------------------
+-- Hosts: the other Macs' Rex servers, over the personal tailnet. Each Mac skips
+-- its own entry, recognised by Rex's "<local hostname>-rex" node name.
+-- rex-sessionizer looks for project sessions on these too.
+--------------------------------------------------------------------------------
+
+local HOSTS = {
+  { label = "laptop", endpoint = "zachs-macbook-pro-2-rex.tailfa0854.ts.net" },
+  { label = "mini", endpoint = "zachs-mac-mini-rex.tailfa0854.ts.net" },
+}
+
+local function local_hostname()
+  local pipe = io.popen("/usr/sbin/scutil --get LocalHostName 2>/dev/null")
+  if not pipe then return "" end
+  local name = pipe:read("*l") or ""
+  pipe:close()
+  return name:lower()
+end
+
+local own_node = local_hostname() .. "-rex."
+for _, host in ipairs(HOSTS) do
+  if host.endpoint:sub(1, #own_node) ~= own_node then
+    rex.host{ label = host.label, endpoint = host.endpoint }
+  end
+end
+
+--------------------------------------------------------------------------------
 -- Projects: one session per project, picked with fzf in a temporary split
 -- below the focused pane (it closes when fzf exits). Floating layers would be
 -- nicer, but the app doesn't focus them or draw them opaque yet. The Raycast
@@ -117,6 +143,13 @@ rex.action{
   title = "Open Project…",
   description = "Pick a project and switch to its session, creating it if needed",
   run = function(ctx)
+    -- REX_CLIENT tells the script which app to switch: the one that pressed
+    -- the key, which may be on another Mac
+    local command = { HOME .. "/.dotfiles/scripts/rex-sessionizer" }
+    if ctx.client_id then
+      table.insert(command, 1, "REX_CLIENT=" .. ctx.client_id)
+      table.insert(command, 1, "/usr/bin/env")
+    end
     local _, err = rex.session.new_split{
       anchor_block_id = ctx.block_id,
       direction = "vertical",
@@ -125,7 +158,7 @@ rex.action{
       focus = true,
       layout = rex.layout.block{
         flavor = SHELL,
-        options = { command = { HOME .. "/.dotfiles/scripts/rex-sessionizer" } },
+        options = { command = command },
       },
     }
     if err then error(err, 0) end
@@ -133,3 +166,21 @@ rex.action{
 }
 
 rex.bind("cmd+o", "open_project")
+
+-- The picker runs on the other Mac (the one not running this session), in a
+-- temporary session the app switches to; see rex-sessionizer --other
+rex.action{
+  name = "open_project_other",
+  title = "Open Project on Other Mac…",
+  description = "Pick a project on the other Mac and switch to its session there",
+  run = function(ctx)
+    os.execute(string.format(
+      "REX_CLIENT=%s REX_RETURN_SESSION=%s %s --other >/dev/null 2>&1 &",
+      shell_quote(ctx.client_id or ""),
+      shell_quote(ctx.session_id or ""),
+      shell_quote(HOME .. "/.dotfiles/scripts/rex-sessionizer")
+    ))
+  end,
+}
+
+rex.bind("cmd+shift+o", "open_project_other")

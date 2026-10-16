@@ -12,6 +12,13 @@
       "subtitle": "Rex",
       "description": "Find or create a Rex session for a project",
       "mode": "view"
+    },
+    {
+      "name": "switch-project-other-mac",
+      "title": "Switch Project on Other Mac",
+      "subtitle": "Rex",
+      "description": "Pick a project on the other Mac and switch to its Rex session there",
+      "mode": "no-view"
     }
   ],
   "dependencies": {
