@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Install the Raycast "Switch Project" extension. `ray develop` builds it into
+# Raycast, tells Raycast to load it, then keeps watching for changes, so stop
+# it after the first build. Raycast keeps the extension once it's stopped.
+set -euo pipefail
+
+cd ~/.dotfiles/raycast-ghostty-sessionizer
+npm install --silent
+
+log=$(mktemp)
+trap 'rm -f "$log"' EXIT
+
+./node_modules/.bin/ray develop --non-interactive > "$log" 2>&1 &
+pid=$!
+
+for _ in $(seq 1 180); do  # the first, cold build can take a minute
+    grep -q "built extension successfully" "$log" && break
+    kill -0 "$pid" 2>/dev/null || break
+    sleep 1
+done
+
+# SIGTERM makes ray tell Raycast development mode ended
+kill -TERM "$pid" 2>/dev/null || true
+wait "$pid" 2>/dev/null || true
+
+if grep -q "built extension successfully" "$log"; then
+    echo "Raycast extension installed"
+else
+    cat "$log"
+    exit 1
+fi

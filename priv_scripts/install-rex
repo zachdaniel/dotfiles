@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Install Rex (superlogical's terminal multiplexer) from its public preview
+# appcast. There's no Homebrew cask; after the first install the app keeps
+# itself up to date through Sparkle.
+set -euo pipefail
+
+APPCAST=$REX_APPCAST_URL
+
+app=$(find /Applications -maxdepth 1 -name 'Rex*.app' | head -1)
+
+if [[ -z $app ]]; then
+    url=$(curl -fsSL "$APPCAST" | xmllint --xpath 'string(//item[1]/enclosure/@url)' -)
+    tmp=$(mktemp -d)
+    trap 'hdiutil detach -quiet "$tmp/mnt" 2>/dev/null || true; rm -rf "$tmp"' EXIT
+
+    echo "Downloading $url"
+    curl -fL --progress-bar -o "$tmp/rex.dmg" "$url"
+    hdiutil attach -quiet -nobrowse -readonly -mountpoint "$tmp/mnt" "$tmp/rex.dmg"
+    src=$(find "$tmp/mnt" -maxdepth 1 -name 'Rex*.app' | head -1)
+    cp -R "$src" /Applications/
+    app="/Applications/$(basename "$src")"
+    echo "Installed $app"
+fi
+
+# rex-sessionizer switches the app's session from the CLI, which the app only
+# accepts with Remote Control on
+defaults write com.superlogical.rex rex.client.remoteControl -bool true
+
+# Agent skill and session-start hooks. Claude Code's copies already live in
+# this repo (claude/skills/rex, claude/settings.json); this adds Codex & co.
+"$app/Contents/Helpers/Rex Server.app/Contents/MacOS/rex" skill setup >/dev/null || true
