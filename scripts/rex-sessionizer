@@ -58,9 +58,14 @@ case $1 in
     mkdir -p "$records"
     rm -rf "$records/projects.new"
     mkdir "$records/projects.new"
-    projects | while read -r dir; do
-        touch "$records/projects.new/$(encode "$(tilde "$dir")")"
-    done
+    # tilde and encode inlined, with one touch, since --projects waits on this
+    files=()
+    while read -r dir; do
+        [[ $dir == "$HOME" || $dir == "$HOME"/* ]] && dir="~${dir#"$HOME"}"
+        dir=${dir//%/%25}
+        files+=("$records/projects.new/${dir//\//%2F}")
+    done < <(projects)
+    touch "${files[@]}"
     rm -rf "$records/projects"
     mv "$records/projects.new" "$records/projects"
     exit 0
