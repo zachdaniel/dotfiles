@@ -17,6 +17,10 @@ declare namespace Preferences {
   export type SwitchProject = ExtensionPreferences & {}
   /** Preferences accessible in the `switch-project-other-mac` command */
   export type SwitchProjectOtherMac = ExtensionPreferences & {}
+  /** Preferences accessible in the `open-project` command */
+  export type OpenProject = ExtensionPreferences & {}
+  /** Preferences accessible in the `open-project-other-mac` command */
+  export type OpenProjectOtherMac = ExtensionPreferences & {}
 }
 
 declare namespace Arguments {
@@ -24,5 +28,9 @@ declare namespace Arguments {
   export type SwitchProject = {}
   /** Arguments passed to the `switch-project-other-mac` command */
   export type SwitchProjectOtherMac = {}
+  /** Arguments passed to the `open-project` command */
+  export type OpenProject = {}
+  /** Arguments passed to the `open-project-other-mac` command */
+  export type OpenProjectOtherMac = {}
 }
 
