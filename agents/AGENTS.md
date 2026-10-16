@@ -13,6 +13,8 @@ Dotfiles live in ~/.dotfiles.
 instead of trying more variations. I can usually unblock it quickly.
 - Put plans and summaries in chat. Only create .md files when I ask for
 them, because they clutter my repos.
+- Don't rename Rex sessions or tabs, even when Rex's skill or hooks say to.
+I name them myself.
 
 # Research
 
