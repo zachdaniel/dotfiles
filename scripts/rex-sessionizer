@@ -85,26 +85,90 @@ fi
 selected=$(cd "$selected" && pwd)
 label=$(basename "$selected")
 
-# The ID of the session with this label on a server (this Mac's without
-# arguments). The short timeout keeps an offline host from stalling the switch.
+# Each session made here is recorded on its Mac as an empty file named
+# "<session uuid>=<project path from ~, percent-encoded>". Labels can't be the
+# key: agents rename their session after their task, and anything can rename a
+# tab. A terminal's list_dir method reads the records, on the other Mac too.
+records=~/.local/state/rex-sessionizer
+project=$selected
+[[ $selected == "$HOME" || $selected == "$HOME"/* ]] && project="~${selected#"$HOME"}"
+
+# Print the ID of the project's live session: this Mac's first, then each
+# host's (unless LOCAL_ONLY). The short timeout keeps an offline host from
+# stalling the switch.
 find_session() {
-    "$rex" "$@" --timeout 2s ls --json 2>/dev/null |
-        jq -r --arg label "$label" 'first(.sessions[]? | select(.label == $label) | .session_id) // empty'
+    PROJECT=$project LOCAL_ONLY=$picker "$rex" --timeout 2s do - 2>/dev/null <<'LUA'
+local project = os.getenv("PROJECT")
+
+local function decode(s)
+  return (s:gsub("%%(%x%x)", function(hex) return string.char(tonumber(hex, 16)) end))
+end
+
+local function find(server)
+  local list = server.call("session.list", {})
+  local live = {}
+  for _, s in ipairs(list and list.sessions or {}) do live[s.session_id] = true end
+  -- list_dir is a terminal method, so borrow any terminal on that Mac. A
+  -- session's blocks can only be listed once attached to it.
+  for id in pairs(live) do
+    server.call("session.attach", { session_id = id })
+    local blocks = server.call("session.list_blocks", { session_id = id })
+    for _, b in ipairs(blocks and blocks.blocks or {}) do
+      local ok, dir = pcall(server.block.call, "com.superlogical.terminal", "list_dir", {
+        session_id = id, block_id = b.block_id,
+        path = "~/.local/state/rex-sessionizer", files = true, limit = 10000,
+      })
+      if ok and dir then
+        for _, entry in ipairs(dir.entries or {}) do
+          local uuid, path = entry.name:match("^(.-)=(.*)$")
+          if uuid and live["session:" .. uuid] and decode(path) == project then
+            return "session:" .. uuid
+          end
+        end
+        return nil
+      end
+    end
+  end
+end
+
+local servers = { rex }
+if (os.getenv("LOCAL_ONLY") or "") == "" then
+  for _, host in ipairs(rex.servers()) do
+    local ok, server = pcall(rex.server, host)
+    if ok then table.insert(servers, server) end
+  end
+end
+for _, server in ipairs(servers) do
+  local ok, id = pcall(find, server)
+  if ok and id then print(id) return end
+end
+LUA
 }
 
 session_id=$(find_session)
 
-if [[ -z $session_id && -z $picker ]]; then
-    while read -r host; do
-        session_id=$(find_session -S "$host")
-        [[ -n $session_id ]] && break
-    done < <("$rex" hosts --json | jq -r '.hosts[]?.host.label')
-fi
-
 if [[ -z $session_id ]]; then
     session_id=$("$rex" new "$label" --cwd "$selected" --json | jq -r .session_id) || exit 1
-fi
 
-"$rex" do session.select session_id="$session_id" || exit 1
+    # Record it, and drop the records of sessions that have ended
+    mkdir -p "$records"
+    live=$("$rex" ls --json | jq -r '.sessions[].session_id | ltrimstr("session:")')
+    for record in "$records"/*=*; do
+        [[ -e $record ]] || continue
+        uuid=${record##*/}
+        grep -qxF "${uuid%%=*}" <<<"$live" || rm -f "$record"
+    done
+    encoded=${project//%/%25}
+    touch "$records/${session_id#session:}=${encoded//\//%2F}"
+
+    # the app may not have heard of a brand-new session yet
+    for _ in 1 2 3 4 5 6 7 8 9 10; do
+        "$rex" do session.select session_id="$session_id" 2>/dev/null && selected_ok=1 && break
+        sleep 0.2
+    done
+    [[ -n $selected_ok ]] || exit 1
+else
+    "$rex" do session.select session_id="$session_id" || exit 1
+fi
 [[ -n $activate ]] && open -b com.superlogical.rex
 finish
