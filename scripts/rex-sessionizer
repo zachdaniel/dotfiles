@@ -1,23 +1,79 @@
 #!/usr/bin/env bash
-# Switch the Rex app to a project's session, creating the session if needed.
+# One Rex session per project, on either Mac.
 #
-#   rex-sessionizer [PATH]   Look for the session on this Mac's server first,
-#                            then on each host in `rex hosts` (the other Macs,
-#                            declared in rex/init.lua). New sessions start on
-#                            this Mac. Without PATH, pick the project with fzf
-#                            (Rex's cmd+o runs this in a temporary split).
-#   rex-sessionizer --other  Pick from the other Mac's projects instead. The
-#                            picker runs on that Mac, in a temporary session the
-#                            app switches to, and only that Mac's sessions count
-#                            (Rex's cmd+shift+o).
+#   rex-sessionizer [PATH]                Switch the app to PATH's session: this
+#                                         Mac's, else the other Mac's, else a new
+#                                         one here. Without PATH, pick with fzf
+#                                         (Rex's cmd+o runs this in a split).
+#   rex-sessionizer --other PROJECT       The same, but only on the other Mac.
+#                                         PROJECT is a path from ~ there.
+#   rex-sessionizer --select ID           Switch the app to session ID.
+#   rex-sessionizer --sessions [--other]  Print "ID<TAB>label<TAB>project" for
+#                                         each open session on a Mac.
+#   rex-sessionizer --projects [--other]  Print "project<TAB>open session ID"
+#                                         for each project on a Mac.
 #
-# REX_CLIENT names the app to switch; cmd+o and cmd+shift+o pass the one that
-# pressed the key. Without it (Raycast), this Mac's own app is switched and
-# brought forward. REX_RETURN_SESSION is where an abandoned --other pick goes
-# back to.
+# Projects are written as paths from ~, so they mean the same on both Macs.
+# Each session made here is recorded on its Mac as an empty file named
+# "<session uuid>=<project, percent-encoded>" in ~/.local/state/rex-sessionizer
+# and found by that, since anything can rename a session. rex-sessionizer.lua
+# reads the records, on the other Mac too.
+#
+# REX_CLIENT names the app to switch; cmd+o passes the one that pressed it.
+# Without it (Raycast), this Mac's own app is switched and brought forward.
+# --index, used internally, writes this Mac's projects into the state directory
+# as file names for --projects, which reads them through a hidden terminal.
 
 export PATH="/opt/homebrew/bin:$PATH"
 rex="${REX_BIN_DIR:-/Applications/Rex Beta.app/Contents/Helpers/Rex Server.app/Contents/MacOS}/rex"
+lua="${BASH_SOURCE%/*}/rex-sessionizer.lua"
+records=~/.local/state/rex-sessionizer
+
+# This Mac's projects, as absolute paths
+projects() {
+    {
+        find ~/dev -mindepth 2 -maxdepth 2 -type d | while read -r dir; do
+            for marker in .git mix.exs Cargo.toml package.json go.mod pyproject.toml Gemfile build.zig flake.nix Makefile dune-project .project-root; do
+                if [[ -e "$dir/$marker" ]]; then echo "$dir"; break; fi
+            done
+        done
+        [[ -d ~/dev/vaults/obsidian ]] && echo ~/dev/vaults/obsidian
+        echo ~/.dotfiles
+    } | sort -u
+}
+
+# An absolute path as a path from ~ (when it's under ~)
+tilde() {
+    if [[ $1 == "$HOME" || $1 == "$HOME"/* ]]; then echo "~${1#"$HOME"}"; else echo "$1"; fi
+}
+
+# A project, percent-encoded to fit in a file name
+encode() {
+    local p=${1//%/%25}
+    echo "${p//\//%2F}"
+}
+
+case $1 in
+--index)
+    mkdir -p "$records"
+    rm -rf "$records/projects.new"
+    mkdir "$records/projects.new"
+    projects | while read -r dir; do
+        touch "$records/projects.new/$(encode "$(tilde "$dir")")"
+    done
+    rm -rf "$records/projects"
+    mv "$records/projects.new" "$records/projects"
+    exit 0
+    ;;
+--sessions | --projects)
+    ACTION=${1#--} OTHER=${2:+1} exec "$rex" --timeout 5s do "$lua"
+    ;;
+--select | --other) ;;
+--*)
+    echo "unknown option $1" >&2
+    exit 1
+    ;;
+esac
 
 if [[ -z $REX_CLIENT ]]; then
     REX_CLIENT=$("$rex" client ls --json | jq -r 'first(.clients[] | select(.info.kind == "app" and .principal.transport == "unix") | .client_id) // empty')
@@ -25,130 +81,78 @@ if [[ -z $REX_CLIENT ]]; then
 fi
 export REX_CLIENT
 
-# --other: start the picker (--picker, below) on the other Mac and switch the
-# app to it. Client IDs differ between servers, so the picker gets the app's
-# label.
+# Switch the app to a session, retrying while the app hasn't heard of a
+# brand-new one yet
+switch_to() {
+    local ok='' err
+    for _ in 1 2 3 4 5 6 7 8 9 10; do
+        if err=$("$rex" do session.select session_id="$1" 2>&1 >/dev/null); then ok=1; break; fi
+        sleep 0.2
+    done
+    if [[ -z $ok ]]; then
+        echo "$err" >&2
+        exit 1
+    fi
+    if [[ -n $activate ]]; then open -b com.superlogical.rex; fi
+}
+
+# The ID of a project's open session; WHERE is all, local or other
+find_session() {
+    ACTION=find PROJECT=$1 WHERE=$2 "$rex" --timeout 2s do "$lua" 2>/dev/null
+}
+
+if [[ $1 == --select ]]; then
+    switch_to "$2"
+    exit 0
+fi
+
+# A project on the other Mac: its session there, or a new one whose first
+# shell records it and then becomes the login shell
 if [[ $1 == --other ]]; then
     host=$("$rex" hosts --json | jq -r '.hosts[]?.host.label')
     if [[ -z $host || $host == *$'\n'* ]]; then
         echo "--other needs exactly one host in rex hosts, not: ${host:-none}" >&2
         exit 1
     fi
-    app=$("$rex" client ls --json | jq -r --arg id "$REX_CLIENT" 'first(.clients[] | select(.client_id == $id) | .info.label) // empty')
-    if [[ -z $app ]]; then
-        echo "no label for client $REX_CLIENT" >&2
+    if [[ -z $2 ]]; then
+        echo "--other needs a project" >&2
         exit 1
     fi
-    picker=$("$rex" -S "$host" new pick-project --shell=none --keep-open --json -- \
-        /usr/bin/env REX_CLIENT="$app" REX_RETURN_SESSION="$REX_RETURN_SESSION" \
-        /bin/sh -c 'exec "$HOME/.dotfiles/scripts/rex-sessionizer" --picker' | jq -r .session_id) || exit 1
-    "$rex" do session.select session_id="$picker" || exit 1
-    [[ -n $activate ]] && open -b com.superlogical.rex
+    session_id=$(find_session "$2" other)
+    if [[ -z $session_id ]]; then
+        session_id=$("$rex" -S "$host" new "${2##*/}" --shell=none --json -- /bin/sh -c '
+            mkdir -p ~/.local/state/rex-sessionizer &&
+                touch ~/.local/state/rex-sessionizer/"${REX_SESSION#session:}=$1"
+            case $2 in "~"*) cd "$HOME${2#"~"}" ;; *) cd "$2" ;; esac
+            exec "${SHELL:-/bin/zsh}" -l' sh "$(encode "$2")" "$2" | jq -r .session_id) || exit 1
+    fi
+    switch_to "$session_id"
     exit 0
 fi
-
-# --picker: running in the temporary session that --other made on this Mac
-if [[ $1 == --picker ]]; then
-    picker=$REX_SESSION
-    shift
-fi
-
-# Close the temporary picker session, which ends this script too
-finish() {
-    [[ -n $picker ]] && exec "$rex" kill "$picker"
-    exit 0
-}
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$({ find ~/dev -mindepth 2 -maxdepth 2 -type d | while read -r dir; do
-        for marker in .git mix.exs Cargo.toml package.json go.mod pyproject.toml Gemfile build.zig flake.nix Makefile dune-project .project-root; do
-            if [[ -e "$dir/$marker" ]]; then echo "$dir"; break; fi
-        done
-    done; echo ~/.dotfiles; } | sort -u | fzf \
+    selected=$(projects | fzf \
         --delimiter=/ --with-nth=-2.. --tiebreak=end \
-        --layout=reverse --border=rounded --border-label=" Projects${picker:+ on $(scutil --get ComputerName)} " --prompt='  ' --gutter=' ' --pointer='▌' \
+        --layout=reverse --border=rounded --border-label=' Projects ' --prompt='  ' --gutter=' ' --pointer='▌' \
         --color='bg+:#313244,fg:#cdd6f4,fg+:#cdd6f4,hl:#f38ba8,hl+:#f38ba8' \
         --color='info:#cba6f7,prompt:#cba6f7,pointer:#f5e0dc,marker:#b4befe,spinner:#f5e0dc' \
         --color='border:#6c7086,label:#cdd6f4,query:#cdd6f4,separator:#45475a,scrollbar:#45475a')
 fi
 
 if [[ -z $selected ]]; then
-    if [[ -n $picker && -n $REX_RETURN_SESSION ]]; then
-        "$rex" do session.select session_id="$REX_RETURN_SESSION"
-    fi
-    finish
+    exit 0
 fi
 
 # Resolve to absolute path
 selected=$(cd "$selected" && pwd)
-label=$(basename "$selected")
+project=$(tilde "$selected")
 
-# Each session made here is recorded on its Mac as an empty file named
-# "<session uuid>=<project path from ~, percent-encoded>". Labels can't be the
-# key: agents rename their session after their task, and anything can rename a
-# tab. A terminal's list_dir method reads the records, on the other Mac too.
-records=~/.local/state/rex-sessionizer
-project=$selected
-[[ $selected == "$HOME" || $selected == "$HOME"/* ]] && project="~${selected#"$HOME"}"
-
-# Print the ID of the project's live session: this Mac's first, then each
-# host's (unless LOCAL_ONLY). The short timeout keeps an offline host from
-# stalling the switch.
-find_session() {
-    PROJECT=$project LOCAL_ONLY=$picker "$rex" --timeout 2s do - 2>/dev/null <<'LUA'
-local project = os.getenv("PROJECT")
-
-local function decode(s)
-  return (s:gsub("%%(%x%x)", function(hex) return string.char(tonumber(hex, 16)) end))
-end
-
-local function find(server)
-  local list = server.call("session.list", {})
-  local live = {}
-  for _, s in ipairs(list and list.sessions or {}) do live[s.session_id] = true end
-  -- list_dir is a terminal method, so borrow any terminal on that Mac. A
-  -- session's blocks can only be listed once attached to it.
-  for id in pairs(live) do
-    server.call("session.attach", { session_id = id })
-    local blocks = server.call("session.list_blocks", { session_id = id })
-    for _, b in ipairs(blocks and blocks.blocks or {}) do
-      local ok, dir = pcall(server.block.call, "com.superlogical.terminal", "list_dir", {
-        session_id = id, block_id = b.block_id,
-        path = "~/.local/state/rex-sessionizer", files = true, limit = 10000,
-      })
-      if ok and dir then
-        for _, entry in ipairs(dir.entries or {}) do
-          local uuid, path = entry.name:match("^(.-)=(.*)$")
-          if uuid and live["session:" .. uuid] and decode(path) == project then
-            return "session:" .. uuid
-          end
-        end
-        return nil
-      end
-    end
-  end
-end
-
-local servers = { rex }
-if (os.getenv("LOCAL_ONLY") or "") == "" then
-  for _, host in ipairs(rex.servers()) do
-    local ok, server = pcall(rex.server, host)
-    if ok then table.insert(servers, server) end
-  end
-end
-for _, server in ipairs(servers) do
-  local ok, id = pcall(find, server)
-  if ok and id then print(id) return end
-end
-LUA
-}
-
-session_id=$(find_session)
+session_id=$(find_session "$project" all)
 
 if [[ -z $session_id ]]; then
-    session_id=$("$rex" new "$label" --cwd "$selected" --json | jq -r .session_id) || exit 1
+    session_id=$("$rex" new "$(basename "$selected")" --cwd "$selected" --json | jq -r .session_id) || exit 1
 
     # Record it, and drop the records of sessions that have ended
     mkdir -p "$records"
@@ -158,17 +162,7 @@ if [[ -z $session_id ]]; then
         uuid=${record##*/}
         grep -qxF "${uuid%%=*}" <<<"$live" || rm -f "$record"
     done
-    encoded=${project//%/%25}
-    touch "$records/${session_id#session:}=${encoded//\//%2F}"
-
-    # the app may not have heard of a brand-new session yet
-    for _ in 1 2 3 4 5 6 7 8 9 10; do
-        "$rex" do session.select session_id="$session_id" 2>/dev/null && selected_ok=1 && break
-        sleep 0.2
-    done
-    [[ -n $selected_ok ]] || exit 1
-else
-    "$rex" do session.select session_id="$session_id" || exit 1
+    touch "$records/${session_id#session:}=$(encode "$project")"
 fi
-[[ -n $activate ]] && open -b com.superlogical.rex
-finish
+
+switch_to "$session_id"

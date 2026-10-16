@@ -166,21 +166,3 @@ rex.action{
 }
 
 rex.bind("cmd+o", "open_project")
-
--- The picker runs on the other Mac (the one not running this session), in a
--- temporary session the app switches to; see rex-sessionizer --other
-rex.action{
-  name = "open_project_other",
-  title = "Open Project on Other Mac…",
-  description = "Pick a project on the other Mac and switch to its session there",
-  run = function(ctx)
-    os.execute(string.format(
-      "REX_CLIENT=%s REX_RETURN_SESSION=%s %s --other >/dev/null 2>&1 &",
-      shell_quote(ctx.client_id or ""),
-      shell_quote(ctx.session_id or ""),
-      shell_quote(HOME .. "/.dotfiles/scripts/rex-sessionizer")
-    ))
-  end,
-}
-
-rex.bind("cmd+shift+o", "open_project_other")

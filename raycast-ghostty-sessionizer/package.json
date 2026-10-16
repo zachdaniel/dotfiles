@@ -17,8 +17,22 @@
       "name": "switch-project-other-mac",
       "title": "Switch Project on Other Mac",
       "subtitle": "Rex",
-      "description": "Pick a project on the other Mac and switch to its Rex session there",
-      "mode": "no-view"
+      "description": "Pick one of the other Mac's projects and switch to its Rex session there",
+      "mode": "view"
+    },
+    {
+      "name": "open-project",
+      "title": "Switch to Open Project",
+      "subtitle": "Rex",
+      "description": "Switch to a Rex session open on this Mac",
+      "mode": "view"
+    },
+    {
+      "name": "open-project-other-mac",
+      "title": "Switch to Open Project on Other Mac",
+      "subtitle": "Rex",
+      "description": "Switch to a Rex session open on the other Mac",
+      "mode": "view"
     }
   ],
   "dependencies": {
