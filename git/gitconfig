@@ -17,8 +17,9 @@
 [core]
 	editor = nvim
 	excludesFile = ~/.gitignore
-	fsmonitor = true
-	untrackedCache = true
+	# Explicitly off (not unset) so repos drop the cache left from when it was
+	# global; gitconfig-monorepo turns it back on for eden-platform
+	untrackedCache = false
 [user]
 	name = Zach Daniel
 	email = zach@zachdaniel.dev
@@ -44,6 +45,9 @@
   autoStash = true
   autoSquash = true
 [merge]
-  confictstyle = zdiff3
+  conflictStyle = zdiff3
 [init]
 	defaultBranch = main
+
+[includeIf "gitdir:~/dev/remedy/eden-platform/"]
+	path = ~/.dotfiles/git/gitconfig-monorepo
