@@ -76,7 +76,12 @@
       stderr: true
 
 - shell:
-    - command: cd ~/.dotfiles/raycast-ghostty-sessionizer && npm install
+    - command: ~/.dotfiles/priv_scripts/install-rex
+      stdout: true
+      stderr: true
+
+- shell:
+    - command: ~/.dotfiles/priv_scripts/install-raycast-sessionizer
       stdout: true
       stderr: true
 
