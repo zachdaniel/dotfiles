@@ -1,10 +1,63 @@
 #!/usr/bin/env bash
 # Switch the Rex app to a project's session, creating the session if needed.
-# With no argument, pick the project with fzf (Rex's cmd+o runs this in a
-# temporary split).
+#
+#   rex-sessionizer [PATH]   Look for the session on this Mac's server first,
+#                            then on each host in `rex hosts` (the other Macs,
+#                            declared in rex/init.lua). New sessions start on
+#                            this Mac. Without PATH, pick the project with fzf
+#                            (Rex's cmd+o runs this in a temporary split).
+#   rex-sessionizer --other  Pick from the other Mac's projects instead. The
+#                            picker runs on that Mac, in a temporary session the
+#                            app switches to, and only that Mac's sessions count
+#                            (Rex's cmd+shift+o).
+#
+# REX_CLIENT names the app to switch; cmd+o and cmd+shift+o pass the one that
+# pressed the key. Without it (Raycast), this Mac's own app is switched and
+# brought forward. REX_RETURN_SESSION is where an abandoned --other pick goes
+# back to.
 
 export PATH="/opt/homebrew/bin:$PATH"
 rex="${REX_BIN_DIR:-/Applications/Rex Beta.app/Contents/Helpers/Rex Server.app/Contents/MacOS}/rex"
+
+if [[ -z $REX_CLIENT ]]; then
+    REX_CLIENT=$("$rex" client ls --json | jq -r 'first(.clients[] | select(.info.kind == "app" and .principal.transport == "unix") | .client_id) // empty')
+    activate=1
+fi
+export REX_CLIENT
+
+# --other: start the picker (--picker, below) on the other Mac and switch the
+# app to it. Client IDs differ between servers, so the picker gets the app's
+# label.
+if [[ $1 == --other ]]; then
+    host=$("$rex" hosts --json | jq -r '.hosts[]?.host.label')
+    if [[ -z $host || $host == *$'\n'* ]]; then
+        echo "--other needs exactly one host in rex hosts, not: ${host:-none}" >&2
+        exit 1
+    fi
+    app=$("$rex" client ls --json | jq -r --arg id "$REX_CLIENT" 'first(.clients[] | select(.client_id == $id) | .info.label) // empty')
+    if [[ -z $app ]]; then
+        echo "no label for client $REX_CLIENT" >&2
+        exit 1
+    fi
+    picker=$("$rex" -S "$host" new pick-project --shell=none --keep-open --json -- \
+        /usr/bin/env REX_CLIENT="$app" REX_RETURN_SESSION="$REX_RETURN_SESSION" \
+        /bin/sh -c 'exec "$HOME/.dotfiles/scripts/rex-sessionizer" --picker' | jq -r .session_id) || exit 1
+    "$rex" do session.select session_id="$picker" || exit 1
+    [[ -n $activate ]] && open -b com.superlogical.rex
+    exit 0
+fi
+
+# --picker: running in the temporary session that --other made on this Mac
+if [[ $1 == --picker ]]; then
+    picker=$REX_SESSION
+    shift
+fi
+
+# Close the temporary picker session, which ends this script too
+finish() {
+    [[ -n $picker ]] && exec "$rex" kill "$picker"
+    exit 0
+}
 
 if [[ $# -eq 1 ]]; then
     selected=$1
@@ -15,25 +68,43 @@ else
         done
     done; echo ~/.dotfiles; } | sort -u | fzf \
         --delimiter=/ --with-nth=-2.. --tiebreak=end \
-        --layout=reverse --border=rounded --border-label=' Projects ' --prompt='  ' --gutter=' ' --pointer='▌' \
+        --layout=reverse --border=rounded --border-label=" Projects${picker:+ on $(scutil --get ComputerName)} " --prompt='  ' --gutter=' ' --pointer='▌' \
         --color='bg+:#313244,fg:#cdd6f4,fg+:#cdd6f4,hl:#f38ba8,hl+:#f38ba8' \
         --color='info:#cba6f7,prompt:#cba6f7,pointer:#f5e0dc,marker:#b4befe,spinner:#f5e0dc' \
         --color='border:#6c7086,label:#cdd6f4,query:#cdd6f4,separator:#45475a,scrollbar:#45475a')
 fi
 
 if [[ -z $selected ]]; then
-    exit 0
+    if [[ -n $picker && -n $REX_RETURN_SESSION ]]; then
+        "$rex" do session.select session_id="$REX_RETURN_SESSION"
+    fi
+    finish
 fi
 
 # Resolve to absolute path
 selected=$(cd "$selected" && pwd)
 label=$(basename "$selected")
 
-session_id=$("$rex" ls --json | jq -r --arg label "$label" 'first(.sessions[]? | select(.label == $label) | .session_id) // empty')
+# The ID of the session with this label on a server (this Mac's without
+# arguments). The short timeout keeps an offline host from stalling the switch.
+find_session() {
+    "$rex" "$@" --timeout 2s ls --json 2>/dev/null |
+        jq -r --arg label "$label" 'first(.sessions[]? | select(.label == $label) | .session_id) // empty'
+}
+
+session_id=$(find_session)
+
+if [[ -z $session_id && -z $picker ]]; then
+    while read -r host; do
+        session_id=$(find_session -S "$host")
+        [[ -n $session_id ]] && break
+    done < <("$rex" hosts --json | jq -r '.hosts[]?.host.label')
+fi
 
 if [[ -z $session_id ]]; then
     session_id=$("$rex" new "$label" --cwd "$selected" --json | jq -r .session_id) || exit 1
 fi
 
 "$rex" do session.select session_id="$session_id" || exit 1
-open -b com.superlogical.rex
+[[ -n $activate ]] && open -b com.superlogical.rex
+finish
