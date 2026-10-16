@@ -26,6 +26,20 @@ fi
 # accepts with Remote Control on
 defaults write com.superlogical.rex rex.client.remoteControl -bool true
 
-# Agent skill and session-start hooks. Claude Code's copies already live in
-# this repo (claude/skills/rex, claude/settings.json); this adds Codex & co.
-"$app/Contents/Helpers/Rex Server.app/Contents/MacOS/rex" skill setup >/dev/null || true
+# The agent skill, in the directory Codex, OpenCode and Pi share. Claude Code's
+# copy already lives in this repo (claude/skills/rex). Setup isn't run for
+# Claude or Codex because it would put back Rex's own session-start hook, which
+# tells agents to rename the session.
+"$app/Contents/Helpers/Rex Server.app/Contents/MacOS/rex" skill setup --agent opencode --agent pi >/dev/null || true
+
+# Codex's session-start hook, through the same wrapper as Claude's
+# (claude/settings.json). Codex asks to approve it in /hooks.
+if [[ -d ~/.codex ]]; then
+    hooks=~/.codex/hooks.json
+    [[ -f $hooks ]] || echo '{}' > "$hooks"
+    jq --arg cmd "$HOME/.dotfiles/claude/hooks/rex-session-start.sh codex" '
+        .hooks.SessionStart = [(.hooks.SessionStart // [])[]
+            | select(any(.hooks[]?; .command | test("rex __internal session-start|rex-session-start")) | not)]
+        + [{hooks: [{type: "command", command: $cmd, timeout: 5}]}]
+    ' "$hooks" > "$hooks.new" && mv "$hooks.new" "$hooks"
+fi
