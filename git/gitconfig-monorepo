@@ -1,0 +1,6 @@
+# Status speedups for the eden-platform monorepo and its worktrees, included
+# from gitconfig. Together they can miss a newly created file now and then;
+# `git status -uall` rescans.
+[core]
+	fsmonitor = true
+	untrackedCache = true
