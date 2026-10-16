@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Switch the Rex app to a project's session, creating the session if needed.
+# With no argument, pick the project with fzf (Rex's cmd+o runs this in a
+# temporary split).
+
+export PATH="/opt/homebrew/bin:$PATH"
+rex="${REX_BIN_DIR:-/Applications/Rex Beta.app/Contents/Helpers/Rex Server.app/Contents/MacOS}/rex"
+
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+    selected=$({ find ~/dev -mindepth 2 -maxdepth 2 -type d | while read -r dir; do
+        for marker in .git mix.exs Cargo.toml package.json go.mod pyproject.toml Gemfile build.zig flake.nix Makefile dune-project .project-root; do
+            if [[ -e "$dir/$marker" ]]; then echo "$dir"; break; fi
+        done
+    done; echo ~/.dotfiles; } | sort -u | fzf \
+        --delimiter=/ --with-nth=-2.. --tiebreak=end \
+        --layout=reverse --border=rounded --border-label=' Projects ' --prompt='  ' --gutter=' ' --pointer='▌' \
+        --color='bg+:#313244,fg:#cdd6f4,fg+:#cdd6f4,hl:#f38ba8,hl+:#f38ba8' \
+        --color='info:#cba6f7,prompt:#cba6f7,pointer:#f5e0dc,marker:#b4befe,spinner:#f5e0dc' \
+        --color='border:#6c7086,label:#cdd6f4,query:#cdd6f4,separator:#45475a,scrollbar:#45475a')
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+# Resolve to absolute path
+selected=$(cd "$selected" && pwd)
+label=$(basename "$selected")
+
+session_id=$("$rex" ls --json | jq -r --arg label "$label" 'first(.sessions[]? | select(.label == $label) | .session_id) // empty')
+
+if [[ -z $session_id ]]; then
+    session_id=$("$rex" new "$label" --cwd "$selected" --json | jq -r .session_id) || exit 1
+fi
+
+"$rex" do session.select session_id="$session_id" || exit 1
+open -b com.superlogical.rex

@@ -77,15 +77,19 @@ local function focusNextScreen()
   end
 end
 
--- PaperWM hotkeys. These are bound inside a modal (below) instead of via
--- PaperWM:bindHotkeys so they can be switched off together with tiling.
-local tiling_hotkeys = {
-  -- switch to a new focused window in tiled grid (aligned with aerospace)
+-- switch to a new focused window in tiled grid (aligned with aerospace).
+-- Bound in their own modal: Rex handles these keys itself while frontmost (see
+-- REX_BUNDLE_ID below).
+local nav_hotkeys = {
   focus_left          = { { "cmd", "shift" }, "h" },
   focus_down          = { { "cmd", "shift" }, "j" },
   focus_up            = { { "cmd", "shift" }, "k" },
   focus_right         = { { "cmd", "shift" }, "l" },
+}
 
+-- PaperWM hotkeys. These are bound inside a modal (below) instead of via
+-- PaperWM:bindHotkeys so they can be switched off together with tiling.
+local tiling_hotkeys = {
   -- move windows around in tiled grid (aligned with aerospace)
   swap_left           = { { "alt", "shift" }, "h" },
   swap_down           = { { "alt", "shift" }, "j" },
@@ -119,33 +123,94 @@ local tiling_hotkeys = {
   move_window_1       = { { "alt", "shift" }, "1" }
 }
 
--- Modal with no trigger key: entered/exited programmatically. Hotkeys bound to
--- it are only active while the modal is entered, i.e. while tiling is running.
-local tiling_modal = hs.hotkey.modal.new()
+-- Modals with no trigger key: entered/exited programmatically. Hotkeys bound to
+-- them are only active while the modal is entered, i.e. while tiling is running
+-- (and for nav_modal, while Rex isn't frontmost).
 local actions = PaperWM.actions.actions()
-for name, spec in pairs(tiling_hotkeys) do
-  if actions[name] then
-    tiling_modal:bind(spec[1], spec[2], nil, actions[name])
-  else
-    hs.showError("PaperWM: unknown action '" .. name .. "'")
+local function bindActions(modal, hotkeys)
+  for name, spec in pairs(hotkeys) do
+    if actions[name] then
+      modal:bind(spec[1], spec[2], nil, actions[name])
+    else
+      hs.showError("PaperWM: unknown action '" .. name .. "'")
+    end
   end
 end
+
+local tiling_modal = hs.hotkey.modal.new()
+bindActions(tiling_modal, tiling_hotkeys)
+local nav_modal = hs.hotkey.modal.new()
+bindActions(nav_modal, nav_hotkeys)
 
 -- Pause / resume tiling.
 -- PaperWM:stop() unsubscribes every window/screen/swipe/mouse watcher so
 -- windows are no longer managed; PaperWM:start() re-scans and re-tiles.
 local tiling_paused = false
 
+-- Rex (terminal multiplexer) takes cmd+shift+hjkl while frontmost: it moves
+-- between nvim windows and Rex panes, and at the edge of the Rex window calls
+-- back in through hammerspoon://paperwm?action=focus_<direction>.
+local REX_BUNDLE_ID = "com.superlogical.rex"
+local nav_active = false
+
+-- Only Rex's terminal windows run its keymap; its other windows (Settings)
+-- would just beep, so PaperWM keeps the keys there.
+local function rexHandlesNav()
+  local win = hs.window.focusedWindow()
+  local app = win and win:application()
+  if not (app and app:bundleID() == REX_BUNDLE_ID) then return false end
+  local id = hs.axuielement.windowElement(win):attributeValue("AXIdentifier")
+  return id ~= nil and id:find("^session%-") ~= nil
+end
+
+local function updateNavKeys()
+  local active = not tiling_paused and not rexHandlesNav()
+  if active == nav_active then return end
+  nav_active = active
+  if active then nav_modal:enter() else nav_modal:exit() end
+end
+
+-- Focus moving between Rex's own windows doesn't activate an app, so watch Rex
+-- for it directly. (hs.window.filter's windowFocused never fires for Rex.)
+local rex_observer
+local function watchRexWindows(app)
+  if rex_observer then rex_observer:stop() end
+  rex_observer = hs.axuielement.observer.new(app:pid())
+    :callback(updateNavKeys)
+    :addWatcher(hs.axuielement.applicationElement(app), "AXFocusedWindowChanged")
+  rex_observer:start()
+end
+
+-- global so it isn't garbage collected
+app_watcher = hs.application.watcher.new(function(_, event, app)
+  if event == hs.application.watcher.activated then
+    updateNavKeys()
+  elseif event == hs.application.watcher.launched and app:bundleID() == REX_BUNDLE_ID then
+    watchRexWindows(app)
+  end
+end)
+app_watcher:start()
+
+local rex_app = hs.application.get(REX_BUNDLE_ID)
+if rex_app then watchRexWindows(rex_app) end
+
+hs.urlevent.bind("paperwm", function(_, params)
+  local action = actions[params.action or ""]
+  if action and not tiling_paused then action() end
+end)
+
 local function startTiling()
   PaperWM:start()
   tiling_modal:enter()
   tiling_paused = false
+  updateNavKeys()
 end
 
 local function pauseTiling()
   tiling_modal:exit()
   PaperWM:stop()
   tiling_paused = true
+  updateNavKeys()
 end
 
 local function toggleTiling()

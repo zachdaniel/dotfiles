@@ -32,7 +32,7 @@ vim.pack.add({
   "https://github.com/echasnovski/mini.nvim",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/NeogitOrg/neogit",
-  "https://github.com/barrettruth/diffs.nvim",
+  "https://forge.barrettruth.com/barrettruth/diffs.nvim",
   "https://github.com/kylechui/nvim-surround",
   "https://github.com/gregorias/nvim-surround-wk",
   "https://github.com/stevearc/quicker.nvim",
@@ -784,19 +784,17 @@ vim.keymap.set("o", "r", function() require("flash").remote() end, { desc = "Rem
 vim.keymap.set({ "o", "x" }, "R", function() require("flash").treesitter_search() end, { desc = "Treesitter Search" })
 vim.keymap.set("c", "<c-s>", function() require("flash").toggle() end, { desc = "Toggle Flash Search" })
 
--- Ghostty split navigation: navigate neovim windows, fall through to ghostty at edges
-local function ghostty_navigate(direction)
-  local ghostty_dir = ({ h = "left", j = "down", k = "up", l = "right" })[direction]
+-- Rex navigation: Rex's cmd+shift+hjkl asks nvim to move first over this socket
+-- (see rex/init.lua), and only moves between Rex panes when nvim is at an edge
+if vim.env.REX_BLOCK then
+  pcall(vim.fn.serverstart, "/tmp/nvim-rex-" .. vim.env.REX_BLOCK:gsub("^block:", "") .. ".sock")
+end
+
+function RexNavigate(direction)
   local win = vim.api.nvim_get_current_win()
   vim.cmd("wincmd " .. direction)
-  if vim.api.nvim_get_current_win() == win then
-    vim.fn.jobstart({ "ghostty-nav", ghostty_dir }, { detach = true })
-  end
+  return vim.api.nvim_get_current_win() ~= win and 1 or 0
 end
-vim.keymap.set("n", "<C-h>", function() ghostty_navigate("h") end)
-vim.keymap.set("n", "<C-j>", function() ghostty_navigate("j") end)
-vim.keymap.set("n", "<C-k>", function() ghostty_navigate("k") end)
-vim.keymap.set("n", "<C-l>", function() ghostty_navigate("l") end)
 
 -- neogit
 

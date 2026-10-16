@@ -9,8 +9,8 @@
     {
       "name": "switch-project",
       "title": "Switch Project",
-      "subtitle": "Ghostty",
-      "description": "Find or create a Ghostty window for a project",
+      "subtitle": "Rex",
+      "description": "Find or create a Rex session for a project",
       "mode": "view"
     }
   ],

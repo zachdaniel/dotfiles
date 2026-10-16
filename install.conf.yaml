@@ -58,6 +58,7 @@
     ~/.config/nushell: nushell
     ~/Library/Application Support/nushell: nushell
     ~/.config/ghostty: ghostty
+    ~/.config/rex: rex
 
 - shell:
     - command: |

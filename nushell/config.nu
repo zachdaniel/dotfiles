@@ -16,38 +16,6 @@ source starship.nu
 # Mise
 source mise.nu
 
-# Ghostty split navigation
-$env.config.keybindings = $env.config.keybindings? | default [] | append [
-  {
-    name: ghostty_split_left
-    modifier: control
-    keycode: char_h
-    mode: [emacs vi_normal vi_insert]
-    event: { send: executehostcommand, cmd: "ghostty-nav left" }
-  }
-  {
-    name: ghostty_split_down
-    modifier: control
-    keycode: char_j
-    mode: [emacs vi_normal vi_insert]
-    event: { send: executehostcommand, cmd: "ghostty-nav down" }
-  }
-  {
-    name: ghostty_split_up
-    modifier: control
-    keycode: char_k
-    mode: [emacs vi_normal vi_insert]
-    event: { send: executehostcommand, cmd: "ghostty-nav up" }
-  }
-  {
-    name: ghostty_split_right
-    modifier: control
-    keycode: char_l
-    mode: [emacs vi_normal vi_insert]
-    event: { send: executehostcommand, cmd: "ghostty-nav right" }
-  }
-]
-
 # Run claude with zsh as $SHELL — Claude Code gets confused trying to run
 # its Bash-tool commands under nushell, so point it at zsh instead.
 def --wrapped claude [...args] {

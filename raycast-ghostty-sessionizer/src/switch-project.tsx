@@ -95,7 +95,7 @@ async function getProjects(): Promise<Project[]> {
 
 function switchToProject(project: Project) {
   try {
-    execSync(`~/.dotfiles/scripts/ghostty-sessionizer "${project.path}"`, {
+    execSync(`~/.dotfiles/scripts/rex-sessionizer "${project.path}"`, {
       shell: "/bin/bash",
       timeout: 10000,
     });
