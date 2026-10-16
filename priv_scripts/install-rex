@@ -30,7 +30,10 @@ defaults write com.superlogical.rex rex.client.remoteControl -bool true
 # copy already lives in this repo (claude/skills/rex). Setup isn't run for
 # Claude or Codex because it would put back Rex's own session-start hook, which
 # tells agents to rename the session.
-"$app/Contents/Helpers/Rex Server.app/Contents/MacOS/rex" skill setup --agent opencode --agent pi >/dev/null || true
+for rex in "$app"/Contents/Helpers/*/Contents/MacOS/rex; do
+    [[ -x $rex ]] && break
+done
+"$rex" skill setup --agent opencode --agent pi >/dev/null || true
 
 # Codex's session-start hook, through the same wrapper as Claude's
 # (claude/settings.json). Codex asks to approve it in /hooks.

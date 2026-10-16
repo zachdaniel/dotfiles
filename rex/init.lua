@@ -4,10 +4,6 @@ local TERMINAL = "com.superlogical.terminal"
 local SHELL = "com.superlogical.terminal.shell"
 local HOME = os.getenv("HOME")
 
-local function shell_quote(s)
-  return "'" .. (s:gsub("'", [['\'']])) .. "'"
-end
-
 --------------------------------------------------------------------------------
 -- Navigation: nvim window -> Rex pane -> macOS window
 --
@@ -33,18 +29,12 @@ local function nvim_navigate(block_id, direction)
   local fg = proc and proc.foreground
   if not (fg and fg.name == "nvim" and fg.path) then return false end
 
-  -- alarm bounds the wait, so a busy nvim can't hang the key
-  local cmd = string.format(
-    "/usr/bin/perl -e 'alarm shift; exec @ARGV' 1 %s --server %s --remote-expr %s 2>/dev/null",
-    shell_quote(fg.path),
-    shell_quote(nvim_socket(block_id)),
-    shell_quote("v:lua.RexNavigate('" .. VIM_KEYS[direction] .. "')")
-  )
-  local pipe = io.popen(cmd)
-  if not pipe then return false end
-  local out = pipe:read("*a")
-  pipe:close()
-  return out:match("^1") ~= nil
+  -- the timeout bounds the wait, so a busy nvim can't hang the key
+  local r = rex.exec({
+    fg.path, "--server", nvim_socket(block_id),
+    "--remote-expr", "v:lua.RexNavigate('" .. VIM_KEYS[direction] .. "')",
+  }, { timeout = 1 })
+  return r ~= nil and r.ok and r.stdout:match("^1") ~= nil
 end
 
 local function find_rect(node, block_id)
@@ -78,7 +68,7 @@ local function at_edge(block_id, direction)
 end
 
 local function focus_macos_window(direction)
-  os.execute("/usr/bin/open -g " .. shell_quote("hammerspoon://paperwm?action=focus_" .. direction) .. " &")
+  rex.exec.start({ "/usr/bin/open", "-g", "hammerspoon://paperwm?action=focus_" .. direction }, { detach = true })
 end
 
 rex.action{
@@ -117,11 +107,9 @@ local HOSTS = {
 }
 
 local function local_hostname()
-  local pipe = io.popen("/usr/sbin/scutil --get LocalHostName 2>/dev/null")
-  if not pipe then return "" end
-  local name = pipe:read("*l") or ""
-  pipe:close()
-  return name:lower()
+  local r = rex.exec({ "/usr/sbin/scutil", "--get", "LocalHostName" })
+  if not (r and r.ok) then return "" end
+  return (r.stdout:gsub("%s+$", "")):lower()
 end
 
 local own_node = local_hostname() .. "-rex."

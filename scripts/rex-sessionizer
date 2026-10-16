@@ -25,7 +25,15 @@
 # as file names for --projects, which reads them through a hidden terminal.
 
 export PATH="/opt/homebrew/bin:$PATH"
-rex="${REX_BIN_DIR:-/Applications/Rex Beta.app/Contents/Helpers/Rex Server.app/Contents/MacOS}/rex"
+# Rex terminals put rex's folder in REX_BIN_DIR. Elsewhere (Raycast), use the
+# app's copy, whose helper bundle has been renamed before.
+if [[ -n $REX_BIN_DIR ]]; then
+    rex=$REX_BIN_DIR/rex
+else
+    for rex in /Applications/Rex*.app/Contents/Helpers/*/Contents/MacOS/rex; do
+        [[ -x $rex ]] && break
+    done
+fi
 lua="${BASH_SOURCE%/*}/rex-sessionizer.lua"
 records=~/.local/state/rex-sessionizer
 
