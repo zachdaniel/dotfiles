@@ -1,17 +1,29 @@
 #!/usr/bin/env bash
-# Install Rex (superlogical's terminal multiplexer) from its public preview
-# appcast. There's no Homebrew cask; after the first install the app keeps
-# itself up to date through Sparkle.
+# Install Rex (superlogical's terminal multiplexer) from its preview appcast.
+# There's no Homebrew cask; after the first install the app keeps itself up to
+# date through Sparkle.
 set -euo pipefail
-
-APPCAST=$REX_APPCAST_URL
 
 app=$(find /Applications -maxdepth 1 -name 'Rex*.app' | head -1)
 
 if [[ -z $app ]]; then
-    url=$(curl -fsSL "$APPCAST" | xmllint --xpath 'string(//item[1]/enclosure/@url)' -)
+    # The appcast URL stays out of this repo; it's exported from ~/.envrc
+    if [[ -z ${REX_APPCAST_URL:-} ]]; then
+        echo "REX_APPCAST_URL isn't set (add it to ~/.envrc); can't install Rex" >&2
+        exit 1
+    fi
+
     tmp=$(mktemp -d)
     trap 'hdiutil detach -quiet "$tmp/mnt" 2>/dev/null || true; rm -rf "$tmp"' EXIT
+
+    # The appcast is stored brotli-compressed but served without a
+    # Content-Encoding header, so curl can't decode it by itself
+    curl -fsSL -o "$tmp/appcast.xml" "$REX_APPCAST_URL"
+    if ! xmllint --noout "$tmp/appcast.xml" 2>/dev/null; then
+        brotli -dc "$tmp/appcast.xml" > "$tmp/appcast.decoded"
+        mv "$tmp/appcast.decoded" "$tmp/appcast.xml"
+    fi
+    url=$(xmllint --xpath 'string(//item[1]/enclosure/@url)' "$tmp/appcast.xml")
 
     echo "Downloading $url"
     curl -fL --progress-bar -o "$tmp/rex.dmg" "$url"

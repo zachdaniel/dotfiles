@@ -19,6 +19,7 @@ brew "sst/tap/opencode"
 # deps: postgres
 brew "readline"
 brew "zlib"
+brew "brotli" # priv_scripts/install-rex decodes the Rex appcast
 brew "curl"
 brew "ossp-uuid"
 brew "icu4c"
