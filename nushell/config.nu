@@ -4,6 +4,9 @@ source $"($nu.cache-dir)/carapace.nu"
 $env.config.buffer_editor = "nvim"
 $env.config.show_banner = false
 
+# Keep history out of the dotfiles repo; it collects pasted secrets
+$env.config.history.path = ($nu.home-dir | path join ".local/state/nushell/history.txt")
+
 # Auto-launch tmux if not already in tmux and not in zed/warp
 # Disabled: using ghostty windows for project switching instead
 # if ($env.TMUX? | is-empty) and ($env.GUI? | default "" | $in not-in ["zed", "warp"]) {
