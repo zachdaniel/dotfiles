@@ -2,6 +2,10 @@
 $env.XDG_CONFIG_HOME = ($env.HOME | path join ".config")
 $env.FOO = "bar"
 
+# Locale: Rex sets LC_ALL to a BCP-47 id (en-US-u-...), which isn't a POSIX
+# locale, so tools fall back to C and pbcopy mangles UTF-8
+$env.LC_ALL = "en_US.UTF-8"
+
 # Carapace
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 mkdir $"($nu.cache-dir)"
