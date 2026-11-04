@@ -68,5 +68,6 @@
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754076959040
-  }
+  },
+  "switchModelsOnFlag": true
 }
