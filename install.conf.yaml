@@ -12,6 +12,7 @@
 
 - shell:
     - [git submodule update --init --recursive]
+    - [git config core.hooksPath git/hooks, Use tracked git hooks (gitleaks pre-commit)]
 
 - shell:
     - ["~/.dotfiles/priv_scripts/cargo-install"]

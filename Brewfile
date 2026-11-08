@@ -30,6 +30,7 @@ brew "pgvector"
 brew "git"
 brew "weave" # entity-based-merge
 brew "gh"
+brew "gitleaks" # dotfiles pre-commit secret scan
 brew "ripgrep"
 brew "coreutils"
 brew "fd"

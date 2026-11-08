@@ -1,0 +1,13 @@
+#!/bin/sh
+# This repo is public: block any commit whose staged changes contain a secret.
+# False positive? Add a `gitleaks:allow` comment on the line, or `git commit --no-verify`.
+
+# GUI and editor git clients often run hooks without Homebrew on PATH.
+PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks not found (brew install gitleaks); refusing to commit." >&2
+  exit 1
+fi
+
+exec gitleaks git --pre-commit --staged --redact --no-banner --log-level warn --verbose .
